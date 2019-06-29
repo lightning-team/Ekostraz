@@ -41,6 +41,7 @@ import { InterventionsTableComponent } from './list/table/table.component';
     MatTableModule,
     MatIconModule,
     MatPaginatorModule,
+    MatIconModule,
     HttpClientModule,
   ],
   providers: [
