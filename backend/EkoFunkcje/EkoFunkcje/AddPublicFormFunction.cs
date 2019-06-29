@@ -23,7 +23,7 @@ namespace EkoFunkcje
             ILogger log)
         {
             var results = new List<ValidationResult>();
-            if (Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results, true))
+            if (Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results))
             {
                 log.LogInformation("C# HTTP trigger function processed a request.");
                 Address convertedGeoAddress = new Address();
