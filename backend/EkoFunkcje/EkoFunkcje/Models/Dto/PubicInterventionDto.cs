@@ -13,7 +13,7 @@
 
         public string Email { get; set; }
 
-        public string Adress { get; set; }
+        public string Address { get; set; }
 
 
     }
