@@ -23,7 +23,7 @@ namespace EkoFunkcje
             var results = new List<ValidationResult>();
             if (Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results, true))
             {
-                var convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress(intervention.Adress);
+                var convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress(intervention.Address);
 
                 log.LogInformation("C# HTTP trigger function processed a request.");
                 var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString",
@@ -38,7 +38,7 @@ namespace EkoFunkcje
                 InterventionEntity interventionEntity = new InterventionEntity(intervention.Email)
                 {
                     Email = intervention.Email,
-                    Address = intervention.Adress,
+                    Address = intervention.Address,
                     CreationDate = DateTime.UtcNow,
                     Description = intervention.Description,
                     FullName = intervention.FullName,

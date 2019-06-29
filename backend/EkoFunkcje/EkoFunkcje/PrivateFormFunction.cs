@@ -27,7 +27,7 @@ namespace EkoFunkcje
                 CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=ekoststorage;AccountKey=I4+b0+vmOhZcbc4fVlxhHUlU0YQNFGaQcfG2kilxxtvftSynVCdmUEg47Y1iG2Z5qG1G/rHo4+QhOSSXN2YanQ==;EndpointSuffix=core.windows.net");
                 //ToDo get string from  env data
 
-                var convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress(intervention.Adress);
+                var convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress(intervention.Address);
                 // Create the table client.
                 CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
@@ -36,7 +36,7 @@ namespace EkoFunkcje
                 InterventionEntity interventionEntity = new InterventionEntity(intervention.Email)
                 {
                     Email = intervention.Email,
-                    Address = intervention.Adress,
+                    Address = intervention.Address,
                     CreationDate = DateTime.UtcNow,
                     Description = intervention.Description,
                     FullName = intervention.FullName,
