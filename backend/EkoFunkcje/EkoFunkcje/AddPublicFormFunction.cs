@@ -37,7 +37,7 @@ namespace EkoFunkcje
                     log.LogError(e,"error");
                     
 
-                    return  new BadRequestErrorMessageResult("Adres nie poprawny");
+                    return  new BadRequestErrorMessageResult( JsonConvert.SerializeObject(new JsonMessage("Adres nie poprawny")));
                 }
                 
                 var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString",
@@ -68,7 +68,7 @@ namespace EkoFunkcje
                 await interventionTable.ExecuteAsync(insertOperation);
 
 
-                return new JsonResult($"Data Added");
+                return new JsonResult(JsonConvert.SerializeObject(new JsonMessage("Data Added")));
             }
             else
             {
@@ -82,5 +82,14 @@ namespace EkoFunkcje
             }
         }
 
+    }
+
+    class JsonMessage
+    {
+        public JsonMessage(string message)
+        {
+            this.Message = message;
+        }
+        public string Message { get; }
     }
 }
