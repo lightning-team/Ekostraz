@@ -22,7 +22,9 @@ namespace EkoFunkcje
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionListItemDto>());
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionListItemDto>()
+                .ForMember(dest => dest.Id,
+                    opts => opts.MapFrom(src => src.PartitionKey)));
             var mapper = config.CreateMapper();
 
             var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString", EnvironmentVariableTarget.Process);

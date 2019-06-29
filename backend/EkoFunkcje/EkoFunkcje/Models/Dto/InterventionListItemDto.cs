@@ -4,6 +4,8 @@ namespace EkoFunkcje
 {
     public class InterventionListItemDto
     {
+        public string Id { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public string FullName { get; set; }
