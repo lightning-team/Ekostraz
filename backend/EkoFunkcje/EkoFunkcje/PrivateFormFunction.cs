@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace EkoFunkcje
 {
-    public static class AddPublicFormFunction
+    public static class PrivateFormFunction
     {
-        [FunctionName("AddPublicForm")]
+        [FunctionName("PrivateForm")]
         public static async Task<ActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] PrivateInterventionDto intervention,
             ILogger log)
