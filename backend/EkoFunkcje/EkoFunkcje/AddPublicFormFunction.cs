@@ -20,6 +20,7 @@ namespace EkoFunkcje
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] InterventionDto intervention,
             ILogger log)
         {
+
             log.LogInformation("C# HTTP trigger function processed a request.");
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=ekoststorage;AccountKey=I4+b0+vmOhZcbc4fVlxhHUlU0YQNFGaQcfG2kilxxtvftSynVCdmUEg47Y1iG2Z5qG1G/rHo4+QhOSSXN2YanQ==;EndpointSuffix=core.windows.net");
             //ToDo get string from  env data
@@ -36,6 +37,7 @@ namespace EkoFunkcje
             interventionEntity.Description = intervention.Description;
             interventionEntity.FullName = intervention.FullName;
             interventionEntity.PhoneNumber = intervention.PhoneNumber;
+            interventionEntity.Status = InterventionStatus.ActionRequired.ToString();
 
             TableOperation insertOperation = TableOperation.Insert(interventionEntity);
 

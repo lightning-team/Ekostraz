@@ -17,8 +17,6 @@ namespace EkoFunkcje
 
         public string Email { get; set; }
 
-        public string Status { get; set; }
-
         public string Adres { get; set; }
 
 
