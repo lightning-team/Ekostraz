@@ -2,7 +2,7 @@
 
 namespace EkoFunkcje
 {
-    public class InterventionListItemDto
+    public class InterventionItemResponse
     {
         public string Id { get; set; }
 
@@ -17,5 +17,9 @@ namespace EkoFunkcje
         public string Address { get; set; }
 
         public string Status { get; set; }
+
+        public double GeoLat { get; set; }
+
+        public double GeoLng { get; set; }
     }
 }

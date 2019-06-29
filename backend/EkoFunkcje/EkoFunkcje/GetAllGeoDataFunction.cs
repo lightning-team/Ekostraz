@@ -22,7 +22,7 @@ namespace EkoFunkcje
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, GeoListItemDto>()
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, GeoListItemResponse>()
                 .ForMember(dest => dest.InterventionId,
                     opts => opts.MapFrom(src => src.PartitionKey)));
             var mapper = config.CreateMapper();
@@ -33,11 +33,11 @@ namespace EkoFunkcje
             CloudTable interventionTable = tableClient.GetTableReference("Intervention");
 
             TableContinuationToken token = null;
-            var entities = new List<GeoListItemDto>();
+            var entities = new List<GeoListItemResponse>();
             do
             {
                 var queryResult = await interventionTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>(), token);
-                entities.AddRange(queryResult.Results.Select(x => mapper.Map<GeoListItemDto>(x)));
+                entities.AddRange(queryResult.Results.Select(x => mapper.Map<GeoListItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);
 

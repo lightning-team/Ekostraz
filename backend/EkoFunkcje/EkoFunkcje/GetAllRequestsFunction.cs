@@ -22,7 +22,7 @@ namespace EkoFunkcje
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionListItemDto>()
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionListItemResponse>()
                 .ForMember(dest => dest.Id,
                     opts => opts.MapFrom(src => src.PartitionKey)));
             var mapper = config.CreateMapper();
@@ -33,11 +33,11 @@ namespace EkoFunkcje
             CloudTable interventionTable = tableClient.GetTableReference("Intervention");
 
             TableContinuationToken token = null;
-            var entities = new List<InterventionListItemDto>();
+            var entities = new List<InterventionListItemResponse>();
             do
             {
                 var queryResult = await interventionTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>(), token);
-                entities.AddRange(queryResult.Results.Select(x => mapper.Map<InterventionListItemDto>(x)));
+                entities.AddRange(queryResult.Results.Select(x => mapper.Map<InterventionListItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);
 

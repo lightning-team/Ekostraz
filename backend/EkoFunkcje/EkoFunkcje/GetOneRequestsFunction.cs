@@ -23,7 +23,7 @@ namespace EkoFunkcje
 
 
 
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionItemDto>()
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionItemResponse>()
                 .ForMember(dest => dest.Id,
                     opts => opts.MapFrom(src => src.PartitionKey)));
             var mapper = config.CreateMapper();
@@ -35,12 +35,12 @@ namespace EkoFunkcje
 
 
             TableContinuationToken token = null;
-            var entities = new List<InterventionItemDto>();
+            var entities = new List<InterventionItemResponse>();
             do
             {
                 var queryResult = await interventionTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
                     TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, reqest.Id)), token);
-                entities.AddRange(queryResult.Results.Select(x => mapper.Map<InterventionItemDto>(x)));
+                entities.AddRange(queryResult.Results.Select(x => mapper.Map<InterventionItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);
 
