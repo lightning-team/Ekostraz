@@ -12,18 +12,21 @@ import {
   MatSnackBarModule,
   MatTableModule,
   MatIconModule,
+  MatPaginatorModule,
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InterventionsListComponent } from './list/list.component';
 import { InterventionDetailsComponent } from './details/details.component';
 import { HttpClientModule } from '@angular/common/http';
 import { InterventionsService } from './interventions.service';
+import { InterventionsTableComponent } from './list/table/table.component';
 
 @NgModule({
   declarations: [
     InterventionsFormComponent,
     InterventionsListComponent,
     InterventionDetailsComponent,
+    InterventionsTableComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +39,8 @@ import { InterventionsService } from './interventions.service';
     MatSelectModule,
     MatSnackBarModule,
     MatTableModule,
+    MatIconModule,
+    MatPaginatorModule,
     MatIconModule,
     HttpClientModule,
   ],

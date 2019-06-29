@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ServerIntervention, ClientIntervention } from '../intervention';
 import { InterventionsService } from '../interventions.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -11,13 +10,10 @@ import { Router } from '@angular/router';
 })
 export class InterventionsListComponent implements OnInit, OnDestroy {
   private subscription: Subscription | null = null;
-
-  displayedColumns = ['position', 'name', 'status', 'phone', 'date', 'description'];
-  interventionsList: ClientIntervention[] = [];
+  interventions: ClientIntervention[] = [];
 
   constructor(
     private interventionsService: InterventionsService,
-    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -37,8 +33,8 @@ export class InterventionsListComponent implements OnInit, OnDestroy {
   }
 
   private onSuccess(data: ServerIntervention[]) {
-    this.interventionsList = data.map(this.mapToTableData);
-    console.log(this.interventionsList);
+    this.interventions = data.map(this.mapToTableData);
+    console.log(this.interventions);
   }
 
   private onFailure() {
@@ -51,9 +47,5 @@ export class InterventionsListComponent implements OnInit, OnDestroy {
 
   private mapToTableData(intervention: ServerIntervention, index: number): ClientIntervention {
     return new ClientIntervention(intervention, index);
-  }
-
-  showDetails(intervention: ClientIntervention) {
-    this.router.navigate(['interventions', intervention.id], {state: intervention});
   }
 }

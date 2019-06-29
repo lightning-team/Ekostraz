@@ -1,21 +1,13 @@
-table {
-    width: 100%;
-
-    .mat-row:hover {
-        cursor: pointer;
-        background: #ccc5;
-    }
-}
-
 .mat-card {
     padding: 30px;
+    & > button {
+        float: right;
+        .mat-icon {
+            margin-left: 6px;
+        }
+    }
+    & h3 {
+        margin-top: 10px;
+        display: inline-block;
+    }
 }
-
-.mat-column-description {
-    max-width: 200px;
-    line-height: 24px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-

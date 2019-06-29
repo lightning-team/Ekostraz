@@ -12663,7 +12663,8 @@ export const FAKE_DATA = [{
 export function getFakeData(page: number = 1) {
     const pageStart = (page - 1) * 10;
     const pageEnd = page * 10;
-    return FAKE_DATA.slice(pageStart, pageEnd).map(transformKeys);
+    // return FAKE_DATA.slice(pageStart, pageEnd).map(transformKeys);
+    return FAKE_DATA.map(transformKeys);
 }
 
 function transformKeys(entry: any) {

@@ -1,0 +1,16 @@
+table {
+    width: 100%;
+
+    .mat-row:hover {
+        cursor: pointer;
+        background: #ccc5;
+    }
+}
+
+.mat-column-description {
+    max-width: 200px;
+    line-height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
