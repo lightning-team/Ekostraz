@@ -1,11 +1,44 @@
-.InterventionForm {
+.InterventionFormCard {
+    max-width: 600px;
+    padding: 30px;
+    margin: auto;
+
+    & .mat-card-title {
+        margin-bottom: 20px;
+    }
+
     & form {
         display: grid;
         grid-auto-columns: 1fr;
-        max-width: 500px;
+
+        .mat-form-field {
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
 
         & textarea {
             min-height: 85px;
+        }
+
+        & [type="submit"] {
+            width: 300px;
+            margin: auto;
+            margin-top: 20px;
+            display: block;
+        }
+
+        & .address {
+            display: grid;
+            grid-auto-columns: 1fr 1fr 1fr;
+            grid-gap: 15px;
+
+            &--street {
+                grid-column: 1 / 3;
+            }
+
+            &--number {
+                grid-column: 3;
+            }
         }
     }   
 }

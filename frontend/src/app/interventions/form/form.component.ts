@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-form',
@@ -11,7 +11,7 @@ export class InterventionsFormComponent implements OnInit {
     date: [''],
     name: [''],
     description: ['', Validators.required],
-    telephone: ['', Validators.required],
+    phone: ['', Validators.required],
     email: ['', Validators.email],
     status: ['', Validators.required],
     address: this.formBuilder.group({
@@ -31,7 +31,8 @@ export class InterventionsFormComponent implements OnInit {
       && this.interventionForm.get(controlName).touched;
   }
 
-  onFormSubmit() {
-    alert('Submitted');
+  onSubmit(interventionFormValue: any) {
+    alert(JSON.stringify(interventionFormValue));
+    // TODO: Connect to InterventionsService
   }
 }

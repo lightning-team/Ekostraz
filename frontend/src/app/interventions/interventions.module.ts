@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { InterventionsRoutingModule } from './interventions-routing.module';
 import { InterventionsFormComponent } from './form/form.component';
-import { MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatButtonModule,
   ]
 })
 export class InterventionsModule { }
