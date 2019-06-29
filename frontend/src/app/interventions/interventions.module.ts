@@ -30,9 +30,9 @@ import { InterventionsService } from './interventions.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
     HttpClientModule,
-  ], 
+  ],
   providers: [
     InterventionsService
   ]

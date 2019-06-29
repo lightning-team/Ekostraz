@@ -63,7 +63,8 @@
                 </mat-form-field>
             </div>
 
-            <button type="submit" color="primary" mat-raised-button>Wyślij zgłoszenie</button>
+            <button type="submit" color="primary" mat-raised-button>{{ 
+                inPrivateMode ? 'Edytuj zgłoszenie' : 'Wyślij zgłoszenie' }}</button>
         </form>
     </mat-card-content>
 </mat-card>

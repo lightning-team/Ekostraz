@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AddPublicFormUrl, AddPrivateFormUrl, GetAllRequestsUrl } from './api.configuration'
-import { Intervention } from './intervention';
+import { ServerIntervention } from './intervention';
 
 @Injectable()
 export class InterventionsService {
@@ -17,16 +17,16 @@ export class InterventionsService {
     })
   };
 
-  getInterventions(): Observable<Intervention[]> {
+  getInterventions(): Observable<ServerIntervention[]> {
     return this.http.get<any>(GetAllRequestsUrl)
-      .pipe(map(data => data.map(item => new Intervention(item))));
+      .pipe(map(data => data.map(item => new ServerIntervention(item))));
   }
 
-  addPublicForm(data: Intervention): Observable<Intervention> {
-    return this.http.post<Intervention>(AddPublicFormUrl, data, this.httpOptions);
+  addPublicForm(data: ServerIntervention): Observable<ServerIntervention> {
+    return this.http.post<ServerIntervention>(AddPublicFormUrl, data, this.httpOptions);
   }
 
-  addPrivateForm(data: Intervention): Observable<Intervention> {
-    return this.http.post<Intervention>(AddPrivateFormUrl, data, this.httpOptions);
+  addPrivateForm(data: ServerIntervention): Observable<ServerIntervention> {
+    return this.http.post<ServerIntervention>(AddPrivateFormUrl, data, this.httpOptions);
   }
 }

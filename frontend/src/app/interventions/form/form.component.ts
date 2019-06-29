@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Intervention } from '../intervention';
-import { InterventionsService } from '../interventions.service'
+import { ServerIntervention } from '../intervention';
+import { InterventionsService } from '../interventions.service';
+import { InterventionStatus } from '../intervention.status';
+import { Subscription } from 'rxjs';
 
 interface InterventionParams {
   interventionId: number;
@@ -10,19 +12,19 @@ interface InterventionParams {
 
 const interventionStatuses = [
   {
-    value: '1',
+    value: InterventionStatus.ToVerify,
     viewValue: 'Do weryfikacji',
   },
   {
-    value: '2',
+    value: InterventionStatus.ActionRequired,
     viewValue: 'Do podjęcia',
   },
   {
-    value: '3',
+    value: InterventionStatus.InProgress,
     viewValue: 'W toku',
   },
   {
-    value: '4',
+    value: InterventionStatus.Closed,
     viewValue: 'Zamknięta',
   },
 ];
@@ -32,33 +34,26 @@ const interventionStatuses = [
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class InterventionsFormComponent implements OnInit {
+export class InterventionsFormComponent implements OnInit, OnDestroy {
   private interventionId: number | null;
+  private postSubscription: Subscription | null = null;
 
   interventionStatuses = interventionStatuses;
-
   inPrivateMode = false;
+  interventionForm: FormGroup;
 
-  interventionForm = this.formBuilder.group({
-    date: [''],
-    name: [''],
-    description: ['', Validators.required],
-    phone: ['', Validators.required],
-    email: ['', Validators.email],
-    status: ['', Validators.required],
-    address: this.formBuilder.group({
-      street: ['', Validators.required],
-      number: ['', Validators.required],
-      city: ['', Validators.required],
-    }),
-  });
-
-  constructor(private formBuilder: FormBuilder,
-              private activatedRoute: ActivatedRoute,
-              private interventionService: InterventionsService
+  constructor(
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private interventionService: InterventionsService
   ) { }
 
   ngOnInit() {
+    this.checkActivatedRoute();
+    this.initializeForm();
+  }
+
+  private checkActivatedRoute() {
     this.activatedRoute.params.subscribe((params: InterventionParams) => {
       this.interventionId = params.interventionId || null;
       if (!!this.interventionId) {
@@ -69,13 +64,70 @@ export class InterventionsFormComponent implements OnInit {
     });
   }
 
+  private initializeForm() {
+    const statusValidators = this.inPrivateMode ? [Validators.required] : [];
+
+    this.interventionForm = this.formBuilder.group({
+      date: [''],
+      name: [''],
+      description: ['', Validators.required],
+      phone: ['', Validators.required],
+      email: ['', Validators.email],
+      status: ['', ...statusValidators],
+      address: this.formBuilder.group({
+        street: ['', Validators.required],
+        number: ['', Validators.required],
+        city: ['', Validators.required],
+      }),
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.postSubscription) {
+      this.postSubscription.unsubscribe();
+    }
+  }
+
   isInvalid(controlName: string) {
     return !this.interventionForm.get(controlName).valid
       && this.interventionForm.get(controlName).touched;
   }
 
   onSubmit(interventionFormValue: any) {
-    let data = new Intervention(interventionFormValue);
-    this.interventionService.addPublicForm(data).subscribe(response => console.log(response));
+    if (!this.interventionForm.valid) return;
+
+    this.postSubscription = this.interventionService.addPublicForm(this.toSeverData(interventionFormValue))
+      .subscribe(
+        (resp) => this.onPostSuccess(resp),
+        (resp) => this.onPostError(resp),
+        () => this.onComplete());
+  }
+
+  private toSeverData(interventionFormValue: any) {
+    const addressString = `${interventionFormValue.address.street}, ` +
+      `${interventionFormValue.address.number}, ${interventionFormValue.address.city}`;
+
+    const transformedData = {
+      Id: this.interventionId,
+      CreationDate: interventionFormValue.date,
+      Address: addressString,
+      Email: interventionFormValue.email,
+      FullName: interventionFormValue.name,
+      PhoneNumber: interventionFormValue.phone,
+      Status: interventionFormValue.status,
+    };
+    return new ServerIntervention(transformedData);
+  }
+
+  private onPostSuccess(response: any) {
+    alert('Success: ' + JSON.stringify(response));
+  }
+
+  private onPostError(response: any) {
+    alert('failure: ' + JSON.stringify(response));
+  }
+
+  private onComplete() {
+    this.postSubscription = null;
   }
 }
