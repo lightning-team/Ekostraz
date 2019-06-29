@@ -3,6 +3,10 @@
 
     <mat-card-content>
         <form [formGroup]='interventionForm' (ngSubmit)="onSubmit(interventionForm.value)">
+            <mat-form-field *ngIf='inPrivateMode'>
+                <input type='text' formControlName="date" matInput placeholder="Data utworzenia" />
+            </mat-form-field>
+
             <mat-form-field>
                 <input type='text' formControlName="name" matInput placeholder="Imię i nazwisko" />
             </mat-form-field>
@@ -25,13 +29,16 @@
             <mat-form-field>
                 <input type='email' formControlName="email" matInput placeholder="Adres e-mail" />
             </mat-form-field>
-            <!-- 
-            <mat-form-field>
-                <input type='text' formControlName="address.street" matInput placeholder="Numer telefonu" />
+
+            <mat-form-field *ngIf='inPrivateMode'>
+                <mat-label>Status interwencji</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let status of interventionStatuses" [value]="status.value">
+                        {{status.viewValue}}
+                    </mat-option>
+                </mat-select>
             </mat-form-field>
-            <mat-error>
-                <span *ngIf="isInvalid('address.street')">Numer telefonu jest wymagany</span>
-            </mat-error> -->
+
 
             <div formGroupName='address' class='address'>
                 <mat-form-field class='address--street'>

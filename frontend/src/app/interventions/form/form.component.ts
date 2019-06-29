@@ -1,12 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+
+interface InterventionParams {
+  interventionId: number;
+}
+
+const interventionStatuses = [
+  {
+    value: '1',
+    viewValue: 'Do weryfikacji',
+  },
+  {
+    value: '2',
+    viewValue: 'Do podjęcia',
+  },
+  {
+    value: '3',
+    viewValue: 'W toku',
+  },
+  {
+    value: '4',
+    viewValue: 'Zamknięta',
+  },
+];
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class InterventionsFormComponent {
+export class InterventionsFormComponent implements OnInit {
+  private interventionId: number | null;
+
+  interventionStatuses = interventionStatuses;
+
+  inPrivateMode = false;
+
   interventionForm = this.formBuilder.group({
     date: [''],
     name: [''],
@@ -21,7 +51,18 @@ export class InterventionsFormComponent {
     }),
   });
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.activatedRoute.params.subscribe((params: InterventionParams) => {
+      this.interventionId = params.interventionId || null;
+      if (!!this.interventionId) {
+        // TODO: Add authorization check whether a person is an Ekostraz worker
+        // or just add a route guard to allow ekostraz workers only
+        this.inPrivateMode = true;
+      }
+    });
+  }
 
   isInvalid(controlName: string) {
     return !this.interventionForm.get(controlName).valid
