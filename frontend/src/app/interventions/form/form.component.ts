@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Intervention } from '../intervention';
+import { InterventionsService } from '../interventions.service'
 
 @Component({
   selector: 'app-form',
@@ -21,7 +23,7 @@ export class InterventionsFormComponent implements OnInit {
     }),
   });
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private interventionService: InterventionsService) { }
 
   ngOnInit() {
   }
@@ -32,7 +34,7 @@ export class InterventionsFormComponent implements OnInit {
   }
 
   onSubmit(interventionFormValue: any) {
-    alert(JSON.stringify(interventionFormValue));
-    // TODO: Connect to InterventionsService
+    let data = new Intervention(interventionFormValue);
+    this.interventionService.addPublicForm(data).subscribe(response => console.log(response));
   }
 }

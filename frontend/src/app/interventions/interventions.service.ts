@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import { InterventionsModule } from './interventions.module';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AddPublicFormUrl, AddPrivateFormUrl, GetAllRequestsUrl } from './api.configuration'
 import { Intervention } from './intervention';
 
-@Injectable({
-  providedIn: InterventionsModule
-})
+@Injectable()
 export class InterventionsService {
 
   constructor(private http: HttpClient) { }
