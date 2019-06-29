@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AddPublicFormUrl, AddPrivateFormUrl, GetAllRequestsUrl } from './api.configuration';
 import { ServerIntervention } from './intervention';
+import { getFakeData } from '../fakedata';
 
 @Injectable()
 export class InterventionsService {
@@ -17,9 +18,12 @@ export class InterventionsService {
     })
   };
 
-  getInterventions(): Observable<ServerIntervention[]> {
-    return this.http.get<any>(GetAllRequestsUrl)
-      .pipe(map(data => data.map(item => new ServerIntervention(item))));
+  getInterventions(page = 1): Observable<ServerIntervention[]> {
+    // return this.http.get<any>(GetAllRequestsUrl)
+    //   .pipe(map(data => data.map(item => new ServerIntervention(item))));
+    return of(
+      getFakeData(page).map(item => new ServerIntervention(item))
+    );
   }
 
   addPublicForm(data: ServerIntervention): Observable<ServerIntervention> {

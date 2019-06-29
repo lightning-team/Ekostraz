@@ -1,0 +1,21 @@
+table {
+    width: 100%;
+
+    .mat-row:hover {
+        cursor: pointer;
+        background: #ccc5;
+    }
+}
+
+.mat-card {
+    padding: 30px;
+}
+
+.mat-column-description {
+    max-width: 200px;
+    line-height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+

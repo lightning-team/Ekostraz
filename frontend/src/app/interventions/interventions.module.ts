@@ -10,6 +10,8 @@ import {
   MatButtonModule,
   MatSelectModule,
   MatSnackBarModule,
+  MatTableModule,
+  MatIconModule,
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InterventionsListComponent } from './list/list.component';
@@ -33,6 +35,8 @@ import { InterventionsService } from './interventions.service';
     MatButtonModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatTableModule,
+    MatIconModule,
     HttpClientModule,
   ],
   providers: [
