@@ -6,7 +6,7 @@ namespace EkoFunkcje
 {
 
     //todo add validation
-    public class InterventionDto
+    public class PrivateInterventionDto
     {
 
         public string FullName { get; set; }
@@ -17,9 +17,7 @@ namespace EkoFunkcje
 
         public string Email { get; set; }
 
-        public string Status { get; set; }
-
-        public string Adres { get; set; }
+        public string Adress { get; set; }
 
 
     }

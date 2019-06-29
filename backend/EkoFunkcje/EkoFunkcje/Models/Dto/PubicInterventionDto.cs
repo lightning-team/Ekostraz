@@ -4,11 +4,10 @@ using System.Text;
 
 namespace EkoFunkcje
 {
-    public class Intervention
-    {
-        public string Id { get; set; }
 
-        public DateTime CreationDate { get; set; }
+    //todo add validation
+    public class PublicInterventionDto
+    {
 
         public string FullName { get; set; }
 
@@ -18,9 +17,7 @@ namespace EkoFunkcje
 
         public string Email { get; set; }
 
-        public string Status { get; set; }
-
-        public string Adres { get; set; }
+        public string Adress { get; set; }
 
 
     }

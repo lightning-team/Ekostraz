@@ -9,12 +9,13 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using System.Threading.Tasks;
 
 namespace EkoFunkcje
 {
-    public static class AddPublicFormFunction
+    public static class PrivateFormFunction
     {
-        [FunctionName("AddPublicForm")]
+        [FunctionName("PrivateForm")]
         public static async Task<ActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] PrivateInterventionDto intervention,
             ILogger log)
