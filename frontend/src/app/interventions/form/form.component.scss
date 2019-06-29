@@ -1,0 +1,11 @@
+.InterventionForm {
+    & form {
+        display: grid;
+        grid-auto-columns: 1fr;
+        max-width: 500px;
+
+        & textarea {
+            min-height: 85px;
+        }
+    }   
+}
