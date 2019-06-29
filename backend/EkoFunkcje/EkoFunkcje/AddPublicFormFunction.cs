@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using System.Web.Http;
+using EkoFunkcje.Models;
 
 namespace EkoFunkcje
 {
@@ -23,9 +25,21 @@ namespace EkoFunkcje
             var results = new List<ValidationResult>();
             if (Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results, true))
             {
-                var convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress(intervention.Address);
-
                 log.LogInformation("C# HTTP trigger function processed a request.");
+                Address convertedGeoAddress = new Address();
+                try
+                {
+                    convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress(intervention.Address);
+
+                }
+                catch (Exception e)
+                {
+                    log.LogError(e,"error");
+                    
+
+                    return  new BadRequestErrorMessageResult("Adres nie poprawny");
+                }
+                
                 var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString",
                     EnvironmentVariableTarget.Process);
                 CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
