@@ -20,6 +20,7 @@ import { InterventionDetailsComponent } from './details/details.component';
 import { HttpClientModule } from '@angular/common/http';
 import { InterventionsService } from './interventions.service';
 import { InterventionsTableComponent } from './list/table/table.component';
+import { InterventionsMapComponent } from './list/map/map.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { InterventionsTableComponent } from './list/table/table.component';
     InterventionsListComponent,
     InterventionDetailsComponent,
     InterventionsTableComponent,
+    InterventionsMapComponent,
   ],
   imports: [
     CommonModule,

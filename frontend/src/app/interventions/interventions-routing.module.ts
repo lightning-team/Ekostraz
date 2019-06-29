@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { InterventionsFormComponent } from './form/form.component';
 import { InterventionsListComponent } from './list/list.component';
 import { InterventionDetailsComponent } from './details/details.component';
+import { InterventionsMapComponent } from './list/map/map.component';
 
 const routes: Routes = [{
   path: '',
@@ -10,6 +11,9 @@ const routes: Routes = [{
 }, {
   path: 'new',
   component: InterventionsFormComponent,
+}, {
+  path: 'map',
+  component: InterventionsMapComponent,
 }, {
   path: ':interventionId',
   component: InterventionDetailsComponent,
