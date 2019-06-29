@@ -1,0 +1,21 @@
+.HomePage {
+    padding-top: 50px;
+    & .logo-container {
+        background: url("~src/assets/logo.svg");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        width: 80%;
+        height: 250px;
+        margin: auto;
+    }
+    
+    & > button {
+        display: block;
+        margin: 50px auto;
+        width: 250px;
+        height: 60px;
+    }
+}
+
+
