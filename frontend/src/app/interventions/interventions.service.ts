@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AddPublicFormUrl, AddPrivateFormUrl, GetAllRequestsUrl } from './api.configuration'
+import { AddPublicFormUrl, AddPrivateFormUrl, GetAllRequestsUrl } from './api.configuration';
 import { ServerIntervention } from './intervention';
 
 @Injectable()

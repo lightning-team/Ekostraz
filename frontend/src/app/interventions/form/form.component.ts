@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ServerIntervention } from '../intervention';
 import { InterventionsService } from '../interventions.service';
 import { InterventionStatus } from '../intervention.status';
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material';
 
 interface InterventionParams {
   interventionId: number;
@@ -45,7 +46,9 @@ export class InterventionsFormComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private interventionService: InterventionsService
+    private interventionService: InterventionsService,
+    private snackBar: MatSnackBar,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -120,14 +123,24 @@ export class InterventionsFormComponent implements OnInit, OnDestroy {
   }
 
   private onPostSuccess(response: any) {
-    alert('Success: ' + JSON.stringify(response));
+    const snackBarRef = this.openSnackBar('Twoje zgłoszenie zostało przyjęte!', 'OK!');
+    snackBarRef.afterDismissed().subscribe(() => {
+      this.router.navigateByUrl('');
+    });
   }
 
   private onPostError(response: any) {
-    alert('failure: ' + JSON.stringify(response));
+    this.openSnackBar('Niestety, nie udało się przyjąć Twojego zgłoszenia!', 'Zamknij');
   }
 
   private onComplete() {
     this.postSubscription = null;
+  }
+
+  private openSnackBar(message: string, action: string) {
+    return this.snackBar.open(message, action, {
+      duration: 5000,
+      verticalPosition: 'top',
+    });
   }
 }

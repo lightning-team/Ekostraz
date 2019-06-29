@@ -8,7 +8,8 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatButtonModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSnackBarModule,
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InterventionsListComponent } from './list/list.component';
@@ -31,6 +32,7 @@ import { InterventionsService } from './interventions.service';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
+    MatSnackBarModule,
     HttpClientModule,
   ],
   providers: [
