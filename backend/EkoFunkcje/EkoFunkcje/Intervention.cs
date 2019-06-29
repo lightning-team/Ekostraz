@@ -20,7 +20,7 @@ namespace EkoFunkcje
 
         public string Status { get; set; }
 
-        public string Adres { get; set; }
+        public string Adress { get; set; }
 
 
     }
