@@ -2,7 +2,7 @@
 
 namespace EkoFunkcje
 {
-    public class GeoListItemDto
+    public class GeoListItemResponse
     {
         public string InterventionId { get; set; }
 
