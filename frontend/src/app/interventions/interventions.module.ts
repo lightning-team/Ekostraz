@@ -5,6 +5,7 @@ import { InterventionsRoutingModule } from './interventions-routing.module';
 import { InterventionsFormComponent } from './form/form.component';
 import { MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [InterventionsFormComponent],
@@ -15,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    HttpClientModule
   ]
 })
 export class InterventionsModule { }
