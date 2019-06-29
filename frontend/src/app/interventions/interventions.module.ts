@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { InterventionsListComponent } from './list/list.component';
 import { InterventionDetailsComponent } from './details/details.component';
 import { HttpClientModule } from '@angular/common/http';
+import { InterventionsService } from './interventions.service';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatButtonModule,
     MatSelectModule
     HttpClientModule,
+  ], 
+  providers: [
+    InterventionsService
   ]
 })
 export class InterventionsModule { }

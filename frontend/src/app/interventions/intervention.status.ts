@@ -1,4 +1,4 @@
-enum InterventionStatus {
+export enum InterventionStatus {
     ToVerify = "ToVerify",
     ActionRequired = "ActionRequired", 
     InProgress = "InProgress", 

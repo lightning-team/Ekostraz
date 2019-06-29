@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Intervention } from '../intervention';
+import { InterventionsService } from '../interventions.service'
 
 interface InterventionParams {
   interventionId: number;
@@ -51,7 +53,10 @@ export class InterventionsFormComponent implements OnInit {
     }),
   });
 
-  constructor(private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute) { }
+  constructor(private formBuilder: FormBuilder,
+              private activatedRoute: ActivatedRoute,
+              private interventionService: InterventionsService
+  ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: InterventionParams) => {
@@ -70,7 +75,7 @@ export class InterventionsFormComponent implements OnInit {
   }
 
   onSubmit(interventionFormValue: any) {
-    alert(JSON.stringify(interventionFormValue));
-    // TODO: Connect to InterventionsService
+    let data = new Intervention(interventionFormValue);
+    this.interventionService.addPublicForm(data).subscribe(response => console.log(response));
   }
 }

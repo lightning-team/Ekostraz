@@ -1,3 +1,5 @@
+import { InterventionStatus } from './intervention.status';
+
 export class Intervention {
     constructor(data: any) {
         this.CreationDate = data.CreationDate || new Date().toUTCString();
