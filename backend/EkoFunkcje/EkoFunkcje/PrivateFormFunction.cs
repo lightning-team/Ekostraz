@@ -30,6 +30,7 @@ namespace EkoFunkcje
                 CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=ekoststorage;AccountKey=I4+b0+vmOhZcbc4fVlxhHUlU0YQNFGaQcfG2kilxxtvftSynVCdmUEg47Y1iG2Z5qG1G/rHo4+QhOSSXN2YanQ==;EndpointSuffix=core.windows.net");
                 //ToDo get string from  env data
 
+                var convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress(intervention.Adress);
                 // Create the table client.
                 CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
@@ -37,12 +38,14 @@ namespace EkoFunkcje
                 await interventionTable.CreateIfNotExistsAsync();
                 InterventionEntity interventionEntity = new InterventionEntity(intervention.Email);
                 interventionEntity.Email = intervention.Email;
-                interventionEntity.Adress = intervention.Adress;
+                interventionEntity.Address = intervention.Adress;
                 interventionEntity.CreationDate = DateTime.UtcNow;
                 interventionEntity.Description = intervention.Description;
                 interventionEntity.FullName = intervention.FullName;
                 interventionEntity.PhoneNumber = intervention.PhoneNumber;
                 interventionEntity.Status = InterventionStatus.ActionRequired.ToString();
+                interventionEntity.GeoLat = convertedGeoAddress.lat;
+                interventionEntity.GeoLng = convertedGeoAddress.lng;
 
 
                 switch (intervention.Status)

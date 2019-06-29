@@ -27,6 +27,10 @@ namespace EkoFunkcje
 
         public string Status { get; set; }
 
-        public string Adress { get; set; }
+        public string Address { get; set; }
+
+        public double GeoLat { get; set; }
+
+        public double GeoLng { get; set; }
     }
 }

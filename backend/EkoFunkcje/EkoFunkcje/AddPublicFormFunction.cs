@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -16,26 +16,36 @@ namespace EkoFunkcje
     {
         [FunctionName("AddPublicForm")]
         public static async Task<ActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] PrivateInterventionDto intervention,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+            PrivateInterventionDto intervention,
             ILogger log)
         {
+            try
+            {
+
+         
             log.LogInformation("C# HTTP trigger function processed a request.");
-            var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString", EnvironmentVariableTarget.Process);
+            var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString",
+                EnvironmentVariableTarget.Process);
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
 
             // Create the table client.
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
+            var convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress("Wroclavia, Sucha, Wrocław");
+
             CloudTable interventionTable = tableClient.GetTableReference("Intervention");
             await interventionTable.CreateIfNotExistsAsync();
             InterventionEntity interventionEntity = new InterventionEntity(intervention.Email);
             interventionEntity.Email = intervention.Email;
-            interventionEntity.Adress = intervention.Adress;
+            interventionEntity.Address = intervention.Adress;
             interventionEntity.CreationDate = DateTime.UtcNow;
             interventionEntity.Description = intervention.Description;
             interventionEntity.FullName = intervention.FullName;
             interventionEntity.PhoneNumber = intervention.PhoneNumber;
             interventionEntity.Status = InterventionStatus.ActionRequired.ToString();
+            interventionEntity.GeoLat = convertedGeoAddress.lat;
+            interventionEntity.GeoLng = convertedGeoAddress.lng;
 
             TableOperation insertOperation = TableOperation.Insert(interventionEntity);
 
@@ -45,6 +55,12 @@ namespace EkoFunkcje
 
             return new OkObjectResult($"Data Added");
             //  : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            }
+              catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
     }
