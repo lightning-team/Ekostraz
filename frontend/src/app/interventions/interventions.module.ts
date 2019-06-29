@@ -13,6 +13,7 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { InterventionsListComponent } from './list/list.component';
 import { InterventionDetailsComponent } from './details/details.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { InterventionDetailsComponent } from './details/details.component';
     MatInputModule,
     MatButtonModule,
     MatSelectModule
+    HttpClientModule,
   ]
 })
 export class InterventionsModule { }
