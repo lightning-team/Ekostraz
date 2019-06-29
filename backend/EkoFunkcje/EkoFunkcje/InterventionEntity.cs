@@ -10,7 +10,7 @@ namespace EkoFunkcje
         public InterventionEntity(string email)
         {
             this.PartitionKey = Guid.NewGuid().ToString();
-            this.RowKey = Email;
+            this.RowKey = email;
         }
 
         public InterventionEntity() { }
