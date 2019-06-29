@@ -32,7 +32,7 @@ namespace EkoFunkcje
             await interventionTable.CreateIfNotExistsAsync();
             InterventionEntity interventionEntity = new InterventionEntity(intervention.Email);
             interventionEntity.Email = intervention.Email;
-            interventionEntity.Adres = intervention.Adres;
+            interventionEntity.Adress = intervention.Adress;
             interventionEntity.CreationDate = DateTime.UtcNow;
             interventionEntity.Description = intervention.Description;
             interventionEntity.FullName = intervention.FullName;
@@ -45,7 +45,7 @@ namespace EkoFunkcje
             await interventionTable.ExecuteAsync(insertOperation);
 
 
-            return new OkObjectResult($"Hello");
+            return new OkObjectResult($"Data Added");
               //  : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
 
