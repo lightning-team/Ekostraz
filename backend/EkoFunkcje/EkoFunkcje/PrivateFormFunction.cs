@@ -72,7 +72,7 @@ namespace EkoFunkcje
                 await interventionTable.ExecuteAsync(insertOperation);
 
 
-                return new OkObjectResult($"Data Added");
+                return new JsonResult($"Data Added");
             }
             else
             {
