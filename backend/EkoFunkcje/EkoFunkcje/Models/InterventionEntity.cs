@@ -5,10 +5,10 @@ namespace EkoFunkcje
 {
     class InterventionEntity : TableEntity
     {
-        public InterventionEntity(string email)
+        public InterventionEntity(int rowKey)
         {
             this.PartitionKey = Guid.NewGuid().ToString();
-            this.RowKey = email;
+            this.RowKey = rowKey.ToString();
         }
 
         public InterventionEntity() { }

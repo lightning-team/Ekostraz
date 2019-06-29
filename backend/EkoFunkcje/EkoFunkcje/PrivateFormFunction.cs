@@ -33,7 +33,7 @@ namespace EkoFunkcje
 
                 CloudTable interventionTable = tableClient.GetTableReference("Intervention");
                 await interventionTable.CreateIfNotExistsAsync();
-                InterventionEntity interventionEntity = new InterventionEntity(intervention.Email)
+                InterventionEntity interventionEntity = new InterventionEntity(intervention.PhoneNumber)
                 {
                     Email = intervention.Email,
                     Address = intervention.Address,
