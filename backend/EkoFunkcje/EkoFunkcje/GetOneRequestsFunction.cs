@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EkoFunkcje.Models;
 
 namespace EkoFunkcje
 {
@@ -26,25 +27,37 @@ namespace EkoFunkcje
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionItemResponse>()
                 .ForMember(dest => dest.Id,
                     opts => opts.MapFrom(src => src.PartitionKey)));
-            var mapper = config.CreateMapper();
+            var mapperIntervention = config.CreateMapper();
+
+            var mapperComments = new MapperConfiguration(cfg => cfg
+                .CreateMap<CommentEntity, InterventionItemResponse>()
+                .ForMember(dest => dest.Id,
+                    opts => opts.MapFrom(src => src.PartitionKey))).CreateMapper();
 
             var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString", EnvironmentVariableTarget.Process);
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
             CloudTable interventionTable = tableClient.GetTableReference("Intervention");
 
+            var queryResult = await interventionTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
+                TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, reqest.Id)), null);
+            //tylko 1 
+            var interventionItemResponses = queryResult.Results.Select(x => mapperIntervention.Map<InterventionItemResponse>(x)).FirstOrDefault();
 
             TableContinuationToken token = null;
-            var entities = new List<InterventionItemResponse>();
+            CloudTable commentsTable = tableClient.GetTableReference("Comments");
+            var entities = new List<string>();
             do
             {
-                var queryResult = await interventionTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, reqest.Id)), token);
-                entities.AddRange(queryResult.Results.Select(x => mapper.Map<InterventionItemResponse>(x)));
-                token = queryResult.ContinuationToken;
+                var result = await commentsTable.ExecuteQuerySegmentedAsync(new TableQuery<CommentEntity>().Where(
+                    TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionItemResponses.Id)), token);
+                result.Results.ForEach(entity => entities.Add(entity.Comment));
+                token = result.ContinuationToken;
             } while (token != null);
 
-            return new JsonResult(entities);
+            interventionItemResponses.Comments = entities;
+
+            return new JsonResult(interventionItemResponses);
         }
 
         public class IdReqest

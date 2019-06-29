@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace EkoFunkcje
 {
@@ -21,5 +22,7 @@ namespace EkoFunkcje
         public double GeoLat { get; set; }
 
         public double GeoLng { get; set; }
+
+        public List<string> Comments { get; set; }
     }
 }

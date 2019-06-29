@@ -13,6 +13,10 @@ namespace EkoFunkcje.Models
             this.RowKey = interventionId;
         }
 
+        public CommentEntity()
+        {
+        }
+
         public string Comment { get; set; }
 
     }
