@@ -6,7 +6,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class InterventionsFormComponent implements OnInit {
+export class InterventionsFormComponent {
   interventionForm = this.formBuilder.group({
     date: [''],
     name: [''],
@@ -22,9 +22,6 @@ export class InterventionsFormComponent implements OnInit {
   });
 
   constructor(private formBuilder: FormBuilder) { }
-
-  ngOnInit() {
-  }
 
   isInvalid(controlName: string) {
     return !this.interventionForm.get(controlName).valid
