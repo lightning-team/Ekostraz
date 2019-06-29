@@ -19,7 +19,7 @@ namespace EkoFunkcje
     {
         [FunctionName("GetAllRequestsFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -27,11 +27,10 @@ namespace EkoFunkcje
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionListItemDto>());
             var mapper = config.CreateMapper();
 
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=ekoststorage;AccountKey=I4+b0+vmOhZcbc4fVlxhHUlU0YQNFGaQcfG2kilxxtvftSynVCdmUEg47Y1iG2Z5qG1G/rHo4+QhOSSXN2YanQ==;EndpointSuffix=core.windows.net");
+            var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString", EnvironmentVariableTarget.Process);
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
             CloudTable interventionTable = tableClient.GetTableReference("Intervention");
-
-            string name = req.Query["name"];
 
             TableContinuationToken token = null;
             var entities = new List<InterventionListItemDto>();

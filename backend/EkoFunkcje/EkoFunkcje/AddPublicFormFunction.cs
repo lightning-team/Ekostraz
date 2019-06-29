@@ -1,4 +1,4 @@
-    using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +16,12 @@ namespace EkoFunkcje
     {
         [FunctionName("AddPublicForm")]
         public static async Task<ActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] PrivateInterventionDto intervention,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] PrivateInterventionDto intervention,
             ILogger log)
         {
-
             log.LogInformation("C# HTTP trigger function processed a request.");
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=ekoststorage;AccountKey=I4+b0+vmOhZcbc4fVlxhHUlU0YQNFGaQcfG2kilxxtvftSynVCdmUEg47Y1iG2Z5qG1G/rHo4+QhOSSXN2YanQ==;EndpointSuffix=core.windows.net");
-            //ToDo get string from  env data
+            var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString", EnvironmentVariableTarget.Process);
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
 
             // Create the table client.
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
@@ -45,7 +44,7 @@ namespace EkoFunkcje
 
 
             return new OkObjectResult($"Data Added");
-              //  : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            //  : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
 
     }
