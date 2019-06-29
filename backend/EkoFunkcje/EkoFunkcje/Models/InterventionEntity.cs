@@ -1,7 +1,5 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EkoFunkcje
 {
@@ -14,7 +12,7 @@ namespace EkoFunkcje
         }
 
         public InterventionEntity() { }
-        
+
         public DateTime CreationDate { get; set; }
 
         public string FullName { get; set; }

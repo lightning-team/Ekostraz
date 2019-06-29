@@ -1,14 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace EkoFunkcje
 {
@@ -20,46 +20,51 @@ namespace EkoFunkcje
             PrivateInterventionDto intervention,
             ILogger log)
         {
-            try
+            var results = new List<ValidationResult>();
+            if (Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results, true))
             {
+                var convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress(intervention.Adress);
 
-         
-            log.LogInformation("C# HTTP trigger function processed a request.");
-            var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString",
-                EnvironmentVariableTarget.Process);
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
+                log.LogInformation("C# HTTP trigger function processed a request.");
+                var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString",
+                    EnvironmentVariableTarget.Process);
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
 
-            // Create the table client.
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+                // Create the table client.
+                CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
-            var convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress("Wroclavia, Sucha, Wrocław");
+                CloudTable interventionTable = tableClient.GetTableReference("Intervention");
+                await interventionTable.CreateIfNotExistsAsync();
+                InterventionEntity interventionEntity = new InterventionEntity(intervention.Email)
+                {
+                    Email = intervention.Email,
+                    Address = intervention.Adress,
+                    CreationDate = DateTime.UtcNow,
+                    Description = intervention.Description,
+                    FullName = intervention.FullName,
+                    PhoneNumber = intervention.PhoneNumber,
+                    Status = InterventionStatus.ActionRequired.ToString(),
+                    GeoLat = convertedGeoAddress.lat,
+                    GeoLng = convertedGeoAddress.lng
+                };
 
-            CloudTable interventionTable = tableClient.GetTableReference("Intervention");
-            await interventionTable.CreateIfNotExistsAsync();
-            InterventionEntity interventionEntity = new InterventionEntity(intervention.Email);
-            interventionEntity.Email = intervention.Email;
-            interventionEntity.Address = intervention.Adress;
-            interventionEntity.CreationDate = DateTime.UtcNow;
-            interventionEntity.Description = intervention.Description;
-            interventionEntity.FullName = intervention.FullName;
-            interventionEntity.PhoneNumber = intervention.PhoneNumber;
-            interventionEntity.Status = InterventionStatus.ActionRequired.ToString();
-            interventionEntity.GeoLat = convertedGeoAddress.lat;
-            interventionEntity.GeoLng = convertedGeoAddress.lng;
+                TableOperation insertOperation = TableOperation.Insert(interventionEntity);
 
-            TableOperation insertOperation = TableOperation.Insert(interventionEntity);
-
-            // Execute the insert operation.
-            await interventionTable.ExecuteAsync(insertOperation);
+                // Execute the insert operation.
+                await interventionTable.ExecuteAsync(insertOperation);
 
 
-            return new OkObjectResult($"Data Added");
-            //  : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+                return new OkObjectResult($"Data Added");
             }
-              catch (Exception e)
+            else
             {
-                Console.WriteLine(e);
-                throw;
+                var errorList = new List<string>();
+                foreach (var error in results)
+                {
+                    errorList.Add(error.ErrorMessage);
+                }
+                string json = JsonConvert.SerializeObject(errorList);
+                return new BadRequestObjectResult(json);
             }
         }
 

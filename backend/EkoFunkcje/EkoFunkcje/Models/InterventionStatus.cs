@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EkoFunkcje
+﻿namespace EkoFunkcje
 {
     enum InterventionStatus
     {
-        ToVerify,ActionRequired,InProgress,Closed
+        ToVerify, ActionRequired, InProgress, Closed
     }
 }

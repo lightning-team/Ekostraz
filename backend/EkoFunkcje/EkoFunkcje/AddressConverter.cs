@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EkoFunkcje.Models;
+﻿using EkoFunkcje.Models;
+using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 
 namespace EkoFunkcje
