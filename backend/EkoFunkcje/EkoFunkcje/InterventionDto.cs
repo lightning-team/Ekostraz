@@ -8,9 +8,6 @@ namespace EkoFunkcje
     //todo add validation
     public class InterventionDto
     {
-        public string Id { get; set; }
-
-        public DateTime CreationDate { get; set; }
 
         public string FullName { get; set; }
 
