@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class InterventionsTableComponent implements OnInit, OnChanges {
+export class InterventionsTableComponent implements OnChanges {
   displayedColumns = ['position', 'name', 'status', 'phone', 'date', 'description'];
   dataSource: MatTableDataSource<ClientIntervention>;
 
@@ -20,15 +20,10 @@ export class InterventionsTableComponent implements OnInit, OnChanges {
     private router: Router,
   ) { }
 
-
-  ngOnInit() {
-    this.dataSource = new MatTableDataSource<ClientIntervention>(this.interventions);
-    this.dataSource.paginator = this.paginator;
-  }
-
   ngOnChanges(changes: any) {
     if (changes.interventions.currentValue !== changes.interventions.previousValue) {
       this.dataSource = new MatTableDataSource<ClientIntervention>(changes.interventions.currentValue);
+      this.dataSource.paginator = this.paginator;
     }
   }
 
