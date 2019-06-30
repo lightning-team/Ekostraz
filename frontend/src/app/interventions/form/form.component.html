@@ -1,5 +1,5 @@
 <mat-card class='InterventionFormCard'>
-    <mat-card-title>Zgłoś interwencję</mat-card-title>
+    <mat-card-title>{{inPrivateMode ? 'Edytuj zgłoszenie' : 'Zgłoś interwencję'}}</mat-card-title>
 
     <mat-card-content>
         <form [formGroup]='interventionForm' (ngSubmit)="onSubmit(interventionForm.value)">

@@ -59,11 +59,13 @@ export class InterventionsFormComponent implements OnInit, OnDestroy {
   private checkActivatedRoute() {
     this.activatedRoute.params.subscribe((params: InterventionParams) => {
       this.interventionId = params.interventionId || null;
-      if (!!this.interventionId) {
+      if (this.interventionId) {
         // TODO: Add authorization check whether a person is an Ekostraz worker
         // or just add a route guard to allow ekostraz workers only
         this.inPrivateMode = true;
       }
+
+      
     });
   }
 
