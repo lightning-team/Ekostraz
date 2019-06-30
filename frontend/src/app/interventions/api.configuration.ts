@@ -2,3 +2,4 @@
     export const AddPublicFormUrl = BaseAppUrl + "AddPublicForm";
     export const AddPrivateFormUrl = BaseAppUrl + "PrivateForm";
     export const GetAllRequestsUrl = BaseAppUrl + "GetAllRequestsFunction";
+    export const DeleteRequestUrl = BaseAppUrl + "DeleteRequestFunction";

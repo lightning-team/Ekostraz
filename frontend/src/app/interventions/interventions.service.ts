@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AddPublicFormUrl, AddPrivateFormUrl, GetAllRequestsUrl } from './api.configuration';
+import { AddPublicFormUrl, AddPrivateFormUrl, GetAllRequestsUrl, DeleteRequestUrl } from './api.configuration';
 import { ServerIntervention } from './intervention';
 import { getFakeData } from '../fakedata';
 
@@ -32,5 +32,13 @@ export class InterventionsService {
 
   addPrivateForm(data: ServerIntervention): Observable<ServerIntervention> {
     return this.http.post<ServerIntervention>(AddPrivateFormUrl, data, this.httpOptions);
+  }
+
+  deleteRequest(partitionKey: string, rowKey: string) {
+    let data = {
+      partitionKey: partitionKey,
+      rowKey: rowKey
+    }
+    return this.http.post(DeleteRequestUrl, data, this.httpOptions);
   }
 }
