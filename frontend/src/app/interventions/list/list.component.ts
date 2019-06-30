@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class InterventionsListComponent implements OnInit, OnDestroy {
   private subscription: Subscription | null = null;
   interventions: ClientIntervention[] = [];
+  isloading: boolean;
 
   constructor(
     private router: Router,
@@ -19,6 +20,7 @@ export class InterventionsListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.isloading = true;
     this.subscription = this.interventionsService.getInterventions()
       .subscribe(
         (resp) => this.onSuccess(resp),
@@ -49,6 +51,7 @@ export class InterventionsListComponent implements OnInit, OnDestroy {
 
   private onCompleted() {
     this.subscription = null;
+    this.isloading = false;
   }
 
   private mapToTableData(intervention: ServerIntervention, index: number): ClientIntervention {

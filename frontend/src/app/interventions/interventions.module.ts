@@ -14,7 +14,8 @@ import {
   MatIconModule,
   MatPaginatorModule,
   MatListModule,
-  MatDialogModule
+  MatDialogModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
@@ -58,6 +59,7 @@ import { DeleteInterventionDialog } from './details/delete.dialog';
     MatIconModule,
     MatListModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBmQtE0I9s8Z8M8m73B0Er9LU9tJDt0n1s'
