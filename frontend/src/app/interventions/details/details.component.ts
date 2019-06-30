@@ -10,4 +10,14 @@ import { ClientIntervention } from '../intervention';
 export class InterventionDetailsComponent {
   @Input() intervention: ClientIntervention;
   @Input() miniVersion?: boolean;
+
+  constructor(private router: Router) { }
+
+  showDeleteDialog() {
+
+  }
+
+  navigateToEditView() {
+    this.router.navigate(['interventions', this.intervention.id, 'edit'], { state: this.intervention });
+  }
 }

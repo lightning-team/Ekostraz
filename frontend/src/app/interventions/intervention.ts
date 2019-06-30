@@ -29,6 +29,7 @@ export class ServerIntervention {
 export class ClientIntervention {
     id: string;
     position: number;
+    address: string;
     name: string;
     status: string;
     phone: string;
@@ -41,6 +42,7 @@ export class ClientIntervention {
     constructor(data: ServerIntervention, index: number) {
         this.id = data.Id;
         this.position = index + 1;
+        this.address = data.Address;
         this.name = data.FullName;
         this.status = data.Status;
         this.phone = data.PhoneNumber;

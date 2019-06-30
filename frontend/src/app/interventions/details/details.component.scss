@@ -14,12 +14,28 @@
 .mat-card-content {
     margin-top: 16px;
     font-size: 16px;
+
+    agm-map {
+        height: 200px;
+    }
+
+    .map-container {
+        width: 60%;
+        margin: 20px auto;
+    }
 }
 
 .mat-card-actions {
     float: right;
 }
 
+.mini {
+    & .mat-card-actions {
+        padding: 0;
+    }
+}
+
 .title-wrapper {
     display: inline-block;
 }
+
