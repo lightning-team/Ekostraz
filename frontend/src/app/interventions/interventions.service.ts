@@ -19,11 +19,11 @@ export class InterventionsService {
   };
 
   getInterventions(page = 1): Observable<ServerIntervention[]> {
-    // return this.http.get<any>(GetAllRequestsUrl)
-    //   .pipe(map(data => data.map(item => new ServerIntervention(item))));
-    return of(
-      getFakeData(page).map(item => new ServerIntervention(item))
-    );
+    return this.http.get<any>(GetAllRequestsUrl)
+      .pipe(map(data => data.map(item => new ServerIntervention(item))));
+    // return of(
+    //   getFakeData(page).map(item => new ServerIntervention(item))
+    // );
   }
 
   addPublicForm(data: ServerIntervention): Observable<ServerIntervention> {
