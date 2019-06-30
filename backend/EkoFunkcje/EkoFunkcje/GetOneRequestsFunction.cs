@@ -17,12 +17,10 @@ namespace EkoFunkcje
     {
         [FunctionName("GetOneRequestsFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] IdReqest reqest,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] IdReqest reqest,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-
-
 
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionItemResponse>()
                 .ForMember(dest => dest.Id,
