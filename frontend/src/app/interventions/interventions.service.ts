@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AddPublicFormUrl, AddPrivateFormUrl, GetAllRequestsUrl, DeleteRequestUrl } from './api.configuration';
-import { ServerIntervention } from './intervention';
+import { AddPublicFormUrl, AddPrivateFormUrl, GetAllRequestsUrl, DeleteRequestUrl, GetOneRequestsUrl } from './api.configuration';
+import { ServerIntervention, ClientIntervention } from './intervention';
 import { getFakeData } from '../fakedata';
 
 @Injectable()
@@ -37,5 +37,11 @@ export class InterventionsService {
       rowKey: rowKey
     }
     return this.http.post(DeleteRequestUrl, data, this.httpOptions);
+  }
+
+  getIntervention(id: string) {
+    return this.http.post<ClientIntervention>(GetOneRequestsUrl, { id }).pipe(
+      map(rawIntervention => new ClientIntervention(new ServerIntervention(rawIntervention)))
+    );
   }
 }

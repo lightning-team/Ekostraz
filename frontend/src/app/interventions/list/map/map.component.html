@@ -3,7 +3,7 @@
     <ng-container *ngIf="!isloading">
         <agm-map *ngIf="!!interventions.length" [latitude]="interventions[0].geolat"
             [longitude]="interventions[0].geolng">
-            <agm-marker *ngFor="let intervention of interventions.slice(0,50)" [latitude]="intervention.geolat"
+            <agm-marker *ngFor="let intervention of interventions.slice(0,200)" [latitude]="intervention.geolat"
                 [longitude]="intervention.geolng">
                 <agm-info-window [disableAutoPan]="false">
                     <app-intervention-details [intervention]='intervention' miniVersion='true'>
