@@ -13,16 +13,16 @@ export class ServerIntervention {
     public GeoLng: number;
 
     constructor(data: any) {
-        this.Id = data.Id || null;
-        this.CreationDate = data.CreationDate || new Date().toISOString();
-        this.Address = data.Address || '';
-        this.Email = data.Email || '';
-        this.FullName = data.FullName || 'Anonim';
-        this.Description = data.Description || 'Default description';
-        this.PhoneNumber = data.PhoneNumber || '';
-        this.Status = data.Status || InterventionStatus.ToVerify;
-        this.GeoLat = data.GeoLat || null;
-        this.GeoLng = data.GeoLng || null;
+        this.Id = data.id || null;
+        this.CreationDate = data.creationDate || new Date().toISOString();
+        this.Address = data.address || '';
+        this.Email = data.email || '';
+        this.FullName = data.fullName || 'Anonim';
+        this.Description = data.description || 'Default description';
+        this.PhoneNumber = data.phoneNumber || '';
+        this.Status = data.status || InterventionStatus.ToVerify;
+        this.GeoLat = data.geoLat || null;
+        this.GeoLng = data.geoLng || null;
     }
 }
 

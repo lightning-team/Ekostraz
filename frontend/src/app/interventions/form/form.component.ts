@@ -113,13 +113,14 @@ export class InterventionsFormComponent implements OnInit, OnDestroy {
       `${interventionFormValue.address.number}, ${interventionFormValue.address.city}`;
 
     const transformedData = {
-      Id: this.interventionId,
-      CreationDate: interventionFormValue.date,
-      Address: addressString,
-      Email: interventionFormValue.email,
-      FullName: interventionFormValue.name,
-      PhoneNumber: interventionFormValue.phone,
-      Status: interventionFormValue.status,
+      id: this.interventionId,
+      creationDate: interventionFormValue.date,
+      address: addressString,
+      email: interventionFormValue.email,
+      fullName: interventionFormValue.name,
+      phoneNumber: interventionFormValue.phone,
+      status: interventionFormValue.status,
+      description: interventionFormValue.description
     };
     return new ServerIntervention(transformedData);
   }
