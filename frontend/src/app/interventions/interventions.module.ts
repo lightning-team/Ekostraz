@@ -13,6 +13,7 @@ import {
   MatTableModule,
   MatIconModule,
   MatPaginatorModule,
+  MatListModule
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InterventionsListComponent } from './list/list.component';
@@ -42,6 +43,7 @@ import { InterventionsTableComponent } from './list/table/table.component';
     MatIconModule,
     MatPaginatorModule,
     MatIconModule,
+    MatListModule,
     HttpClientModule,
   ],
   providers: [

@@ -32,6 +32,7 @@ export class ClientIntervention {
     name: string;
     status: string;
     phone: string;
+    email: string;
     date: string;
     description: string;
     geolat: number;
@@ -43,6 +44,7 @@ export class ClientIntervention {
         this.name = data.FullName;
         this.status = data.Status;
         this.phone = data.PhoneNumber;
+        this.email = data.Email;
         this.date = data.CreationDate;
         this.description = data.Description;
         this.geolat = data.GeoLat;
