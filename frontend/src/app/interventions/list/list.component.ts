@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ServerIntervention, ClientIntervention } from '../intervention';
 import { InterventionsService } from '../interventions.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -13,6 +14,7 @@ export class InterventionsListComponent implements OnInit, OnDestroy {
   interventions: ClientIntervention[] = [];
 
   constructor(
+    private router: Router,
     private interventionsService: InterventionsService,
   ) { }
 
@@ -30,6 +32,10 @@ export class InterventionsListComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
       this.subscription = null;
     }
+  }
+
+  showMap() {
+    this.router.navigate(['interventions', 'map'], { state: this.interventions });
   }
 
   private onSuccess(data: ServerIntervention[]) {

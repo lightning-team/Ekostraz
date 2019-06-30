@@ -1,1 +1,5 @@
-<p>map works!</p>
+<mat-card>
+    <agm-map *ngIf="!!interventions.length" [latitude]="interventions[0].geolat" [longitude]="interventions[0].geolng">
+        <agm-marker [latitude]="interventions[0].geolat" [longitude]="interventions[0].geolng"></agm-marker>
+    </agm-map>
+</mat-card>
