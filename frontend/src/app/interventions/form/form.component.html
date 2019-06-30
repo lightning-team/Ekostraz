@@ -32,7 +32,7 @@
 
             <mat-form-field *ngIf='inPrivateMode'>
                 <mat-label>Status interwencji</mat-label>
-                <mat-select name='status'>
+                <mat-select formControlName="status">
                     <mat-option *ngFor="let status of interventionStatuses" [value]="status.value">
                         {{status.viewValue}}
                     </mat-option>
