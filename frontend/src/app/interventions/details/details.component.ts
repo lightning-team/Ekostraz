@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClientIntervention } from '../intervention';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteInterventionDialog } from './delete.dialog';
 
 @Component({
   selector: 'app-intervention-details',
@@ -11,10 +13,17 @@ export class InterventionDetailsComponent {
   @Input() intervention: ClientIntervention;
   @Input() miniVersion?: boolean;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private dialog: MatDialog) { }
 
   showDeleteDialog() {
+    const dialogRef = this.dialog.open(DeleteInterventionDialog);
+    dialogRef.afterClosed().subscribe(result => this.onDialogClose(result));
+  }
 
+  private onDialogClose(result: boolean) {
+    if (!!result) {
+      // TODO: Connect delete action from the service
+    }
   }
 
   navigateToEditView() {

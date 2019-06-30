@@ -13,7 +13,8 @@ import {
   MatTableModule,
   MatIconModule,
   MatPaginatorModule,
-  MatListModule
+  MatListModule,
+  MatDialogModule
 } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
@@ -26,6 +27,7 @@ import { InterventionDetailsContainerComponent } from './details/details.contain
 import { InterventionsService } from './interventions.service';
 import { InterventionsTableComponent } from './list/table/table.component';
 import { InterventionsMapComponent } from './list/map/map.component';
+import { DeleteInterventionDialog } from './details/delete.dialog';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,10 @@ import { InterventionsMapComponent } from './list/map/map.component';
     InterventionDetailsContainerComponent,
     InterventionsTableComponent,
     InterventionsMapComponent,
+    DeleteInterventionDialog,
+  ],
+  entryComponents: [
+    DeleteInterventionDialog,
   ],
   imports: [
     CommonModule,
@@ -51,6 +57,7 @@ import { InterventionsMapComponent } from './list/map/map.component';
     MatPaginatorModule,
     MatIconModule,
     MatListModule,
+    MatDialogModule,
     HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBmQtE0I9s8Z8M8m73B0Er9LU9tJDt0n1s'
