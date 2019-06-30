@@ -16,7 +16,7 @@ namespace EkoFunkcje
     {
         [FunctionName("DeleteRequestFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] DeletionRequest request,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] DeletionRequest request,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
