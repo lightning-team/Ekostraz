@@ -4,6 +4,8 @@ import { registerLocaleData } from '@angular/common';
 import { MatToolbarModule, MatButtonModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -16,6 +18,7 @@ registerLocaleData(localePl);
     HomePageComponent,
   ],
   imports: [
+    AuthModule,
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -23,6 +26,7 @@ registerLocaleData(localePl);
     MatButtonModule,
   ],
   providers: [
+    AuthService,
     { provide: LOCALE_ID, useValue: 'pl' }
   ],
   bootstrap: [AppComponent]

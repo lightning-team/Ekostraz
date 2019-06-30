@@ -11,16 +11,16 @@ import { LoggedInMemberGuard } from './logged-in-member.guard';
   imports: [
     CommonModule,
   ],
-  exports: [
-    LoginFormComponent,
-    AuthService,
+  providers: [
+    // AuthService,
     LoggedInUserGuard,
     LoggedInMemberGuard,
   ],
-  providers: [
-    AuthService,
-    LoggedInUserGuard,
-    LoggedInMemberGuard,
-  ]
+  exports: [
+    LoginFormComponent,
+    // AuthService,
+    // LoggedInUserGuard,
+    // LoggedInMemberGuard,
+  ],
 })
 export class AuthModule { }
