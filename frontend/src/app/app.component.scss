@@ -1,0 +1,26 @@
+.app-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+
+    & a {
+        color: white;
+        text-decoration: none;
+    }
+
+    & a:focused,
+    & a:visited {
+        color: white;
+    }
+}
+
+.nav-buttons-container {
+    flex-grow: 1;
+}
+
+.container {
+    max-width: 1170px;
+    margin: auto;
+}

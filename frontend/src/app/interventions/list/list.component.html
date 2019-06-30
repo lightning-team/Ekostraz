@@ -1,0 +1,8 @@
+<mat-card>
+    <h3>Lista interwencji</h3>
+    <button (click)='showMap()' color="primary" mat-raised-button>
+        Sprawdź na mapie!
+        <mat-icon>map</mat-icon>
+    </button>
+    <app-interventions-table [interventions]="interventions"></app-interventions-table>
+</mat-card>

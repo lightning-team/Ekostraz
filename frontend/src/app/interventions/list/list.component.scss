@@ -1,0 +1,13 @@
+.mat-card {
+    padding: 30px;
+    & > button {
+        float: right;
+        .mat-icon {
+            margin-left: 6px;
+        }
+    }
+    & h3 {
+        margin-top: 10px;
+        display: inline-block;
+    }
+}
