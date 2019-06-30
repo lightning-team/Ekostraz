@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { InterventionsFormComponent } from './form/form.component';
 import { InterventionsListComponent } from './list/list.component';
-import { InterventionDetailsComponent } from './details/details.component';
+import { InterventionDetailsContainerComponent } from './details/details.container.component';
 import { InterventionsMapComponent } from './list/map/map.component';
 
 const routes: Routes = [{
@@ -16,7 +16,7 @@ const routes: Routes = [{
   component: InterventionsMapComponent,
 }, {
   path: ':interventionId',
-  component: InterventionDetailsComponent,
+  component: InterventionDetailsContainerComponent,
 }, {
   path: ':interventionId/edit',
   component: InterventionsFormComponent,

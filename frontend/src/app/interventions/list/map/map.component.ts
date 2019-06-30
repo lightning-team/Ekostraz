@@ -45,7 +45,6 @@ export class InterventionsMapComponent implements OnInit, OnDestroy {
   // TODO: Logic below is the same as list.component.ts - try to extract/abstract upon it.
   private onSuccess(data: ServerIntervention[]) {
     this.interventions = data.map(this.mapToClientInterventions);
-    console.log(this.interventions);
   }
 
   private onFailure() {

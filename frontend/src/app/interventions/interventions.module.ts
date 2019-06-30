@@ -22,6 +22,7 @@ import { InterventionsFormComponent } from './form/form.component';
 import { InterventionsRoutingModule } from './interventions-routing.module';
 import { InterventionsListComponent } from './list/list.component';
 import { InterventionDetailsComponent } from './details/details.component';
+import { InterventionDetailsContainerComponent } from './details/details.container.component';
 import { InterventionsService } from './interventions.service';
 import { InterventionsTableComponent } from './list/table/table.component';
 import { InterventionsMapComponent } from './list/map/map.component';
@@ -31,6 +32,7 @@ import { InterventionsMapComponent } from './list/map/map.component';
     InterventionsFormComponent,
     InterventionsListComponent,
     InterventionDetailsComponent,
+    InterventionDetailsContainerComponent,
     InterventionsTableComponent,
     InterventionsMapComponent,
   ],
