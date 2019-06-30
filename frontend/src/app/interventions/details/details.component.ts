@@ -24,6 +24,7 @@ export class InterventionDetailsComponent {
   private onDialogClose(result: boolean) {
     if (!!result) {
       this.interventionService.deleteRequest(this.intervention.id, this.intervention.phone).subscribe();
+      this.router.navigate(['interventions']);
     }
   }
 
