@@ -32,7 +32,7 @@
 
             <mat-form-field *ngIf='inPrivateMode'>
                 <mat-label>Status interwencji</mat-label>
-                <mat-select>
+                <mat-select name='status'>
                     <mat-option *ngFor="let status of interventionStatuses" [value]="status.value">
                         {{status.viewValue}}
                     </mat-option>
@@ -64,7 +64,7 @@
             </div>
 
             <button type="submit" color="primary" mat-raised-button>{{ 
-                inPrivateMode ? 'Edytuj zgłoszenie' : 'Wyślij zgłoszenie' }}</button>
+                inPrivateMode ? 'Zapisz' : 'Wyślij zgłoszenie' }}</button>
         </form>
     </mat-card-content>
 </mat-card>
