@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnChanges } from '@angular/core';
 import { ClientIntervention } from '../../intervention';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class InterventionsTableComponent implements OnInit {
+export class InterventionsTableComponent implements OnInit, OnChanges {
   displayedColumns = ['position', 'name', 'status', 'phone', 'date', 'description'];
   dataSource: MatTableDataSource<ClientIntervention>;
 
@@ -24,6 +24,12 @@ export class InterventionsTableComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new MatTableDataSource<ClientIntervention>(this.interventions);
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnChanges(changes: any) {
+    if (changes.interventions.currentValue !== changes.interventions.previousValue) {
+      this.dataSource = new MatTableDataSource<ClientIntervention>(changes.interventions.currentValue);
+    }
   }
 
   showDetails(intervention: ClientIntervention) {
