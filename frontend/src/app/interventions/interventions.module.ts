@@ -13,6 +13,7 @@ import {
   MatTableModule,
   MatIconModule,
   MatPaginatorModule,
+  MatListModule
 } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
@@ -47,6 +48,7 @@ import { InterventionsMapComponent } from './list/map/map.component';
     MatIconModule,
     MatPaginatorModule,
     MatIconModule,
+    MatListModule,
     HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBmQtE0I9s8Z8M8m73B0Er9LU9tJDt0n1s'

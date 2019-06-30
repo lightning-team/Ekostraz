@@ -1,3 +1,28 @@
-<mat-card>
-hello!
+<mat-card class="mat-elevation-z8">
+    <div class="title-wrapper">
+        <mat-card-title>Zgłoszenie z dnia {{intervention.date | date: 'medium' }}</mat-card-title>
+        <mat-card-subtitle>Identyfikator zgłoszenia: {{intervention.id}}</mat-card-subtitle>
+    </div>
+    <mat-card-actions align="end">
+        <button mat-raised-button color="primary">Edytuj<mat-icon>edit</mat-icon></button>
+        <button mat-raised-button color="warn">Usuń<mat-icon>delete</mat-icon></button>
+    </mat-card-actions>
+
+    <mat-list>
+        <mat-list-item>
+            <mat-icon>done</mat-icon> {{intervention.status}}
+        </mat-list-item>
+        <mat-list-item>
+            <mat-icon>account_circle</mat-icon> {{intervention.name}}
+        </mat-list-item>
+        <mat-list-item>
+            <mat-icon>phone</mat-icon> {{intervention.phone}}
+        </mat-list-item>
+        <mat-list-item>
+            <mat-icon>email</mat-icon> {{intervention.email}}
+        </mat-list-item>
+    </mat-list>
+    <mat-card-content>
+        {{intervention.description}}
+    </mat-card-content>
 </mat-card>
