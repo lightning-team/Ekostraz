@@ -12669,15 +12669,15 @@ export function getFakeData(page: number = 1) {
 
 function transformKeys(entry: any) {
     return {
-        'Id': Math.floor(Math.random() * 10000),
-        'CreationDate': entry['date'],
-        'FullName': entry['contactPerson'],
-        'Address': entry['address'],
-        'Description': entry['description'],
-        'Status': entry['status'],
-        'PhoneNumber': entry['phone'],
-        'Email': entry['email'],
-        'GeoLat': entry['geolat'],
-        'GeoLng': entry['geolng'],
+        'id': Math.floor(Math.random() * 10000),
+        'creationDate': entry['date'],
+        'fullName': entry['contactPerson'],
+        'address': entry['address'],
+        'description': entry['description'],
+        'status': entry['status'],
+        'phoneNumber': entry['phone'],
+        'email': entry['email'],
+        'geoLat': entry['geolat'],
+        'geoLng': entry['geolng'],
     }
 }
