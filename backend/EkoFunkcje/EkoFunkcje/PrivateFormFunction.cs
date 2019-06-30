@@ -24,8 +24,11 @@ namespace EkoFunkcje
             if (Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results, true))
             {
                 log.LogInformation("C# HTTP trigger function processed a request.");
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=ekoststorage;AccountKey=I4+b0+vmOhZcbc4fVlxhHUlU0YQNFGaQcfG2kilxxtvftSynVCdmUEg47Y1iG2Z5qG1G/rHo4+QhOSSXN2YanQ==;EndpointSuffix=core.windows.net");
-                //ToDo get string from  env data
+                
+                var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString",
+                    EnvironmentVariableTarget.Process);
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
+
 
                 var convertedGeoAddress = await new AddressConverter().ConvertToGeoAddress(intervention.Address);
                 // Create the table client.
