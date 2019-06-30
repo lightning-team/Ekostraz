@@ -4,8 +4,8 @@
 
     </div>
     <div class='auth-buttons-container'>
-        <!-- <button *ngIf='!isLoggedIn()' mat-button>Login</button> -->
-        <!-- <button *ngIf='isLoggedIn()' mat-button>Logout</button> -->
+        <button *ngIf='!isLoggedIn()' mat-button routerLink='/login'>Login</button>
+        <button *ngIf='isLoggedIn()' mat-button>Logout</button>
     </div>
 </mat-toolbar>
 
