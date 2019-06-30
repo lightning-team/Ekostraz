@@ -39,7 +39,7 @@ export class ClientIntervention {
     geolat: number;
     geolng: number;
 
-    constructor(data: ServerIntervention, index: number) {
+    constructor(data: ServerIntervention, index: number = 0) {
         this.id = data.Id;
         this.position = index + 1;
         this.address = data.Address;

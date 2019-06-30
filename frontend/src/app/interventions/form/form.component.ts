@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ServerIntervention } from '../intervention';
+import { ServerIntervention, ClientIntervention } from '../intervention';
 import { InterventionsService } from '../interventions.service';
 import { InterventionStatus } from '../intervention.status';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
 
 interface InterventionParams {
-  interventionId: number;
+  interventionId: string;
 }
 
 const interventionStatuses = [
@@ -36,12 +37,13 @@ const interventionStatuses = [
   styleUrls: ['./form.component.scss']
 })
 export class InterventionsFormComponent implements OnInit, OnDestroy {
-  private interventionId: number | null;
+  private interventionId: string | null;
   private postSubscription: Subscription | null = null;
 
   interventionStatuses = interventionStatuses;
   inPrivateMode = false;
   interventionForm: FormGroup;
+  intervention: ClientIntervention | null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,7 +51,10 @@ export class InterventionsFormComponent implements OnInit, OnDestroy {
     private interventionService: InterventionsService,
     private snackBar: MatSnackBar,
     private router: Router,
-  ) { }
+  ) {
+    const currentNavigation = this.router.getCurrentNavigation();
+    this.intervention = currentNavigation ? currentNavigation.extras.state as ClientIntervention : null;
+  }
 
   ngOnInit() {
     this.checkActivatedRoute();
@@ -64,8 +69,6 @@ export class InterventionsFormComponent implements OnInit, OnDestroy {
         // or just add a route guard to allow ekostraz workers only
         this.inPrivateMode = true;
       }
-
-      
     });
   }
 
@@ -73,7 +76,7 @@ export class InterventionsFormComponent implements OnInit, OnDestroy {
     const statusValidators = this.inPrivateMode ? [Validators.required] : [];
 
     this.interventionForm = this.formBuilder.group({
-      date: [''],
+      date: [{ value: '', disabled: true }],
       name: [''],
       description: ['', Validators.required],
       phone: ['', Validators.required],
@@ -85,6 +88,16 @@ export class InterventionsFormComponent implements OnInit, OnDestroy {
         city: ['', Validators.required],
       }),
     });
+
+    if (this.inPrivateMode) {
+      if (this.intervention) {
+        this.interventionForm.patchValue(transformClientIntervention(this.intervention));
+      } else if (this.interventionId) {
+        this.interventionService.getIntervention(this.interventionId).subscribe(
+          intervention => this.interventionForm.patchValue(transformClientIntervention(intervention))
+        );
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -146,4 +159,26 @@ export class InterventionsFormComponent implements OnInit, OnDestroy {
       verticalPosition: 'top',
     });
   }
+}
+
+function transformClientIntervention(interventionData: ClientIntervention) {
+  console.log('Interventions: ', interventionData);
+  return {
+    date: formatDate(interventionData.date, 'medium', 'pl'),
+    name: interventionData.name,
+    description: interventionData.description,
+    phone: interventionData.phone,
+    email: interventionData.email,
+    status: interventionData.status,
+    address: getFormAddress(interventionData.address),
+  };
+}
+
+function getFormAddress(address: string) {
+  const split = address.split(',');
+  return {
+    street: split[0],
+    number: split[1],
+    city: split[2],
+  };
 }

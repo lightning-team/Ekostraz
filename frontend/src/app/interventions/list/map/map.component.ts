@@ -14,6 +14,7 @@ export class InterventionsMapComponent implements OnInit, OnDestroy {
   private subscription: Subscription | null = null;
 
   interventions: ClientIntervention[] = [];
+  isloading: boolean;
 
   constructor(
     private router: Router,
@@ -21,6 +22,7 @@ export class InterventionsMapComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.isloading = true;
     const currentNavigation = this.router.getCurrentNavigation();
     const routerInterventions = currentNavigation && currentNavigation.extras.state as ClientIntervention[] | undefined;
     if (routerInterventions) {
@@ -53,6 +55,7 @@ export class InterventionsMapComponent implements OnInit, OnDestroy {
 
   private onCompleted() {
     this.subscription = null;
+    this.isloading = false;
   }
 
   private mapToClientInterventions(intervention: ServerIntervention, index: number): ClientIntervention {
