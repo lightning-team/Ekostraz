@@ -3,3 +3,4 @@
     export const AddPrivateFormUrl = BaseAppUrl + "PrivateForm";
     export const GetAllRequestsUrl = BaseAppUrl + "GetAllRequestsFunction";
     export const DeleteRequestUrl = BaseAppUrl + "DeleteRequestFunction";
+    export const GetOneRequestsUrl = BaseAppUrl + "GetOneRequestsFunction";
