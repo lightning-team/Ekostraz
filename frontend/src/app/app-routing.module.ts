@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AboutUsComponent } from './about-us/about-us.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoginFormComponent } from './auth/login-form/login-form.component';
 import { LoggedOutGuard } from './auth/guards/logged-out.guard';
@@ -10,6 +11,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
+  },
+  {
+    path: 'o-nas',
+    component: AboutUsComponent,
   },
   {
     path: 'zaloguj',
