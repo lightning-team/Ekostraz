@@ -12,12 +12,12 @@ const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'login',
+    path: 'zaloguj',
     component: LoginFormComponent,
     canActivate: [LoggedOutGuard]
   },
   {
-    path: 'interventions',
+    path: 'interwencje',
     loadChildren: './interventions/interventions.module#InterventionsModule',
     canLoad: [LoggedInUserGuard],
   },

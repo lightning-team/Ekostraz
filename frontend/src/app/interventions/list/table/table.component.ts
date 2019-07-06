@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, OnChanges } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges } from '@angular/core';
 import { ClientIntervention } from '../../intervention';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
@@ -28,6 +28,6 @@ export class InterventionsTableComponent implements OnChanges {
   }
 
   showDetails(intervention: ClientIntervention) {
-    this.router.navigate(['interventions', intervention.id], { state: intervention });
+    this.router.navigate(['interwencje', intervention.id], { state: intervention });
   }
 }

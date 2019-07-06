@@ -11,10 +11,10 @@ const routes: Routes = [{
   component: InterventionsListComponent,
   canActivate: [LoggedInMemberGuard],
 }, {
-  path: 'new',
+  path: 'zglos',
   component: InterventionsFormComponent,
 }, {
-  path: 'map',
+  path: 'mapa',
   component: InterventionsMapComponent,
   canActivate: [LoggedInMemberGuard],
 }, {
@@ -22,7 +22,7 @@ const routes: Routes = [{
   component: InterventionDetailsContainerComponent,
   canActivate: [LoggedInMemberGuard],
 }, {
-  path: ':interventionId/edit',
+  path: ':interventionId/edytuj',
   component: InterventionsFormComponent,
   canActivate: [LoggedInMemberGuard],
 }];

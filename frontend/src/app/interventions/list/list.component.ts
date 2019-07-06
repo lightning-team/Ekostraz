@@ -37,7 +37,7 @@ export class InterventionsListComponent implements OnInit, OnDestroy {
   }
 
   showMap() {
-    this.router.navigate(['interventions', 'map'], { state: this.interventions });
+    this.router.navigate(['interwencje', 'mapa'], { state: this.interventions });
   }
 
   private onSuccess(data: ServerIntervention[]) {

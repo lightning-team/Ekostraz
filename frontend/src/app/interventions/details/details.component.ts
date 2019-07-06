@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClientIntervention } from '../intervention';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteInterventionDialog } from './delete.dialog';
-import { InterventionsService } from '../interventions.service'
+import { InterventionsService } from '../interventions.service';
 
 @Component({
   selector: 'app-intervention-details',
@@ -24,11 +24,11 @@ export class InterventionDetailsComponent {
   private onDialogClose(result: boolean) {
     if (!!result) {
       this.interventionService.deleteRequest(this.intervention.id, this.intervention.phone).subscribe();
-      this.router.navigate(['interventions']);
+      this.router.navigate(['interwencje']);
     }
   }
 
   navigateToEditView() {
-    this.router.navigate(['interventions', this.intervention.id, 'edit'], { state: this.intervention });
+    this.router.navigate(['interwencje', this.intervention.id, 'edytuj'], { state: this.intervention });
   }
 }

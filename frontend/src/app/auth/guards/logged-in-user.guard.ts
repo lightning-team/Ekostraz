@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanLoad, Router } from '@angular/router';
+import { CanLoad, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthModule } from '../auth.module';
@@ -15,7 +15,7 @@ export class LoggedInUserGuard implements CanLoad {
     return of(this.authService.isLoggedIn()).pipe(
       tap(loggedIn => {
         if (!loggedIn) {
-          this.router.navigate(['login']);
+          this.router.navigate(['zaloguj']);
         }
       })
     );
