@@ -5,6 +5,7 @@ import { InterventionsListComponent } from './list/list.component';
 import { InterventionDetailsContainerComponent } from './details/details.container.component';
 import { InterventionsMapComponent } from './list/map/map.component';
 import { LoggedInMemberGuard } from '../auth/guards/logged-in-member.guard';
+import {PrivateFormComponent} from './private-form/private-form.component';
 
 const routes: Routes = [{
   path: '',
@@ -12,7 +13,7 @@ const routes: Routes = [{
   canActivate: [LoggedInMemberGuard],
 }, {
   path: 'zglos',
-  component: InterventionsFormComponent,
+  component: PrivateFormComponent,
 }, {
   path: 'mapa',
   component: InterventionsMapComponent,
@@ -23,7 +24,7 @@ const routes: Routes = [{
   canActivate: [LoggedInMemberGuard],
 }, {
   path: ':interventionId/edytuj',
-  component: InterventionsFormComponent,
+  component: PrivateFormComponent,
   canActivate: [LoggedInMemberGuard],
 }];
 

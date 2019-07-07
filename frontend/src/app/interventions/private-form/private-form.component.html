@@ -1,0 +1,5 @@
+<app-interventions-form
+    [intervention]="intervention$ | async"
+    [inPrivateMode]="true"
+    (formSubmit)="onSubmit($event)"
+></app-interventions-form>
