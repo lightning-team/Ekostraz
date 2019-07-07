@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, OnChanges } from '@angular/core';
-import { ClientIntervention } from '../../intervention';
+import { ClientIntervention } from '../../types';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';

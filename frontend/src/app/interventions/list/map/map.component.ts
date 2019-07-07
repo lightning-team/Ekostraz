@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ClientIntervention, ServerIntervention } from '../../intervention';
+import { ClientIntervention } from '../../types';
 import { Subscription } from 'rxjs';
 import { InterventionsService } from '../../interventions.service';
 import { Router } from '@angular/router';
@@ -45,8 +45,8 @@ export class InterventionsMapComponent implements OnInit, OnDestroy {
   }
 
   // TODO: Logic below is the same as list.component.ts - try to extract/abstract upon it.
-  private onSuccess(data: ServerIntervention[]) {
-    this.interventions = data.map(this.mapToClientInterventions);
+  private onSuccess(interventions: ClientIntervention[]) {
+    this.interventions = interventions;
   }
 
   private onFailure() {
@@ -56,9 +56,5 @@ export class InterventionsMapComponent implements OnInit, OnDestroy {
   private onCompleted() {
     this.subscription = null;
     this.isloading = false;
-  }
-
-  private mapToClientInterventions(intervention: ServerIntervention, index: number): ClientIntervention {
-    return new ClientIntervention(intervention, index);
   }
 }

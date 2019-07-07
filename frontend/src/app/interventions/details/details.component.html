@@ -1,6 +1,6 @@
 <mat-card class="mat-elevation-z8" [ngClass]="{'mini': !!miniVersion}">
     <div class="title-wrapper">
-        <mat-card-title>Zgłoszenie z dnia {{intervention.date | date: 'medium' }}</mat-card-title>
+        <mat-card-title>Zgłoszenie z dnia {{intervention.creationDate | date: 'medium' }}</mat-card-title>
         <mat-card-subtitle>Identyfikator zgłoszenia: {{intervention.id}}</mat-card-subtitle>
     </div>
     <mat-card-actions align="end">
@@ -17,7 +17,7 @@
             <mat-icon>done</mat-icon> {{intervention.status}}
         </mat-list-item>
         <mat-list-item>
-            <mat-icon>account_circle</mat-icon> {{intervention.name}}
+            <mat-icon>account_circle</mat-icon> {{intervention.fullName}}
         </mat-list-item>
         <mat-list-item>
             <mat-icon>phone</mat-icon> {{intervention.phone}}
@@ -33,8 +33,8 @@
         {{intervention.description}}
 
         <section *ngIf='!miniVersion' class='map-container'>
-            <agm-map [latitude]="intervention.geolat" [longitude]="intervention.geolng">
-                <agm-marker [latitude]="intervention.geolat" [longitude]="intervention.geolng">
+            <agm-map [latitude]="intervention.geoLat" [longitude]="intervention.geoLng">
+                <agm-marker [latitude]="intervention.geoLat" [longitude]="intervention.geoLng">
                 </agm-marker>
             </agm-map>
         </section>

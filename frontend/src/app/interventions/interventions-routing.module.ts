@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { InterventionsFormComponent } from './form/form.component';
 import { InterventionsListComponent } from './list/list.component';
 import { InterventionDetailsContainerComponent } from './details/details.container.component';
 import { InterventionsMapComponent } from './list/map/map.component';

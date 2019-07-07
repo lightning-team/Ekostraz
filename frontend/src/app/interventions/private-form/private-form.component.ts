@@ -3,9 +3,9 @@ import {MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import { of, Observable, Subscription } from 'rxjs';
-import {take, map, switchMap} from 'rxjs/operators';
+import { tap, map, switchMap } from 'rxjs/operators';
 
-import {ClientIntervention, ServerIntervention} from '../intervention';
+import {ClientIntervention, FormInterventionData, PostInterventionData} from '../types';
 import {InterventionsService} from '../interventions.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
   private interventionId: string | null;
   private postSubscription: Subscription | null = null;
 
+  routeState$: Observable<ClientIntervention | undefined>;
   intervention$: Observable<ClientIntervention>;
 
   constructor(
@@ -25,14 +26,13 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
       private interventionService: InterventionsService,
       private activatedRoute: ActivatedRoute,
   ) {
-    const currentNavigation = this.router.getCurrentNavigation();
-    this.intervention$ = currentNavigation ? of(currentNavigation.extras.state as ClientIntervention) : null;
+    this.routeState$ = of(this.router.getCurrentNavigation().extras.state as ClientIntervention | undefined);
   }
 
   ngOnInit() {
-    if (!this.intervention$) {
-      this.intervention$ = this.getIntervention();
-    }
+    this.intervention$ = this.routeState$.pipe(
+        switchMap(routeState => routeState ? of(routeState) : this.getIntervention()),
+    );
   }
 
   ngOnDestroy() {
@@ -41,29 +41,23 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmit(formValue: any) {
-    this.postSubscription = this.interventionService.addPublicForm(this.toServerData(formValue))
+  private getIntervention() {
+    return this.activatedRoute.params.pipe(
+        map(params => params.interventionId || null),
+        tap(interventionId => (this.interventionId = interventionId)),
+        switchMap(interventionId => interventionId ?
+            this.interventionService.getIntervention(interventionId as string) :
+            of(null)
+        )
+    );
+  }
+
+  onSubmit(formValue: FormInterventionData) {
+    this.postSubscription = this.interventionService.postPrivateForm(formValue, this.interventionId)
         .subscribe(
             (resp) => this.onPostSuccess(resp),
             (resp) => this.onPostError(resp),
             () => this.onComplete());
-  }
-
-  private toServerData(interventionFormValue: any) {
-    const addressString = `${interventionFormValue.address.street}, ` +
-        `${interventionFormValue.address.number}, ${interventionFormValue.address.city}`;
-
-    const transformedData = {
-      id: this.interventionId,
-      creationDate: interventionFormValue.date,
-      address: addressString,
-      email: interventionFormValue.email,
-      fullName: interventionFormValue.name,
-      phoneNumber: interventionFormValue.phone,
-      status: interventionFormValue.status,
-      description: interventionFormValue.description
-    };
-    return new ServerIntervention(transformedData);
   }
 
   private onPostSuccess(response: any) {
@@ -86,17 +80,6 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
       duration: 5000,
       verticalPosition: 'top',
     });
-  }
-
-  private getIntervention() {
-    return this.activatedRoute.params.pipe(
-        take(1),
-        map(params => params.interventionId || null),
-        switchMap(interventionId => interventionId ?
-                this.interventionService.getIntervention(this.interventionId) :
-                of(null)
-        )
-    );
   }
 }
 

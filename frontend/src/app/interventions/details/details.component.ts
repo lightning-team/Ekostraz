@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClientIntervention } from '../intervention';
+import { ClientIntervention } from '../types';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteInterventionDialog } from './delete.dialog';
 import { InterventionsService } from '../interventions.service';
@@ -23,7 +23,7 @@ export class InterventionDetailsComponent {
 
   private onDialogClose(result: boolean) {
     if (!!result) {
-      this.interventionService.deleteRequest(this.intervention.id, this.intervention.phone).subscribe();
+      this.interventionService.delete(this.intervention.id, this.intervention.phone).subscribe();
       this.router.navigate(['interwencje']);
     }
   }

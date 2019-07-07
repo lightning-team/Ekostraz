@@ -1,8 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ServerIntervention, ClientIntervention } from '../intervention';
+import { ClientIntervention, ListIntervention} from '../types';
 import { InterventionsService } from '../interventions.service';
 import { Router } from '@angular/router';
+
+
+function mapToTableData(intervention: ClientIntervention, index: number): ListIntervention {
+  return {...intervention, position: index + 1};
+}
+
 
 @Component({
   selector: 'app-list',
@@ -40,9 +46,8 @@ export class InterventionsListComponent implements OnInit, OnDestroy {
     this.router.navigate(['interwencje', 'mapa'], { state: this.interventions });
   }
 
-  private onSuccess(data: ServerIntervention[]) {
-    this.interventions = data.map(this.mapToTableData);
-    console.log(this.interventions);
+  private onSuccess(interventions: ClientIntervention[]) {
+    this.interventions = interventions.map(mapToTableData);
   }
 
   private onFailure() {
@@ -52,9 +57,5 @@ export class InterventionsListComponent implements OnInit, OnDestroy {
   private onCompleted() {
     this.subscription = null;
     this.isloading = false;
-  }
-
-  private mapToTableData(intervention: ServerIntervention, index: number): ClientIntervention {
-    return new ClientIntervention(intervention, index);
   }
 }

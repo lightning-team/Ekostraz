@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ClientIntervention } from '../intervention';
+import { ClientIntervention } from '../types';
 import { InterventionsService } from '../interventions.service';
 
 @Component({

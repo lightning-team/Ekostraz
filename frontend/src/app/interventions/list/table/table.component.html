@@ -10,7 +10,7 @@
         <!-- Name Column -->
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Imię i nazwisko </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
         </ng-container>
 
         <!-- Status Column -->
@@ -28,7 +28,7 @@
         <!-- Date Column -->
         <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef> Data dodania </th>
-            <td mat-cell *matCellDef="let element"> {{element.date | date: 'medium' }} </td>
+            <td mat-cell *matCellDef="let element"> {{element.creationDate | date: 'medium' }} </td>
         </ng-container>
 
         <!-- Description Column -->

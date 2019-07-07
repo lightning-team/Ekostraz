@@ -1,3 +1,5 @@
+import {RawServerIntervention} from './interventions/types';
+
 export const FAKE_DATA = [{
     "date": "2019-06-28T23:24:42.888Z",
     "contactPerson": "Christa Erdman",
@@ -12667,9 +12669,9 @@ export function getFakeData(page: number = 1) {
     return FAKE_DATA.map(transformKeys);
 }
 
-function transformKeys(entry: any) {
+function transformKeys(entry: any): RawServerIntervention {
     return {
-        'id': Math.floor(Math.random() * 10000),
+        'id': String(Math.floor(Math.random() * 10000)),
         'creationDate': entry['date'],
         'fullName': entry['contactPerson'],
         'address': entry['address'],
