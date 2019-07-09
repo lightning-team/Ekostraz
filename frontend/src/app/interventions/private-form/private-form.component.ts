@@ -1,9 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import { of, Observable, Subscription } from 'rxjs';
-import { tap, map, switchMap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { tap, take } from 'rxjs/operators';
 
 import {ClientIntervention, FormInterventionData} from '../types';
 import {InterventionsService} from '../interventions.service';
@@ -17,22 +16,17 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
   private interventionId: string | null;
   private postSubscription: Subscription | null = null;
 
-  routeState$: Observable<ClientIntervention | undefined>;
   intervention$: Observable<ClientIntervention>;
 
   constructor(
-      private snackBar: MatSnackBar,
-      private router: Router,
-      private interventionService: InterventionsService,
       private activatedRoute: ActivatedRoute,
-  ) {
-    const state = this.router.getCurrentNavigation().extras.state;
-    this.routeState$ = of(state.intervention as ClientIntervention | undefined);
-  }
+      private interventionsService: InterventionsService,
+  ) {}
 
   ngOnInit() {
-    this.intervention$ = this.routeState$.pipe(
-        switchMap(routeState => routeState ? of(routeState) : this.getIntervention()),
+    this.intervention$ = this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
+        tap(intervention => { this.interventionId = intervention.id; }),
+        take(1)
     );
   }
 
@@ -43,20 +37,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getIntervention() {
-    return this.activatedRoute.params.pipe(
-        map(params => params.interventionId || null),
-        tap(interventionId => (this.interventionId = interventionId)),
-        switchMap(interventionId => interventionId ?
-            this.interventionService.getIntervention(interventionId as string) :
-            of(null)
-        )
-    );
-  }
-
   onSubmit(formValue: FormInterventionData) {
-    this.postSubscription = this.interventionService.postPrivateForm(formValue, this.interventionId);
+    this.postSubscription = this.interventionsService.postPrivateForm(formValue, this.interventionId);
   }
 }
-
-

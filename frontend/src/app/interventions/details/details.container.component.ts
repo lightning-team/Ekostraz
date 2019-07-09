@@ -2,38 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ClientIntervention } from '../types';
 import { InterventionsService } from '../interventions.service';
+import { Observable } from 'rxjs';
+import {take, tap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-intervention-details-container',
     template: `
-      <app-intervention-details [intervention]='intervention'></app-intervention-details>
+      <app-intervention-details [intervention]='intervention$ | async'></app-intervention-details>
     `,
 })
 export class InterventionDetailsContainerComponent implements OnInit {
-
-    private intervention: ClientIntervention;
+    intervention$: Observable<ClientIntervention>;
 
     constructor(
-        private router: Router,
         private activatedRoute: ActivatedRoute,
         private interventionsService: InterventionsService,
-    ) {
-        const state = this.router.getCurrentNavigation().extras.state;
-        this.intervention = state && state.intervention;
-    }
+    ) {}
 
     ngOnInit() {
-        if (this.intervention) return;
-        this.fetchIntervention();
-    }
-
-    private fetchIntervention() {
-        this.activatedRoute.params.subscribe(params => {
-            if (!params.interventionId) return;
-            this.interventionsService.getIntervention(params.interventionId as string)
-                .subscribe(intervention => {
-                    this.intervention = intervention;
-                });
-        });
+        this.intervention$ = this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
+            take(1)
+        );
     }
 }
