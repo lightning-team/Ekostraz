@@ -4,7 +4,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { PostInterventionData, ClientIntervention, FormInterventionData, RawServerIntervention } from './types';
 import { Params, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { map, switchMap, catchError, delay } from 'rxjs/operators';
 import { getFakeData } from '../fakedata';
 
 const BASE_API_URL = 'https://devkodawanie.azurewebsites.net/api/';
@@ -24,7 +24,6 @@ const HTTP_OPTIONS = {
 
 @Injectable()
 export class InterventionsService {
-
   constructor(
       private http: HttpClient,
       private router: Router,
@@ -34,7 +33,10 @@ export class InterventionsService {
   getInterventions(): Observable<ClientIntervention[]> {
     // return this.http.get<any>(GetAllRequestsUrl)
     //   .pipe(map(data => data.map(item => new PostInterventionData(item))));
-    return of(getFakeData().map(item => new ClientIntervention(item)));
+    return of(getFakeData().map(item => new ClientIntervention(item))).pipe(
+        delay(2000),
+        catchError(this.handleError.bind(this)),
+    );
   }
 
   private postForm(formData: FormInterventionData, interventionId: string, APIUrl: string): Subscription {
@@ -61,11 +63,13 @@ export class InterventionsService {
     // TODO: Patch window.history when using Angular Universal.
     const intervention = window.history.state && window.history.state.intervention as ClientIntervention;
     return intervention ? of(intervention) : this.getActiveRouteIntervention(routeParams).pipe(
-        catchError(e => {
-          this.openSnackBar('Ups! Przepraszamy, coś poszło nie tak!', 'OK');
-          return of(null);
-        })
+        catchError(this.handleError.bind(this))
     );
+  }
+
+  private handleError(e) {
+    this.openSnackBar('Ups! Przepraszamy, coś poszło nie tak!', 'OK');
+    return of(null);
   }
 
   private getActiveRouteIntervention(routeParams: Observable<Params>): Observable<ClientIntervention | null> {
