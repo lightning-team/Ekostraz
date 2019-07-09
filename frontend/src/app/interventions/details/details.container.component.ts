@@ -13,11 +13,13 @@ export class InterventionDetailsContainerComponent implements OnInit {
 
     private intervention: ClientIntervention;
 
-    constructor(private router: Router,
+    constructor(
+        private router: Router,
         private activatedRoute: ActivatedRoute,
         private interventionsService: InterventionsService,
     ) {
-        this.intervention = this.router.getCurrentNavigation().extras.state as ClientIntervention;
+        const state = this.router.getCurrentNavigation().extras.state;
+        this.intervention = state && state.intervention;
     }
 
     ngOnInit() {

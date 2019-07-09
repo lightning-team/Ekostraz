@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { of, Observable, Subscription } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs/operators';
 
-import {ClientIntervention, FormInterventionData, PostInterventionData} from '../types';
+import {ClientIntervention, FormInterventionData} from '../types';
 import {InterventionsService} from '../interventions.service';
 
 @Component({
@@ -26,7 +26,8 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
       private interventionService: InterventionsService,
       private activatedRoute: ActivatedRoute,
   ) {
-    this.routeState$ = of(this.router.getCurrentNavigation().extras.state as ClientIntervention | undefined);
+    const state = this.router.getCurrentNavigation().extras.state;
+    this.routeState$ = of(state.intervention as ClientIntervention | undefined);
   }
 
   ngOnInit() {

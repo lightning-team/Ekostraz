@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ClientIntervention, ListIntervention} from '../types';
+import { ClientIntervention, InterventionListRouterState, ListIntervention } from '../types';
 import { InterventionsService } from '../interventions.service';
 import { Router } from '@angular/router';
 
@@ -43,7 +43,9 @@ export class InterventionsListComponent implements OnInit, OnDestroy {
   }
 
   showMap() {
-    this.router.navigate(['interwencje', 'mapa'], { state: this.interventions });
+    this.router.navigate(
+        ['interwencje', 'mapa'],
+        { state: {interventions: this.interventions} } as InterventionListRouterState);
   }
 
   private onSuccess(interventions: ClientIntervention[]) {

@@ -91,3 +91,15 @@ export interface RawServerIntervention {
     geoLat: number | null;
     geoLng: number | null;
 }
+
+export interface InterventionRouterState {
+    state: {
+        intervention: ClientIntervention,
+    };
+}
+
+export interface InterventionListRouterState {
+    state: {
+        interventions: ClientIntervention[],
+    };
+}

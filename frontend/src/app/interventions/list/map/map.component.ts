@@ -24,7 +24,8 @@ export class InterventionsMapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isloading = true;
     const currentNavigation = this.router.getCurrentNavigation();
-    const routerInterventions = currentNavigation && currentNavigation.extras.state as ClientIntervention[] | undefined;
+    const state = currentNavigation && currentNavigation.extras.state;
+    const routerInterventions = state && state.interventions as ClientIntervention[] | undefined;
     if (routerInterventions) {
       this.interventions = routerInterventions;
     } else {

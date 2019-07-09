@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClientIntervention } from '../types';
+import { ClientIntervention, InterventionRouterState } from '../types';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteInterventionDialog } from './delete.dialog';
 import { InterventionsService } from '../interventions.service';
@@ -29,6 +29,9 @@ export class InterventionDetailsComponent {
   }
 
   navigateToEditView() {
-    this.router.navigate(['interwencje', this.intervention.id, 'edytuj'], { state: this.intervention });
+    this.router.navigate(
+          ['interwencje', this.intervention.id, 'edytuj'],
+          {state: {intervention: this.intervention}} as InterventionRouterState
+        );
   }
 }
