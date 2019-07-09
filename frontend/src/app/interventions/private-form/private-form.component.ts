@@ -38,6 +38,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.postSubscription) {
       this.postSubscription.unsubscribe();
+      this.postSubscription = null;
     }
   }
 
@@ -53,33 +54,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(formValue: FormInterventionData) {
-    this.postSubscription = this.interventionService.postPrivateForm(formValue, this.interventionId)
-        .subscribe(
-            (resp) => this.onPostSuccess(resp),
-            (resp) => this.onPostError(resp),
-            () => this.onComplete());
-  }
-
-  private onPostSuccess(response: any) {
-    const snackBarRef = this.openSnackBar('Twoje zgłoszenie zostało przyjęte!', 'OK!');
-    snackBarRef.afterDismissed().subscribe(() => {
-      this.router.navigateByUrl('');
-    });
-  }
-
-  private onPostError(response: any) {
-    this.openSnackBar('Niestety, nie udało się przyjąć Twojego zgłoszenia!', 'Zamknij');
-  }
-
-  private onComplete() {
-    this.postSubscription = null;
-  }
-
-  private openSnackBar(message: string, action: string) {
-    return this.snackBar.open(message, action, {
-      duration: 5000,
-      verticalPosition: 'top',
-    });
+    this.postSubscription = this.interventionService.postPrivateForm(formValue, this.interventionId);
   }
 }
 

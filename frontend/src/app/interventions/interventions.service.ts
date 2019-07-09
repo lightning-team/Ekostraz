@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, of, Subscription } from 'rxjs';
+import { PostInterventionData, ClientIntervention, FormInterventionData, RawServerIntervention } from './types';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 import { map } from 'rxjs/operators';
-import {PostInterventionData, ClientIntervention, FormInterventionData, RawServerIntervention} from './types';
 import { getFakeData } from '../fakedata';
 
 const BASE_API_URL = 'https://devkodawanie.azurewebsites.net/api/';
@@ -16,7 +18,11 @@ const GetOneRequestsUrl = BASE_API_URL + 'GetOneRequestsFunction';
 @Injectable()
 export class InterventionsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+      private http: HttpClient,
+      private router: Router,
+      private snackBar: MatSnackBar,
+  ) { }
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -31,15 +37,19 @@ export class InterventionsService {
     return of(getFakeData().map(item => new ClientIntervention(item)));
   }
 
-  private postForm(formData: FormInterventionData, interventionId: string, APIUrl: string) {
-    return this.http.post(APIUrl, new PostInterventionData(formData, interventionId), this.httpOptions);
+  private postForm(formData: FormInterventionData, interventionId: string, APIUrl: string): Subscription {
+    return this.http.post(APIUrl, new PostInterventionData(formData, interventionId), this.httpOptions)
+        .subscribe({
+          next: this.onPostSuccess.bind(this),
+          error: this.onPostError.bind(this)
+        });
   }
 
-  postPublicForm(formData: FormInterventionData): Observable<any> {
+  postPublicForm(formData: FormInterventionData): Subscription {
     return this.postForm(formData, null, AddPublicFormUrl);
   }
 
-  postPrivateForm(formData: FormInterventionData, id: string | null): Observable<any> {
+  postPrivateForm(formData: FormInterventionData, id: string | null): Subscription {
     return this.postForm(formData, id, AddPrivateFormUrl);
   }
 
@@ -51,5 +61,23 @@ export class InterventionsService {
     return this.http.post<RawServerIntervention>(GetOneRequestsUrl, { id }).pipe(
       map(rawIntervention => new ClientIntervention(rawIntervention))
     );
+  }
+
+  private onPostSuccess(response: any) {
+    const snackBarRef = this.openSnackBar('Twoje zgłoszenie zostało przyjęte!', 'OK!');
+    snackBarRef.afterDismissed().subscribe(() => {
+      this.router.navigateByUrl('');
+    });
+  }
+
+  private onPostError(response: any) {
+    this.openSnackBar('Niestety, nie udało się przyjąć Twojego zgłoszenia!', 'Zamknij');
+  }
+
+  private openSnackBar(message: string, action: string) {
+    return this.snackBar.open(message, action, {
+      duration: 5000,
+      verticalPosition: 'top',
+    });
   }
 }
