@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClientIntervention, InterventionRouterState } from '../types';
+import { Intervention, InterventionRouterState } from '../types';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteInterventionDialog } from './delete.dialog';
 import { InterventionsService } from '../interventions.service';
@@ -12,7 +12,7 @@ import { ComponentWithSubscriptions } from '@shared/base';
   styleUrls: ['./details.component.scss']
 })
 export class InterventionDetailsComponent extends ComponentWithSubscriptions {
-  @Input() intervention: ClientIntervention;
+  @Input() intervention: Intervention;
   @Input() miniVersion?: boolean;
 
   constructor(private router: Router, private dialog: MatDialog, private interventionService: InterventionsService) {

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
 import {finalize, switchMapTo, take, tap} from 'rxjs/operators';
 
-import {ClientIntervention, InterventionFormSubmitData} from '../types';
+import {Intervention, InterventionFormSubmitData} from '../types';
 import {InterventionsService} from '../interventions.service';
 import {ComponentWithSubscriptions} from '@shared/base';
 
@@ -14,7 +14,7 @@ import {ComponentWithSubscriptions} from '@shared/base';
   styleUrls: ['./private-edit-form.component.scss']
 })
 export class PrivateEditFormComponent extends ComponentWithSubscriptions implements OnInit {
-  intervention: ClientIntervention | null = null;
+  intervention: Intervention | null = null;
   loading$: BehaviorSubject<boolean | null> = new BehaviorSubject(true);
 
   constructor(
@@ -38,7 +38,7 @@ export class PrivateEditFormComponent extends ComponentWithSubscriptions impleme
     this.subscriptions.add(loadDataSubscription);
   }
 
-  private setIntervention(intervention: ClientIntervention) {
+  private setIntervention(intervention: Intervention) {
     this.intervention = intervention;
   }
 

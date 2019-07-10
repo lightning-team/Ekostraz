@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable} from 'rxjs';
-import { ClientIntervention, InterventionListRouterState, ListIntervention } from '../types';
+import { Intervention, InterventionListRouterState, ListIntervention } from '../types';
 import { InterventionsService } from '../interventions.service';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -25,13 +25,13 @@ export class InterventionsListComponent implements OnInit {
     );
   }
 
-  showMap(interventions: ClientIntervention[]) {
+  showMap(interventions: Intervention[]) {
     this.router.navigate(
         ['interwencje', 'mapa'],
         { state: {interventions} } as InterventionListRouterState);
   }
 }
 
-function mapToTableData(intervention: ClientIntervention, index: number): ListIntervention {
+function mapToTableData(intervention: Intervention, index: number): ListIntervention {
   return {...intervention, position: index + 1};
 }

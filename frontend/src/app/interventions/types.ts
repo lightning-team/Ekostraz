@@ -47,7 +47,7 @@ export class PostInterventionData {
     }
 }
 
-export class ClientIntervention {
+export class Intervention {
     id: string;
     /** Address string formatted as: "{street}, {number}, {city}" */
     address: string;
@@ -78,7 +78,7 @@ export class ClientIntervention {
     }
 }
 
-export interface ListIntervention extends ClientIntervention {
+export interface ListIntervention extends Intervention {
     /** List position */
     position: number;
 }
@@ -99,12 +99,12 @@ export interface RawServerIntervention {
 
 export interface InterventionRouterState {
     state: {
-        intervention: ClientIntervention,
+        intervention: Intervention,
     };
 }
 
 export interface InterventionListRouterState {
     state: {
-        interventions: ClientIntervention[],
+        interventions: Intervention[],
     };
 }

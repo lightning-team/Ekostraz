@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, catchError, delay } from 'rxjs/operators';
 
-import { PostInterventionData, ClientIntervention, InterventionFormData, RawServerIntervention } from './types';
+import { PostInterventionData, Intervention, InterventionFormData, RawServerIntervention } from './types';
 import { getFakeData } from '../fakedata';
 
 const BASE_API_URL = 'https://devkodawanie.azurewebsites.net/api/';
@@ -33,17 +33,17 @@ export class InterventionsService {
       private location: Location,
   ) { }
 
-  getInterventions(): Observable<ClientIntervention[]> {
-    const interventions = getFromLocationState(this.location, 'interventions') as ClientIntervention[];
+  getInterventions(): Observable<Intervention[]> {
+    const interventions = getFromLocationState(this.location, 'interventions') as Intervention[];
     return interventions ? of(interventions) : this.fetchInterventions().pipe(
         catchError(this.handleError.bind(this))
     );
   }
 
-  fetchInterventions(): Observable<ClientIntervention[]> {
+  fetchInterventions(): Observable<Intervention[]> {
     // return this.http.get<any>(GetAllRequestsUrl)
     //   .pipe(map(data => data.map(item => new PostInterventionData(item))));
-    return of(getFakeData().map(item => new ClientIntervention(item))).pipe(
+    return of(getFakeData().map(item => new Intervention(item))).pipe(
         delay(2000),
         catchError(this.handleError.bind(this)),
     );
@@ -69,8 +69,8 @@ export class InterventionsService {
     return this.http.post(DeleteRequestUrl, {partitionKey: id, rowKey: phone}, HTTP_OPTIONS);
   }
 
-  getIntervention(routeParams: Observable<Params> ): Observable<ClientIntervention | null> {
-    const intervention = getFromLocationState(this.location, 'intervention') as ClientIntervention;
+  getIntervention(routeParams: Observable<Params> ): Observable<Intervention | null> {
+    const intervention = getFromLocationState(this.location, 'intervention') as Intervention;
     return intervention ? of(intervention) : this.getActiveRouteIntervention(routeParams).pipe(
         catchError(this.handleError.bind(this))
     );
@@ -81,7 +81,7 @@ export class InterventionsService {
     return of(null);
   }
 
-  private getActiveRouteIntervention(routeParams: Observable<Params>): Observable<ClientIntervention | null> {
+  private getActiveRouteIntervention(routeParams: Observable<Params>): Observable<Intervention | null> {
     return routeParams.pipe(
         switchMap(params => params.interventionId ?
             this.fetchIntervention(params.interventionId as string) :
@@ -90,9 +90,9 @@ export class InterventionsService {
     );
   }
 
-  fetchIntervention(id: string): Observable<ClientIntervention> {
+  fetchIntervention(id: string): Observable<Intervention> {
     return this.http.post<RawServerIntervention>(GetOneRequestsUrl, { id }).pipe(
-      map(rawIntervention => new ClientIntervention(rawIntervention))
+      map(rawIntervention => new Intervention(rawIntervention))
     );
   }
 

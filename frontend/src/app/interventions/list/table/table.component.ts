@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, OnChanges } from '@angular/core';
-import { ClientIntervention, InterventionRouterState } from '../../types';
+import { Intervention, InterventionRouterState } from '../../types';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,21 +11,21 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class InterventionsTableComponent implements OnChanges {
   displayedColumns = ['position', 'name', 'status', 'phone', 'date', 'description'];
-  dataSource: MatTableDataSource<ClientIntervention>;
+  dataSource: MatTableDataSource<Intervention>;
 
-  @Input() interventions: ClientIntervention[] = [];
+  @Input() interventions: Intervention[] = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(private router: Router) {}
 
   ngOnChanges(changes: any) {
     if (changes.interventions.currentValue !== changes.interventions.previousValue) {
-      this.dataSource = new MatTableDataSource<ClientIntervention>(changes.interventions.currentValue);
+      this.dataSource = new MatTableDataSource<Intervention>(changes.interventions.currentValue);
       this.dataSource.paginator = this.paginator;
     }
   }
 
-  showDetails(intervention: ClientIntervention) {
+  showDetails(intervention: Intervention) {
     this.router.navigate(
         ['interwencje', intervention.id],
         { state: {intervention}} as InterventionRouterState);

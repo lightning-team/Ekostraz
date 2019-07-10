@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ClientIntervention, InterventionFormData, InterventionFormSubmitData} from '../types';
+import {Intervention, InterventionFormData, InterventionFormSubmitData} from '../types';
 import {InterventionStatus} from '../intervention.status';
 import {formatDate} from '@angular/common';
 
@@ -41,7 +41,7 @@ export class InterventionsFormComponent implements OnInit {
   @Input() formTitle = 'Zgłoś interwencję';
   @Input() buttonText = 'Wyślij zgłoszenie';
   /** Intervention data to fill the form with. */
-  @Input() intervention: ClientIntervention | null = null;
+  @Input() intervention: Intervention | null = null;
 
   /** Event emitted on form submit */
   @Output() formSubmit = new EventEmitter<InterventionFormSubmitData>();
@@ -89,8 +89,8 @@ export class InterventionsFormComponent implements OnInit {
   }
 }
 
-/** Transforms ClientIntervention to form data */
-function transformToFormData(interventionData: ClientIntervention): InterventionFormData {
+/** Transforms Intervention to form data */
+function transformToFormData(interventionData: Intervention): InterventionFormData {
   return {
     date: formatDate(interventionData.creationDate, 'medium', 'pl'),
     name: interventionData.fullName,

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ClientIntervention } from '../types';
+import { Intervention } from '../types';
 import { InterventionsService } from '../interventions.service';
 import { Observable } from 'rxjs';
 import {take, tap} from 'rxjs/operators';
@@ -12,7 +12,7 @@ import {take, tap} from 'rxjs/operators';
     `,
 })
 export class InterventionDetailsContainerComponent implements OnInit {
-    intervention$: Observable<ClientIntervention>;
+    intervention$: Observable<Intervention>;
 
     constructor(
         private activatedRoute: ActivatedRoute,
