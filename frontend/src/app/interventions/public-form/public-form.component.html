@@ -1,1 +1,6 @@
-<p>public-form works!</p>
+<app-interventions-form
+        [intervention]="null"
+        [inPrivateMode]="false"
+        [inEditMode]="false"
+        (formSubmit)="onSubmit($event)"
+></app-interventions-form>

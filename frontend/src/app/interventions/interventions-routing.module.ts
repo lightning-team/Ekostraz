@@ -5,6 +5,7 @@ import { InterventionDetailsContainerComponent } from './details/details.contain
 import { InterventionsMapComponent } from './list/map/map.component';
 import { LoggedInMemberGuard } from '../auth/guards/logged-in-member.guard';
 import {PrivateFormComponent} from './private-form/private-form.component';
+import {PublicFormComponent} from './public-form/public-form.component';
 
 const routes: Routes = [{
   path: '',
@@ -13,6 +14,10 @@ const routes: Routes = [{
 }, {
   path: 'zglos',
   component: PrivateFormComponent,
+}, {
+  // TODO: Change the path and extract PublicForm to the root module
+  path: 'zglos-publiczny',
+  component: PublicFormComponent,
 }, {
   path: 'mapa',
   component: InterventionsMapComponent,
