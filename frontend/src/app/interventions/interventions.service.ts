@@ -1,10 +1,13 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, Subscription } from 'rxjs';
-import { PostInterventionData, ClientIntervention, FormInterventionData, RawServerIntervention } from './types';
+import { Location } from '@angular/common';
 import { Params, Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material';
+
+import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, catchError, delay } from 'rxjs/operators';
+
+import { PostInterventionData, ClientIntervention, FormInterventionData, RawServerIntervention } from './types';
 import { getFakeData } from '../fakedata';
 
 const BASE_API_URL = 'https://devkodawanie.azurewebsites.net/api/';
@@ -27,10 +30,11 @@ export class InterventionsService {
       private http: HttpClient,
       private router: Router,
       private snackBar: MatSnackBar,
+      private location: Location,
   ) { }
 
   getInterventions(): Observable<ClientIntervention[]> {
-    const interventions = getFromHistoryState('interventions') as ClientIntervention[];
+    const interventions = getFromLocationState(this.location, 'interventions') as ClientIntervention[];
     return interventions ? of(interventions) : this.fetchInterventions().pipe(
         catchError(this.handleError.bind(this))
     );
@@ -66,7 +70,7 @@ export class InterventionsService {
   }
 
   getIntervention(routeParams: Observable<Params> ): Observable<ClientIntervention | null> {
-    const intervention = getFromHistoryState('intervention') as ClientIntervention;
+    const intervention = getFromLocationState(this.location, 'intervention') as ClientIntervention;
     return intervention ? of(intervention) : this.getActiveRouteIntervention(routeParams).pipe(
         catchError(this.handleError.bind(this))
     );
@@ -112,7 +116,7 @@ export class InterventionsService {
   }
 }
 
-function getFromHistoryState(key: string) {
-  // TODO: Patch window.history when using Angular Universal.
-  return window.history.state && window.history.state[key];
+function getFromLocationState(location: Location, key: string) {
+  const state = location.getState() as any;
+  return state && state[key];
 }
