@@ -1,27 +1,22 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Component} from '@angular/core';
 import {InterventionFormSubmitData} from '../types';
 import {InterventionsService} from '../interventions.service';
+import {ComponentWithSubscriptions} from '@base';
 
 @Component({
   selector: 'app-public-intervention-form',
   templateUrl: './public-form.component.html',
   styleUrls: ['./public-form.component.scss']
 })
-export class PublicFormComponent implements OnDestroy {
-  private postSubscription: Subscription | null = null;
-
-  constructor(private interventionsService: InterventionsService) {}
-
-  ngOnDestroy() {
-    if (this.postSubscription) {
-      this.postSubscription.unsubscribe();
-      this.postSubscription = null;
-    }
+export class PublicFormComponent extends ComponentWithSubscriptions {
+  constructor(private interventionsService: InterventionsService) {
+    super();
   }
 
   onSubmit(eventData: InterventionFormSubmitData) {
     const {formValue, interventionId} = eventData;
-    this.postSubscription = this.interventionsService.postPrivateForm(formValue, interventionId);
+    this.subscriptions.add(
+        this.interventionsService.postPrivateForm(formValue, interventionId)
+    );
   }
 }
