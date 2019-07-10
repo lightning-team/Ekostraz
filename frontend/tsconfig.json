@@ -11,7 +11,8 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "paths": {
-      "@base": ["./src/base/index.ts"]
+      "@shared/base": ["./src/app/shared/base/index.ts"],
+      "@shared/*": ["./src/app/shared/*"]
     },
     "target": "es2015",
     "typeRoots": [

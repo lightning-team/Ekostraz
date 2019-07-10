@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
+import {ComponentWithSubscriptions} from '@shared/base';
+
 import {InterventionFormSubmitData} from '../types';
 import {InterventionsService} from '../interventions.service';
-import {ComponentWithSubscriptions} from '@base';
 
 @Component({
   selector: 'app-public-intervention-form',

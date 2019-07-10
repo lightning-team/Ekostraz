@@ -6,7 +6,7 @@ import {finalize, switchMapTo, take, tap} from 'rxjs/operators';
 
 import {ClientIntervention, InterventionFormSubmitData} from '../types';
 import {InterventionsService} from '../interventions.service';
-import {ComponentWithSubscriptions} from '@base';
+import {ComponentWithSubscriptions} from '@shared/base';
 
 @Component({
   selector: 'app-private-edit-intervention-form',

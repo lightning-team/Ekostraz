@@ -4,7 +4,7 @@ import { ClientIntervention, InterventionRouterState } from '../types';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteInterventionDialog } from './delete.dialog';
 import { InterventionsService } from '../interventions.service';
-import { ComponentWithSubscriptions } from '@base';
+import { ComponentWithSubscriptions } from '@shared/base';
 
 @Component({
   selector: 'app-intervention-details',

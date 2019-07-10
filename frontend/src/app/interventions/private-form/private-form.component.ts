@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
-import {ComponentWithSubscriptions} from '@base';
-
-import { Subscription } from 'rxjs';
+import {ComponentWithSubscriptions} from '@shared/base';
 
 import { InterventionFormSubmitData } from '../types';
 import { InterventionsService } from '../interventions.service';
