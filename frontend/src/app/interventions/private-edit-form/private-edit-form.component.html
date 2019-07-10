@@ -4,7 +4,8 @@
     <app-interventions-form *ngIf="intervention"
             [intervention]="intervention"
             [inPrivateMode]="true"
-            [inEditMode]="true"
+            [formTitle]="'Edytuj interwencję'"
+            [buttonText]="'Zapisz'"
             (formSubmit)="onSubmit($event)"
     ></app-interventions-form>
     <h3 *ngIf="!intervention">Nie udało się pobrać danych z serwera!</h3>

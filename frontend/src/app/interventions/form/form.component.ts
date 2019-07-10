@@ -36,11 +36,11 @@ const interventionStatuses = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InterventionsFormComponent implements OnInit {
-  /** Flag to decide whether the form should be in extended private mode for Ekostraż workers only */
+  /** Flag to decide whether the form should be in extended private mode for Ekostraż workers only. */
   @Input() inPrivateMode = false;
-  /** Flag which turns on edit mode related text and functions */
-  @Input() inEditMode = false;
-  /** Intervention data to fill the form with. Consumed only in edit mode. */
+  @Input() formTitle = 'Zgłoś interwencję';
+  @Input() buttonText = 'Wyślij zgłoszenie';
+  /** Intervention data to fill the form with. */
   @Input() intervention: ClientIntervention | null = null;
 
   /** Event emitted on form submit */
@@ -54,7 +54,7 @@ export class InterventionsFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    if (this.inEditMode && this.intervention) {
+    if (this.intervention) {
       this.interventionForm.patchValue(transformToFormData(this.intervention));
     }
   }
