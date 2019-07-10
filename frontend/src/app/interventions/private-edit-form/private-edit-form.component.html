@@ -1,0 +1,11 @@
+<mat-spinner [diameter]="40" *ngIf="(loading$ | async) && !(intervention$ | async) as intervention; else form"></mat-spinner>
+
+<ng-template #form>
+    <app-interventions-form *ngIf="intervention"
+            [intervention]="intervention"
+            [inPrivateMode]="true"
+            [inEditMode]="true"
+            (formSubmit)="onSubmit($event)"
+    ></app-interventions-form>
+    <h3 *ngIf="!intervention">Nie udało się pobrać danych z serwera!</h3>
+</ng-template>
