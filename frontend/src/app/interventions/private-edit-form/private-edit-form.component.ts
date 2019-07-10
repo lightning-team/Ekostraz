@@ -48,9 +48,8 @@ export class PrivateEditFormComponent extends ComponentWithSubscriptions impleme
   }
 
   onSubmit(eventData: InterventionFormSubmitData) {
-    const {formValue, interventionId} = eventData;
     this.subscriptions.add(
-        this.interventionsService.postPrivateForm(formValue, interventionId)
+        this.interventionsService.postPrivateForm(eventData)
     );
   }
 }

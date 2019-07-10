@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, catchError, delay } from 'rxjs/operators';
 
-import { PostInterventionData, Intervention, InterventionFormData, RawServerIntervention } from './types';
+import {PostInterventionData, Intervention, InterventionFormData, RawServerIntervention, InterventionFormSubmitData} from './types';
 import { getFakeData } from '../fakedata';
 
 const BASE_API_URL = 'https://devkodawanie.azurewebsites.net/api/';
@@ -61,8 +61,9 @@ export class InterventionsService {
     return this.postForm(formData, null, AddPublicFormUrl);
   }
 
-  postPrivateForm(formData: InterventionFormData, id: string | null): Subscription {
-    return this.postForm(formData, id, AddPrivateFormUrl);
+  postPrivateForm(eventData: InterventionFormSubmitData): Subscription {
+    const {formValue, interventionId} = eventData;
+    return this.postForm(formValue, interventionId, AddPrivateFormUrl);
   }
 
   delete(id: string, phone: string) {
