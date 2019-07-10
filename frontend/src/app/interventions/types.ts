@@ -1,6 +1,6 @@
 import {InterventionStatus} from './intervention.status';
 
-export interface FormInterventionData {
+export interface InterventionFormData {
     date: string;
     name: string;
     description: string;
@@ -8,6 +8,11 @@ export interface FormInterventionData {
     email: string;
     status: InterventionStatus;
     address: { number: string; city: string; street: string };
+}
+
+export interface InterventionFormSubmitData {
+    formValue: InterventionFormData;
+    interventionId: string|null;
 }
 
 export class PostInterventionData {
@@ -26,7 +31,7 @@ export class PostInterventionData {
     // GeoLat: number;
     // GeoLng: number;
 
-    constructor(formData: FormInterventionData, id = null) {
+    constructor(formData: InterventionFormData, id = null) {
         this.Id = id;
         this.CreationDate = formData.date || new Date().toISOString();
         this.Description = formData.description;

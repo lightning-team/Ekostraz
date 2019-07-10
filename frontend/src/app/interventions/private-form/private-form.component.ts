@@ -2,9 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Observable, Subscription } from 'rxjs';
-import { tap, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
-import {ClientIntervention, FormInterventionData} from '../types';
+import {ClientIntervention, InterventionFormSubmitData} from '../types';
 import {InterventionsService} from '../interventions.service';
 
 @Component({
@@ -13,7 +13,6 @@ import {InterventionsService} from '../interventions.service';
   styleUrls: ['./private-form.component.scss']
 })
 export class PrivateFormComponent implements OnInit, OnDestroy {
-  private interventionId: string | null;
   private postSubscription: Subscription | null = null;
 
   intervention$: Observable<ClientIntervention>;
@@ -25,7 +24,6 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.intervention$ = this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
-        tap(intervention => { this.interventionId = intervention.id; }),
         take(1)
     );
   }
@@ -37,7 +35,8 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmit(formValue: FormInterventionData) {
-    this.postSubscription = this.interventionsService.postPrivateForm(formValue, this.interventionId);
+  onSubmit(eventData: InterventionFormSubmitData) {
+    const {formValue, interventionId} = eventData;
+    this.postSubscription = this.interventionsService.postPrivateForm(formValue, interventionId);
   }
 }

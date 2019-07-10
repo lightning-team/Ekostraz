@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ClientIntervention, FormInterventionData} from '../types';
+import {ClientIntervention, InterventionFormData, InterventionFormSubmitData} from '../types';
 import {InterventionStatus} from '../intervention.status';
 import {formatDate} from '@angular/common';
 
@@ -44,7 +44,7 @@ export class InterventionsFormComponent implements OnInit {
   @Input() intervention: ClientIntervention | null = null;
 
   /** Event emitted on form submit */
-  @Output() formSubmit = new EventEmitter<FormInterventionData>();
+  @Output() formSubmit = new EventEmitter<InterventionFormSubmitData>();
 
   /** Intervention status value map used for select input generation */
   interventionStatuses = interventionStatuses;
@@ -77,9 +77,10 @@ export class InterventionsFormComponent implements OnInit {
     });
   }
 
-  onSubmit(formValue: FormInterventionData) {
+  onSubmit(formValue: InterventionFormData) {
     if (!this.interventionForm.valid) return;
-    this.formSubmit.emit(formValue);
+    const interventionId = this.intervention ? this.intervention.id : null;
+    this.formSubmit.emit( {formValue, interventionId});
   }
 
   isInvalid(controlName: string) {
@@ -89,7 +90,7 @@ export class InterventionsFormComponent implements OnInit {
 }
 
 /** Transforms ClientIntervention to form data */
-function transformToFormData(interventionData: ClientIntervention): FormInterventionData {
+function transformToFormData(interventionData: ClientIntervention): InterventionFormData {
   return {
     date: formatDate(interventionData.creationDate, 'medium', 'pl'),
     name: interventionData.fullName,
@@ -98,7 +99,7 @@ function transformToFormData(interventionData: ClientIntervention): FormInterven
     email: interventionData.email,
     status: interventionData.status,
     address: transformToFormAddress(interventionData.address),
-  } as FormInterventionData;
+  } as InterventionFormData;
 }
 
 function transformToFormAddress(address: string) {
