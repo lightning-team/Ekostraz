@@ -20,7 +20,7 @@ export class InterventionsListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.interventions$ = this.interventionsService.getInterventions().pipe(
+    this.interventions$ = this.interventionsService.fetchInterventions().pipe(
         map(interventions => interventions.map(mapToTableData)),
     );
   }

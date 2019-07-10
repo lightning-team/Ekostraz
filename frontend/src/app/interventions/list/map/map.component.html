@@ -1,8 +1,8 @@
 <mat-card>
-    <mat-spinner [diameter]="40" *ngIf="isloading"></mat-spinner>
-    <ng-container *ngIf="!isloading">
+    <ng-container *ngIf="interventions$ | async as interventions; else loading">
         <agm-map *ngIf="!!interventions.length" [latitude]="interventions[0].geoLat"
             [longitude]="interventions[0].geoLng">
+
             <agm-marker *ngFor="let intervention of interventions.slice(0,200)" [latitude]="intervention.geoLat"
                 [longitude]="intervention.geoLng">
                 <agm-info-window [disableAutoPan]="false">
@@ -10,6 +10,11 @@
                     </app-intervention-details>
                 </agm-info-window>
             </agm-marker>
+
         </agm-map>
     </ng-container>
 </mat-card>
+
+<ng-template #loading>
+    <mat-spinner [diameter]="40"></mat-spinner>
+</ng-template>

@@ -14,7 +14,6 @@ const GetAllRequestsUrl = BASE_API_URL + 'GetAllRequestsFunction';
 const DeleteRequestUrl = BASE_API_URL + 'DeleteRequestFunction';
 const GetOneRequestsUrl = BASE_API_URL + 'GetOneRequestsFunction';
 
-
 const HTTP_OPTIONS = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
@@ -31,6 +30,13 @@ export class InterventionsService {
   ) { }
 
   getInterventions(): Observable<ClientIntervention[]> {
+    const interventions = getFromHistoryState('interventions') as ClientIntervention[];
+    return interventions ? of(interventions) : this.fetchInterventions().pipe(
+        catchError(this.handleError.bind(this))
+    );
+  }
+
+  fetchInterventions(): Observable<ClientIntervention[]> {
     // return this.http.get<any>(GetAllRequestsUrl)
     //   .pipe(map(data => data.map(item => new PostInterventionData(item))));
     return of(getFakeData().map(item => new ClientIntervention(item))).pipe(
@@ -60,8 +66,7 @@ export class InterventionsService {
   }
 
   getIntervention(routeParams: Observable<Params> ): Observable<ClientIntervention | null> {
-    // TODO: Patch window.history when using Angular Universal.
-    const intervention = window.history.state && window.history.state.intervention as ClientIntervention;
+    const intervention = getFromHistoryState('intervention') as ClientIntervention;
     return intervention ? of(intervention) : this.getActiveRouteIntervention(routeParams).pipe(
         catchError(this.handleError.bind(this))
     );
@@ -105,4 +110,9 @@ export class InterventionsService {
       horizontalPosition: 'right',
     });
   }
+}
+
+function getFromHistoryState(key: string) {
+  // TODO: Patch window.history when using Angular Universal.
+  return window.history.state && window.history.state[key];
 }
