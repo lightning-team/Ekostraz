@@ -1,0 +1,1 @@
+export { ComponentWithSubscriptions } from './ComponentWithSubscriptions';

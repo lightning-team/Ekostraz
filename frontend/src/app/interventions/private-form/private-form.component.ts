@@ -1,4 +1,5 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component} from '@angular/core';
+import {ComponentWithSubscriptions} from '@base';
 
 import { Subscription } from 'rxjs';
 
@@ -10,20 +11,13 @@ import { InterventionsService } from '../interventions.service';
   templateUrl: './private-form.component.html',
   styleUrls: ['./private-form.component.scss']
 })
-export class PrivateFormComponent implements OnDestroy {
-  private postSubscription: Subscription | null = null;
-
-  constructor(private interventionsService: InterventionsService) {}
-
-  ngOnDestroy() {
-    if (this.postSubscription) {
-      this.postSubscription.unsubscribe();
-      this.postSubscription = null;
-    }
+export class PrivateFormComponent extends ComponentWithSubscriptions {
+  constructor(private interventionsService: InterventionsService) {
+    super();
   }
 
   onSubmit(eventData: InterventionFormSubmitData) {
     const {formValue, interventionId} = eventData;
-    this.postSubscription = this.interventionsService.postPrivateForm(formValue, interventionId);
+    this.subscriptions.add(this.interventionsService.postPrivateForm(formValue, interventionId));
   }
 }
