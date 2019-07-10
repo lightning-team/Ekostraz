@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import {Subscription, BehaviorSubject, Observable} from 'rxjs';
-import {finalize, tap } from 'rxjs/operators';
+import {Subscription, BehaviorSubject} from 'rxjs';
+import {finalize, switchMapTo, take, tap} from 'rxjs/operators';
 
 import {ClientIntervention, InterventionFormSubmitData} from '../types';
 import {InterventionsService} from '../interventions.service';
@@ -14,10 +14,8 @@ import {InterventionsService} from '../interventions.service';
 })
 export class PrivateEditFormComponent implements OnInit, OnDestroy {
   private postSubscription: Subscription | null = null;
-  intervention: ClientIntervention;
-
-  loading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
-  intervention$: Observable<ClientIntervention | null>;
+  intervention: ClientIntervention | null = null;
+  loading$: BehaviorSubject<boolean | null> = new BehaviorSubject(true);
 
   constructor(
       private activatedRoute: ActivatedRoute,
@@ -25,19 +23,24 @@ export class PrivateEditFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.intervention$ = this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
-        tap(val => this.updateIntervention(val)),
-        finalize(() => this.finishLoading()),
+    const intervention$ = this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
+        tap(intervention => this.setIntervention(intervention)),
     );
+
+    this.loading$.pipe(
+        take(1),
+        switchMapTo(intervention$),
+        finalize(() => this.finishLoading()),
+    ).subscribe();
+  }
+
+  private setIntervention(intervention: ClientIntervention) {
+    this.intervention = intervention;
   }
 
   private finishLoading() {
     this.loading$.next(false);
     this.loading$.complete();
-  }
-
-  private updateIntervention(intervention: ClientIntervention|null) {
-    this.intervention = intervention;
   }
 
   ngOnDestroy() {

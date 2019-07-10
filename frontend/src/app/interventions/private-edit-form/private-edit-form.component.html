@@ -1,4 +1,4 @@
-<mat-spinner [diameter]="40" *ngIf="(loading$ | async) && !(intervention$ | async) as intervention; else form"></mat-spinner>
+<mat-spinner [diameter]="40" *ngIf="loading$ | async; else form"></mat-spinner>
 
 <ng-template #form>
     <app-interventions-form *ngIf="intervention"
