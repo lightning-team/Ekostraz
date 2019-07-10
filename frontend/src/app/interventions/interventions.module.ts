@@ -30,6 +30,7 @@ import { InterventionsTableComponent } from './list/table/table.component';
 import { InterventionsMapComponent } from './list/map/map.component';
 import { DeleteInterventionDialog } from './details/delete.dialog';
 import { PrivateFormComponent } from './private-form/private-form.component';
+import { PublicFormComponent } from './public-form/public-form.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { PrivateFormComponent } from './private-form/private-form.component';
     InterventionsMapComponent,
     DeleteInterventionDialog,
     PrivateFormComponent,
+    PublicFormComponent,
   ],
   entryComponents: [
     DeleteInterventionDialog,
