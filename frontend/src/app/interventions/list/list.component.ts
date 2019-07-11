@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable} from 'rxjs';
-import { Intervention, InterventionListRouterState, ListIntervention } from '../types';
-import { InterventionsService } from '../interventions.service';
-import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import {Component} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Intervention, InterventionListRouterState, ListIntervention} from '../types';
+import {InterventionsService} from '../interventions.service';
+import {Router} from '@angular/router';
+import {LoadingComponent} from '@shared/base';
 
 
 @Component({
@@ -11,18 +11,15 @@ import { map } from 'rxjs/operators';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class InterventionsListComponent implements OnInit {
-  interventions$: Observable<ListIntervention[]>;
+export class InterventionsListComponent extends LoadingComponent<Intervention[], ListIntervention[]> {
+  protected mapInitialData = mapToTableData;
 
-  constructor(
-    private router: Router,
-    private interventionsService: InterventionsService,
-  ) {}
+  constructor(private router: Router, private interventionsService: InterventionsService) {
+    super();
+  }
 
-  ngOnInit() {
-    this.interventions$ = this.interventionsService.fetchInterventions().pipe(
-        map(interventions => interventions.map(mapToTableData)),
-    );
+  getInitialData$(): Observable<Intervention[]> {
+     return this.interventionsService.fetchInterventions();
   }
 
   showMap(interventions: Intervention[]) {
@@ -32,6 +29,6 @@ export class InterventionsListComponent implements OnInit {
   }
 }
 
-function mapToTableData(intervention: Intervention, index: number): ListIntervention {
-  return {...intervention, position: index + 1};
+function mapToTableData(interventions: Intervention[]): ListIntervention[] {
+  return interventions.map((intervention, index) => ({...intervention, position: index + 1}));
 }

@@ -1,14 +1,12 @@
-<mat-card>
-    <ng-container *ngIf="interventions$ | async as interventions; else loading">
+<mat-spinner [diameter]="40" *ngIf="loading$ | async; else list"></mat-spinner>
+
+<ng-template #list>
+    <section class="InterventionsList">
         <h3>Lista interwencji</h3>
-        <button (click)='showMap(interventions)' color="primary" mat-raised-button>
+        <button (click)='showMap(initialData)' color="primary" mat-raised-button>
             Sprawdź na mapie!
             <mat-icon>map</mat-icon>
         </button>
-        <app-interventions-table [interventions]="interventions"></app-interventions-table>
-    </ng-container>
-</mat-card>
-
-<ng-template #loading>
-    <mat-spinner [diameter]="40"></mat-spinner>
+        <app-interventions-table [interventions]="initialData"></app-interventions-table>
+    </section>
 </ng-template>
