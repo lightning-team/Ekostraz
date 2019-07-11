@@ -1,2 +1,3 @@
-export { ComponentWithSubscriptions } from './ComponentWithSubscriptions';
-export { FormContainer, SubmittableForm } from './FormContainer';
+export * from './ComponentWithSubscriptions';
+export * from './FormContainer';
+export * from './LoadingComponent';
