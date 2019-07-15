@@ -3,9 +3,9 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {finalize, switchMapTo, take, tap, map} from 'rxjs/operators';
 import {ComponentWithSubscriptions} from './ComponentWithSubscriptions';
 
-const identity: (<T>(item: T) => T) = item => item;
+const identity = <T>(item: T) => item;
 
-export abstract class LoadingComponent<APIData, ViewData = any> extends ComponentWithSubscriptions implements OnInit {
+export abstract class LoadingComponent<APIData, ViewData = APIData> extends ComponentWithSubscriptions implements OnInit {
     loading$: BehaviorSubject<boolean | null> = new BehaviorSubject(true);
     initialData: ViewData|APIData|null = null;
 

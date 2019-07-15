@@ -1,26 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Intervention } from '../types';
-import { InterventionsService } from '../interventions.service';
-import { Observable } from 'rxjs';
-import {take, tap} from 'rxjs/operators';
+import {Component} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {LoadingComponent} from '@shared/base';
+
+import {Observable} from 'rxjs';
+import {take} from 'rxjs/operators';
+
+import {InterventionsService} from '../interventions.service';
+import {Intervention} from '../types';
 
 @Component({
     selector: 'app-intervention-details-container',
     template: `
-      <app-intervention-details [intervention]='intervention$ | async'></app-intervention-details>
+        <mat-spinner [diameter]="40" *ngIf="loading$ | async; else details"></mat-spinner>
+        <ng-template #details>
+            <app-intervention-details [intervention]='initialData'></app-intervention-details>
+        </ng-template>
     `,
 })
-export class InterventionDetailsContainerComponent implements OnInit {
-    intervention$: Observable<Intervention>;
-
+export class InterventionDetailsContainerComponent extends LoadingComponent<Intervention> {
     constructor(
-        private activatedRoute: ActivatedRoute,
         private interventionsService: InterventionsService,
-    ) {}
+        private activatedRoute: ActivatedRoute,
+    ) {
+        super();
+    }
 
-    ngOnInit() {
-        this.intervention$ = this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
+    getInitialData$(): Observable<Intervention> {
+        return this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
             take(1)
         );
     }
