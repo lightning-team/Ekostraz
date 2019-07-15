@@ -13,7 +13,7 @@ import { ComponentWithSubscriptions } from '@shared/base';
 })
 export class InterventionDetailsComponent extends ComponentWithSubscriptions {
   @Input() intervention: Intervention;
-  @Input() miniVersion?: boolean;
+  @Input() embedded?: boolean;
 
   constructor(private router: Router, private dialog: MatDialog, private interventionService: InterventionsService) {
     super();
