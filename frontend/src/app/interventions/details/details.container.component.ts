@@ -16,6 +16,11 @@ import {Intervention} from '../types';
             <app-intervention-details [intervention]='initialData'></app-intervention-details>
         </ng-template>
     `,
+    styles: [`
+        mat-spinner {
+            margin: auto;
+        }
+    `]
 })
 export class InterventionDetailsContainerComponent extends LoadingComponent<Intervention> {
     constructor(
