@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Intervention } from '../../types';
-import { InterventionsService } from '../../interventions.service';
+import {Component} from '@angular/core';
+import {LoadingComponent} from '@shared/base';
+
+import {Intervention} from '../../types';
+import {InterventionsService} from '../../interventions.service';
 
 @Component({
   selector: 'app-interventions-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class InterventionsMapComponent implements OnInit {
-  interventions$: Observable<Intervention[]>;
+export class InterventionsMapComponent extends LoadingComponent<Intervention[]> {
+  constructor(private interventionsService: InterventionsService) {
+    super();
+  }
 
-  constructor(private interventionsService: InterventionsService) {}
-
-  ngOnInit() {
-    this.interventions$ = this.interventionsService.getInterventions();
+  getInitialData$() {
+    return this.interventionsService.getInterventions();
   }
 }
