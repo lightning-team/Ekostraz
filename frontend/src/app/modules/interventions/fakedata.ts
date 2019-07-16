@@ -1,4 +1,4 @@
-import {RawServerIntervention} from './interventions/types';
+import {RawServerIntervention} from './types';
 
 export const FAKE_DATA = [{
     "date": "2019-06-28T23:24:42.888Z",

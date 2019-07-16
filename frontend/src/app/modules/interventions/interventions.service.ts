@@ -8,7 +8,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, catchError, delay } from 'rxjs/operators';
 
 import {PostInterventionData, Intervention, InterventionFormData, RawServerIntervention, InterventionFormSubmitData} from './types';
-import { getFakeData } from '../fakedata';
+import { getFakeData } from './fakedata';
 
 const BASE_API_URL = 'https://devkodawanie.azurewebsites.net/api/';
 const AddPublicFormUrl = BASE_API_URL + 'AddPublicForm';

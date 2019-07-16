@@ -18,7 +18,7 @@ const routes: Routes = [
   },
   {
     path: 'interwencje',
-    loadChildren: './interventions/interventions.module#InterventionsModule',
+    loadChildren: './modules/interventions/interventions.module#InterventionsModule',
     canLoad: [LoggedInUserGuard],
   },
   { path: '**', redirectTo: '' }
