@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomePageComponent } from './home-page/home-page.component';
-import { LoginFormComponent } from './auth/login-form/login-form.component';
-import { LoggedOutGuard } from './auth/guards/logged-out.guard';
-import { LoggedInUserGuard } from './auth/guards/logged-in-user.guard';
+import { LoginFormComponent } from './modules/auth/login-form/login-form.component';
+import { LoggedOutGuard } from './modules/auth/guards/logged-out.guard';
+import { LoggedInUserGuard } from './modules/auth/guards/logged-in-user.guard';
 
 const routes: Routes = [
   {

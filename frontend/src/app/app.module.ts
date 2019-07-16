@@ -4,8 +4,8 @@ import { registerLocaleData } from '@angular/common';
 import { MatToolbarModule, MatButtonModule, MatCardModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AuthModule } from './auth/auth.module';
-import { AuthService } from './auth/auth.service';
+import { AuthModule } from './modules/auth/auth.module';
+import { AuthService } from './modules/auth/auth.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
