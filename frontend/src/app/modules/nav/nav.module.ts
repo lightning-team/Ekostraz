@@ -5,11 +5,13 @@ import {RouterModule} from '@angular/router';
 
 import {NavComponent} from './nav.component';
 import { DesktopNavComponent } from './desktop-nav/desktop-nav.component';
+import { MobileNavComponent } from './mobile-nav/mobile-nav.component';
 
 @NgModule({
   declarations: [
     NavComponent,
     DesktopNavComponent,
+    MobileNavComponent,
   ],
   imports: [
     CommonModule,
