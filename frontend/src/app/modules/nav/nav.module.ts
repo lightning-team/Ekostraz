@@ -4,10 +4,12 @@ import {MatButtonModule, MatToolbarModule} from '@angular/material';
 import {RouterModule} from '@angular/router';
 
 import {NavComponent} from './nav.component';
+import { DesktopNavComponent } from './desktop-nav/desktop-nav.component';
 
 @NgModule({
   declarations: [
     NavComponent,
+    DesktopNavComponent,
   ],
   imports: [
     CommonModule,

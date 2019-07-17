@@ -1,0 +1,35 @@
+<div class='nav-buttons-container'>
+    <ng-container *ngIf="isLoggedIn">
+        <button mat-button routerLink='/interwencje'
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+            <i class="material-icons">list</i>
+            Interwencje
+        </button>
+        <button mat-button routerLink='/interwencje/mapa' routerLinkActive="active">
+            <i class="material-icons">map</i>
+            Mapa
+        </button>
+        <button mat-button routerLink='/interwencje/zglos' routerLinkActive="active">
+            <i class="material-icons">notifications_active</i>
+            Zgłoś
+        </button>
+    </ng-container>
+    <button *ngIf="!isLoggedIn"
+            mat-button routerLink='/interwencje/zglos-publiczny'
+            routerLinkActive="active">
+        Zgłoś interwencję
+    </button>
+</div>
+<div class='auth-buttons-container'>
+    <button *ngIf='!isLoggedIn' class="login" mat-button (click)='logIn.emit()'>
+        <i class="material-icons">account_circle</i>
+        Zaloguj
+    </button>
+    <ng-container *ngIf='isLoggedIn'>
+        <span class='greeting'>Witaj, Inspektorze!</span>
+        <button class="logout" mat-button title='Wyloguj' (click)='logOut.emit()'>
+            <i class="material-icons">exit_to_app</i>
+        </button>
+    </ng-container>
+</div>

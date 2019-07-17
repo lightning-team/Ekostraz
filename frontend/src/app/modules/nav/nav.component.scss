@@ -5,50 +5,18 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 10;
   @include mat-elevation(5);
-
-  & a {
-    color: white;
-    text-decoration: none;
-  }
-
-  & a:focus,
-  & a:visited {
-    color: white;
-  }
-}
-
-.nav-buttons-container {
-  flex-grow: 1;
-  height: 100%;
-}
-
-.auth-buttons-container {
-  .greeting {
-    font-size: 14px;
-    margin-right: 5px;
-  }
-
-  .logout.mat-button {
-    min-width: 40px;
-    padding: 0;
-  }
-
-  .logout .material-icons {
-    margin: 0;
-    transform: rotate(180deg);
-  }
-}
-
-.mat-button {
-  height: 100%;
-  .material-icons {
-    margin-right: 5px;
-  }
 }
 
 .logo-text {
+  color: white;
   margin-right: 30px;
   text-transform: uppercase;
+  text-decoration: none;
+
+  &:focus,
+  &:visited {
+    color: white;
+  }
 }
