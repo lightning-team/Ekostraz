@@ -7,6 +7,7 @@ import { LoggedInMemberGuard } from '../auth/guards/logged-in-member.guard';
 import {PrivateFormComponent} from './private-form/private-form.component';
 import {PublicFormComponent} from './public-form/public-form.component';
 import {PrivateEditFormComponent} from './private-edit-form/private-edit-form.component';
+import {LoggedOutGuard} from '../auth/guards/logged-out.guard';
 
 const routes: Routes = [{
   path: '',
@@ -19,6 +20,7 @@ const routes: Routes = [{
   // TODO: Change the path and extract PublicForm to the root module
   path: 'zglos-publiczny',
   component: PublicFormComponent,
+  canActivate: [LoggedOutGuard]
 }, {
   path: 'mapa',
   component: InterventionsMapComponent,

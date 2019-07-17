@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {map, share} from 'rxjs/operators';
 import {AuthService} from '../modules/auth/auth.service';
 
 @Component({
@@ -7,13 +8,15 @@ import {AuthService} from '../modules/auth/auth.service';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
+  isLoggedIn$ = this.authService.isLoggedIn$;
+
   constructor(private authService: AuthService) { }
 
-  isLoggedIn() {
-    return this.authService.isLoggedIn();
+  logIn() {
+    this.authService.logIn();
   }
 
-  logout() {
-    this.authService.logout();
+  logOut() {
+    this.authService.logOut();
   }
 }

@@ -19,7 +19,8 @@ const routes: Routes = [
   {
     path: 'interwencje',
     loadChildren: './modules/interventions/interventions.module#InterventionsModule',
-    canLoad: [LoggedInUserGuard],
+    // TODO: Temporary disable until public form is moved out of the Interventions module
+    // canLoad: [LoggedInUserGuard],
   },
   { path: '**', redirectTo: '' }
 ];

@@ -12,10 +12,12 @@ export class LoggedInUserGuard implements CanLoad {
   constructor(private authService: AuthService, private router: Router) { }
 
   canLoad(): Observable<boolean> {
-    return of(this.authService.isLoggedIn()).pipe(
+    return this.authService.isLoggedIn$.pipe(
       tap(loggedIn => {
         if (!loggedIn) {
-          this.router.navigate(['zaloguj']);
+            // TODO: Add login flow later
+          // this.router.navigate(['zaloguj']);
+            alert('You should be logged in!');
         }
       })
     );

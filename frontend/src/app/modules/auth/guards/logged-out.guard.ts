@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthModule } from '../auth.module';
 import { AuthService } from '../auth.service';
 
@@ -12,10 +12,13 @@ export class LoggedOutGuard implements CanActivate {
     constructor(private authService: AuthService, private router: Router) { }
 
     canActivate(): Observable<boolean> {
-        return of(!this.authService.isLoggedIn()).pipe(
-            tap(loggedOut => {
-                if (!loggedOut) {
-                    this.router.navigate(['']);
+        return this.authService.isLoggedIn$.pipe(
+            map(isUserLoggedIn => {
+                if (isUserLoggedIn) {
+                    this.router.navigate(['interwencje/zglos']);
+                    return false;
+                } else {
+                    return true;
                 }
             })
         );

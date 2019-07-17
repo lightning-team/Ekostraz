@@ -1,21 +1,29 @@
 import { Injectable } from '@angular/core';
-import { AuthModule } from './auth.module';
 import { Router } from '@angular/router';
+
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+
+import { AuthModule } from './auth.module';
 
 @Injectable({
   providedIn: AuthModule,
 })
 export class AuthService {
-  private user_: any = null;
+  user = new BehaviorSubject(null);
+  isLoggedIn$: Observable<boolean> = this.user.asObservable().pipe(
+      map(userData => !!userData),
+      shareReplay(1),
+  );
 
   constructor(private router: Router) { }
 
-  isLoggedIn() {
-    return !this.user_;
+  logIn() {
+    this.user.next({});
   }
 
-  logout() {
-    this.user_ = null;
+  logOut() {
+    this.user.next(null);
     this.router.navigate(['']);
   }
 }
