@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MatButtonModule, MatToolbarModule} from '@angular/material';
+import {MatButtonModule, MatIconModule, MatToolbarModule} from '@angular/material';
 import {RouterModule} from '@angular/router';
 
 import {NavComponent} from './nav.component';
@@ -16,6 +16,7 @@ import { MobileNavComponent } from './mobile-nav/mobile-nav.component';
   imports: [
     CommonModule,
     MatButtonModule,
+    MatIconModule,
     MatToolbarModule,
     RouterModule,
   ],
