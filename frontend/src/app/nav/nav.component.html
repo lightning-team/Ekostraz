@@ -3,18 +3,36 @@
         <a class="logo-text" title="Strona główna" routerLink='/'>Ekostraż</a>
         <div class='nav-buttons-container'>
             <ng-container *ngIf="isLoggedIn$ | async">
-                <button mat-button routerLink='/interwencje' routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Interwencje</button>
-                <button mat-button routerLink='/interwencje/mapa' routerLinkActive="active">Mapa</button>
-                <button mat-button routerLink='/interwencje/zglos' routerLinkActive="active">Zgłoś</button>
+                <button mat-button routerLink='/interwencje' routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <i class="material-icons">list</i>
+                    Interwencje
+                </button>
+                <button mat-button routerLink='/interwencje/mapa' routerLinkActive="active">
+                    <i class="material-icons">map</i>
+                    Mapa
+                </button>
+                <button mat-button routerLink='/interwencje/zglos' routerLinkActive="active">
+                    <i class="material-icons">notifications_active</i>
+                    Zgłoś
+                </button>
             </ng-container>
             <button *ngIf="!(isLoggedIn$ | async)"
                     mat-button routerLink='/interwencje/zglos-publiczny'
-                    routerLinkActive="active">Zgłoś interwencję
+                    routerLinkActive="active">
+                Zgłoś interwencję
             </button>
         </div>
         <div class='auth-buttons-container'>
-            <button *ngIf='!(isLoggedIn$ | async)' mat-button (click)='logIn()'>Zaloguj</button>
-            <button *ngIf='isLoggedIn$ | async' mat-button (click)='logOut()'>Wyloguj</button>
+            <button *ngIf='!(isLoggedIn$ | async)' class="login" mat-button (click)='logIn()'>
+                <i class="material-icons">account_circle</i>
+                Zaloguj
+            </button>
+            <ng-container *ngIf='isLoggedIn$ | async'>
+                <span class='greeting'>Witaj, Inspektorze!</span>
+                <button class="logout" mat-button title='Wyloguj' (click)='logOut()'>
+                    <i class="material-icons">exit_to_app</i>
+                </button>
+            </ng-container>
         </div>
     </mat-toolbar>
 </header>
