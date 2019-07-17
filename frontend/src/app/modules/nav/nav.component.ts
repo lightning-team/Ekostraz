@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import {map, share} from 'rxjs/operators';
-import {AuthService} from '../modules/auth/auth.service';
+import {AuthService} from '../auth/auth.service';
 
 @Component({
   selector: 'app-nav',
