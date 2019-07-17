@@ -1,15 +1,4 @@
-<mat-toolbar class='app-navbar mat-elevation-z6' color='primary'>
-    <a class="logo-text" title="Strona główna" routerLink='/'>Ekostraż</a>
-    <div class='nav-buttons-container'>
-        <button mat-button routerLink='/interwencje'>Interwencje</button>
-        <button mat-button routerLink='/interwencje/mapa'>Mapa</button>
-        <button mat-button routerLink='/interwencje/zglos'>Zgłoś</button>
-    </div>
-    <div class='auth-buttons-container'>
-        <button *ngIf='!isLoggedIn()' mat-button routerLink='/zaloguj'>Zaloguj</button>
-        <button *ngIf='isLoggedIn()' mat-button>Wyloguj</button>
-    </div>
-</mat-toolbar>
+<app-nav></app-nav>
 
 <section class='container'>
     <router-outlet></router-outlet>

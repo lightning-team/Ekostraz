@@ -8,14 +8,4 @@ import { AuthService } from './modules/auth/auth.service';
 })
 export class AppComponent {
   title = 'ekostraz';
-
-  constructor(private authService: AuthService) { }
-
-  isLoggedIn() {
-    return this.authService.isLoggedIn();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
 }

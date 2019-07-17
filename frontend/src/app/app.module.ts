@@ -9,13 +9,16 @@ import { AuthService } from './modules/auth/auth.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { NavComponent } from './nav/nav.component';
 
 import localePl from '@angular/common/locales/pl';
 registerLocaleData(localePl);
+
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
+    NavComponent,
   ],
   imports: [
     AuthModule,

@@ -1,0 +1,14 @@
+<header>
+    <mat-toolbar class='app-navbar' color='primary'>
+        <a class="logo-text" title="Strona główna" routerLink='/'>Ekostraż</a>
+        <div class='nav-buttons-container'>
+            <button mat-button routerLink='/interwencje' routerLinkActive="active">Interwencje</button>
+            <button mat-button routerLink='/interwencje/mapa' routerLinkActive="active">Mapa</button>
+            <button mat-button routerLink='/interwencje/zglos' routerLinkActive="active">Zgłoś</button>
+        </div>
+        <div class='auth-buttons-container'>
+            <button *ngIf='!isLoggedIn()' mat-button routerLink='/zaloguj'>Zaloguj</button>
+            <button *ngIf='isLoggedIn()' mat-button>Wyloguj</button>
+        </div>
+    </mat-toolbar>
+</header>
