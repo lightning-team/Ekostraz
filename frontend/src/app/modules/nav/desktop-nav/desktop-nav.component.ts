@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {NavInterface} from '../nav.interface';
 
 @Component({
   selector: 'app-desktop-nav',
@@ -7,7 +6,7 @@ import {NavInterface} from '../nav.interface';
   styleUrls: ['./desktop-nav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DesktopNavComponent implements NavInterface {
+export class DesktopNavComponent {
     @Input() isLoggedIn = false;
     @Output() logIn = new EventEmitter();
     @Output() logOut = new EventEmitter();
