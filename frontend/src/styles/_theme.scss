@@ -1,4 +1,5 @@
 @import '~@angular/material/theming';
+
 @include mat-core();
 
 $my-color-green: darkgreen;
@@ -7,15 +8,3 @@ $my-app-accent:  mat-palette($mat-green, 500, 900, A100);
 $my-app-warn:    mat-palette($mat-deep-orange, 800);
 $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
 @include angular-material-theme($my-app-theme);
-
-body {
-    margin: 0;
-}
-
-// Angular Material hacks here - add rules with care - only when
-// Angular's view encapsulation does not allow for styling it!
-.app-navbar .mat-button.active {
-    & .mat-button-focus-overlay {
-        opacity: .1;
-    }
-}

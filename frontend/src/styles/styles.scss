@@ -1,0 +1,13 @@
+@import 'theme';
+
+body {
+    margin: 0;
+}
+
+// Angular Material hacks here - add rules with care - only when
+// Angular's view encapsulation does not allow for styling it!
+.app-navbar .mat-button.active {
+    & .mat-button-focus-overlay {
+        opacity: .1;
+    }
+}
