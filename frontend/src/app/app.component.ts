@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { AuthService } from './modules/auth/auth.service';
+import {Component, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +7,5 @@ import { AuthService } from './modules/auth/auth.service';
 })
 export class AppComponent {
   title = 'ekostraz';
+  @ViewChild('sidenav', {static: true}) sidenav;
 }

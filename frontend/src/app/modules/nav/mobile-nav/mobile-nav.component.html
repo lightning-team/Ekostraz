@@ -1,1 +1,12 @@
-<p>mobile-nav works!</p>
+<mat-sidenav-container>
+    <mat-sidenav #nav>
+        <ng-container *ngTemplateOutlet="menuContent"></ng-container>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <ng-content></ng-content>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+<ng-template #menuContent>
+    This is menu content
+</ng-template>

@@ -1,5 +1,11 @@
-<app-nav></app-nav>
+<app-nav (sideNavToggle)='sidenav.toggle()'></app-nav>
 
-<section class='container'>
-    <router-outlet></router-outlet>
-</section>
+<app-mobile-nav #sidenav>
+    <ng-container *ngTemplateOutlet="main"></ng-container>
+</app-mobile-nav>
+
+<ng-template #main>
+    <section class='container'>
+        <router-outlet></router-outlet>
+    </section>
+</ng-template>

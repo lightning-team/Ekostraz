@@ -9,7 +9,7 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
 @include angular-material-theme($my-app-theme);
 
 body {
-    margin: 100px 0 40px 0;
+    margin: 0;
 }
 
 // Angular Material hacks here - add rules with care - only when

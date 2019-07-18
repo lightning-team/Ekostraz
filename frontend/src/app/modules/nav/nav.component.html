@@ -1,6 +1,6 @@
 <header>
     <mat-toolbar class='app-navbar' color='primary'>
-        <button *ngIf="isMobileView$ | async" mat-icon-button>
+        <button *ngIf="isMobileView$ | async" mat-icon-button (click)='sideNavToggle.emit()'>
             <mat-icon>menu</mat-icon>
         </button>
         <a class="logo-text" title="Strona główna" routerLink='/'>Ekostraż</a>
@@ -12,9 +12,3 @@
         </app-desktop-nav>
     </mat-toolbar>
 </header>
-
-<app-mobile-nav *ngIf="isMobileView$ | async"
-        [isLoggedIn]="isLoggedIn$ | async"
-        (logIn)="logIn()"
-        (logOut)="logOut()">
-></app-mobile-nav>

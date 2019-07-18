@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {BreakpointObserver} from '@angular/cdk/layout';
 
 import {AuthService} from '../auth/auth.service';
@@ -13,6 +13,7 @@ import {shareReplay, switchMap} from 'rxjs/operators';
 export class NavComponent implements OnInit {
   isMobileView$: Observable<boolean>;
   isLoggedIn$ = this.authService.isLoggedIn$;
+  @Output() sideNavToggle = new EventEmitter();
 
   constructor(private breakPointObserver: BreakpointObserver, private authService: AuthService) {}
 
