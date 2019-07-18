@@ -1,6 +1,9 @@
 <header>
     <mat-toolbar class='app-navbar' color='primary'>
-        <button *ngIf="isMobileView$ | async" mat-icon-button (click)='sideNavToggle.emit()'>
+        <button *ngIf="isMobileView$ | async"
+                class="hamburger-menu"
+                mat-icon-button
+                (click)='sideNavToggle.emit()'>
             <mat-icon>menu</mat-icon>
         </button>
         <a class="logo-text" title="Strona główna" routerLink='/'>Ekostraż</a>

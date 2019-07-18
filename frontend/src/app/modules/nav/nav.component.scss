@@ -1,5 +1,7 @@
 @import '~@angular/material/theming';
 
+$break-mobile: 700px;
+
 .app-navbar {
   position: fixed;
   top: 0;
@@ -7,6 +9,14 @@
   right: 0;
   z-index: 10;
   @include mat-elevation(5);
+
+  @media (max-width: $break-mobile) {
+    padding-left: 5px;
+  }
+}
+
+.hamburger-menu {
+  margin-right: 5px;
 }
 
 .logo-text {
