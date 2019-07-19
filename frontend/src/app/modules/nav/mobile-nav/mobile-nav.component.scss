@@ -1,4 +1,5 @@
 $app-padding-top: 100px;
+$toolbar-mobile-height: 56px;
 
 .mat-sidenav-content {
   min-height: 100vh;
@@ -6,5 +7,26 @@ $app-padding-top: 100px;
 }
 
 .mat-sidenav {
-  padding-top: $app-padding-top;
+  padding-top: $toolbar-mobile-height;
+  min-width: 210px;
+  position: fixed;
+  height: 100vh;
+}
+
+.mat-divider {
+  margin: 5px 0;
+}
+
+.nav-links-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mat-list-item.active {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.mat-icon {
+  margin-right: 5px;
 }
