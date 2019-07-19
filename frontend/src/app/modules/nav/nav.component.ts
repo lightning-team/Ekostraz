@@ -1,9 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {BreakpointObserver} from '@angular/cdk/layout';
+import {Observable} from 'rxjs';
 
 import {AuthService} from '../auth/auth.service';
-import {Observable, of} from 'rxjs';
-import {shareReplay, switchMap} from 'rxjs/operators';
+import {BreakpointService} from '../../services/breakpoint.service';
 
 @Component({
   selector: 'app-nav',
@@ -15,14 +14,10 @@ export class NavComponent implements OnInit {
   isLoggedIn$ = this.authService.isLoggedIn$;
   @Output() sideNavToggle = new EventEmitter();
 
-  constructor(private breakPointObserver: BreakpointObserver, private authService: AuthService) {}
+  constructor(private breakpointService: BreakpointService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.isMobileView$ = this.breakPointObserver
-        .observe(['(max-width: 700px)']).pipe(
-            switchMap(state => of(state.matches)),
-            shareReplay(1)
-        );
+    this.isMobileView$ = this.breakpointService.isMobileView$;
   }
 
   logIn() {

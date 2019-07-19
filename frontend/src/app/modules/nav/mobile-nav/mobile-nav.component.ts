@@ -1,9 +1,9 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {AuthService} from '../../auth/auth.service';
-import {Observable, of} from 'rxjs';
-import {BreakpointObserver} from '@angular/cdk/layout';
-import {shareReplay, switchMap} from 'rxjs/operators';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatSidenav} from '@angular/material';
+import {ComponentWithSubscriptions} from '@shared/base';
+
+import {AuthService} from '../../auth/auth.service';
+import {BreakpointService} from '../../../services/breakpoint.service';
 
 interface MenuItem {
   text: string;
@@ -69,26 +69,21 @@ const menuItems = {
   templateUrl: './mobile-nav.component.html',
   styleUrls: ['./mobile-nav.component.scss']
 })
-export class MobileNavComponent implements OnInit {
-  isLoggedIn$ = this.authService.isLoggedIn$;
+export class MobileNavComponent extends ComponentWithSubscriptions implements OnInit {
   menuItems: MenuItems = menuItems;
-
+  isLoggedIn$ = this.authService.isLoggedIn$;
   @ViewChild('sidenav', {static: false}) sidenav: MatSidenav;
 
-  constructor(private breakPointObserver: BreakpointObserver, private authService: AuthService) {}
+  constructor(private authService: AuthService, private breakpointService: BreakpointService) {
+    super();
+  }
 
   ngOnInit() {
-    // TODO: Extract breakpoint to a common logic for both mobile and desktop menu.
-    // TODO: Please refactor and clean-up
-    this.breakPointObserver
-        .observe(['(max-width: 700px)']).pipe(
-            switchMap(state => of(state.matches)),
-            shareReplay(1)
-        ).subscribe(() => {
-          if (this.sidenav.opened) {
-              this.sidenav.close();
-          }
-        });
+    this.subscriptions.add(
+        this.breakpointService.isMobileView$.subscribe(() => {
+          if (this.sidenav.opened) this.sidenav.close();
+        })
+    );
   }
 
   toggle() {
