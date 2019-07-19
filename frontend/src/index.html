@@ -10,11 +10,92 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    /* Style elements to display before Angular app start */
+    .intro-page {
+      position: fixed;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
+
+    .intro-image {
+      min-width: 220px;
+      width: 20%;
+      transform-origin: bottom;
+      animation: startLogoBounce ease-in-out 4s infinite;
+    }
+
+    @keyframes startLogoBounce {
+      0% {
+        transform: scale(1.02);
+      }
+      50% {
+        transform: scale(0.98);
+      }
+      100% {
+        transform: scale(1.02);
+      }
+    }
+
+    .intro-dots {
+      position: relative;
+      width: 142px;
+      height: 40px;
+      margin: auto;
+    }
+    .intro-dots .dot {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 15px;
+      background: rgba(0,107,45,0.95);
+      border-radius: 50%;
+      transform: translateX(0);
+      animation: dot 4s infinite;
+    }
+    .intro-dots .dots {
+      transform: translateX(0);
+      margin-top: 12px;
+      margin-left: 31px;
+      animation: dots 4s infinite;
+    }
+    .intro-dots .dots span {
+      display: block;
+      float: left;
+      width: 16px;
+      height: 16px;
+      margin-left: 16px;
+      background: rgba(0,107,45,0.85);
+      border-radius: 50%;
+    }
+    @keyframes dot {
+      50% {
+        transform: translateX(96px);
+      }
+    }
+    @keyframes dots {
+      50% {
+        transform: translateX(-31px);
+      }
+    }
+  </style>
 </head>
 
 <body>
   <app-root>
-    Loading...
+    <section class="intro-page">
+      <img class='intro-image' src="./assets/logo_animals.svg" alt="Ekostraż logo startowe"/>
+      <div class="intro-dots">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </section>
   </app-root>
 </body>
 
