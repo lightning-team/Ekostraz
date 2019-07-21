@@ -1,5 +1,5 @@
+<mat-progress-bar *ngIf="isRouteLoading$ | async" [mode]="'indeterminate'" [color]="'accent'"></mat-progress-bar>
 <app-nav (sideNavToggle)='sidenav.toggle()'></app-nav>
-
 <app-mobile-nav #sidenav>
     <ng-container *ngTemplateOutlet="main"></ng-container>
 </app-mobile-nav>
