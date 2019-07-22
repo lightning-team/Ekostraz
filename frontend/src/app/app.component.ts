@@ -4,15 +4,18 @@ import {
   Router, RouterEvent
 } from '@angular/router';
 
-import {merge, MonoTypeOperatorFunction, Observable, of} from 'rxjs';
+import {merge, MonoTypeOperatorFunction, Observable} from 'rxjs';
 import {filter, mapTo} from 'rxjs/operators';
+
+import {routeFader} from './animations/routeFader';
 
 type RouterEventFilter = (eventConstructor: new (...args: any[]) => RouterEvent) => MonoTypeOperatorFunction<RouterEvent>;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [routeFader]
 })
 export class AppComponent {
   title = 'ekostraz';
