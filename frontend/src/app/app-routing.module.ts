@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomePageComponent } from './home-page/home-page.component';
-import { LoginFormComponent } from './modules/auth/login-form/login-form.component';
 import { LoggedOutGuard } from './modules/auth/guards/logged-out.guard';
 import { LoggedInUserGuard } from './modules/auth/guards/logged-in-user.guard';
 import { PublicFormComponent } from './modules/public-form/public-form/public-form.component';
+import {LoginComponent} from './modules/auth/login/login.component';
 
 const routes: Routes = [
   {
@@ -14,8 +14,8 @@ const routes: Routes = [
   },
   {
     path: 'zaloguj',
-    component: LoginFormComponent,
-    canActivate: [LoggedOutGuard]
+    component: LoginComponent,
+    canActivate: [LoggedOutGuard],
   },
   {
     path: 'zglos-interwencje',

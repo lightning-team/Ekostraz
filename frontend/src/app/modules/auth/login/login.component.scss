@@ -1,0 +1,56 @@
+@import 'theme';
+
+$primary-color: map-get($my-app-primary, 'default');
+.login-dialog-backdrop {
+  background-image: url('~src/assets/logo_animals_vert.svg'),
+                    linear-gradient(white, $primary-color 160%);
+  background-repeat: no-repeat;
+  background-size: 300px, 100%;
+  background-position: center 40px, top;
+}
+
+.login-dialog-panel {
+  $dialog-padding: 24px;
+  .mat-dialog-container {
+    padding: $dialog-padding;
+    display: flex;
+    flex-direction: column;
+
+    // TODO: Rethink/clean-up. These are temporary rules for mocked dialog to fit one screen size for now.
+    height: 400px;
+    width: 340px;
+    margin-top: 120px;
+  }
+
+  .mat-dialog-title {
+    color: $primary-color;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+    position: relative;
+    line-height: 36px;
+
+    &:after {
+      background: $primary-color;
+      content: '';
+      display: block;
+      height: 100%;
+      position: absolute;
+      left: -$dialog-padding;
+      top: 0;
+      width: 3px;
+    }
+  }
+
+  .mat-dialog-content {
+    flex: 1 1 60%;
+  }
+
+  .mat-dialog-actions {
+    flex-grow: 1;
+  }
+
+  .mat-button {
+    width: 200px;
+  }
+}

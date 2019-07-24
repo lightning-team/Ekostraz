@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {MatButtonModule, MatDialogModule} from '@angular/material';
 
-import { LoginFormComponent } from './login-form/login-form.component';
+import { LoginComponent } from './login/login.component';
 import {AuthService} from './auth.service';
 
 @NgModule({
-  declarations: [LoginFormComponent],
+  declarations: [LoginComponent],
   imports: [
     CommonModule,
+    MatButtonModule,
+    MatDialogModule,
   ],
-  exports: [
-    LoginFormComponent,
-  ],
+  exports: [LoginComponent],
   providers: [AuthService]
 })
 export class AuthModule { }
