@@ -35,7 +35,6 @@ registerLocaleData(localePl);
     HttpClientModule,
   ],
   providers: [
-    AuthService,
     { provide: LOCALE_ID, useValue: 'pl' }
   ],
   bootstrap: [AppComponent]

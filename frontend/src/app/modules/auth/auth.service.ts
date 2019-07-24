@@ -4,10 +4,8 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AuthModule } from './auth.module';
-
 @Injectable({
-  providedIn: AuthModule,
+  providedIn: 'root'
 })
 export class AuthService {
   user = new BehaviorSubject(null);
@@ -16,6 +14,10 @@ export class AuthService {
   );
 
   constructor(private router: Router) { }
+
+  navigateToLoginPage() {
+    this.router.navigate(['zaloguj']);
+  }
 
   logIn() {
     this.user.next({});

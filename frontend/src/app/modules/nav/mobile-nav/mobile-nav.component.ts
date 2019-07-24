@@ -91,7 +91,7 @@ export class MobileNavComponent extends ComponentWithSubscriptions implements On
   }
 
   logIn() {
-    this.authService.logIn();
+    this.authService.navigateToLoginPage();
     this.sidenav.close();
   }
 

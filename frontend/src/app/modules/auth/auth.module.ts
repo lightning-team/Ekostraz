@@ -1,7 +1,8 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { LoginFormComponent } from './login-form/login-form.component';
+import {AuthService} from './auth.service';
 
 @NgModule({
   declarations: [LoginFormComponent],
@@ -11,5 +12,6 @@ import { LoginFormComponent } from './login-form/login-form.component';
   exports: [
     LoginFormComponent,
   ],
+  providers: [AuthService]
 })
 export class AuthModule { }
