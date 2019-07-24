@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import {RouterExtensionsService} from '../../services/router-extensions.service';
+
+const SUCCESSFUL_LOGIN_ROUTE = '/interwencje';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +16,20 @@ export class AuthService {
       map(userData => !!userData),
   );
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private routerExtensions: RouterExtensionsService) { }
 
   navigateToLoginPage() {
     this.router.navigate(['zaloguj']);
   }
 
-  logIn() {
+  logIn(fromRouteGuard = false) {
+    // TODO: Add proper login with API call
     this.user.next({});
+    if (fromRouteGuard) {
+      this.router.navigateByUrl(this.routerExtensions.previousUrl);
+    } else {
+      this.router.navigateByUrl(SUCCESSFUL_LOGIN_ROUTE);
+    }
   }
 
   logOut() {
