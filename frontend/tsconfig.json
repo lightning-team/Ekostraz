@@ -12,7 +12,8 @@
     "importHelpers": true,
     "paths": {
       "@shared/base": ["./src/app/shared/base/index.ts"],
-      "@shared/*": ["./src/app/shared/*"]
+      "@shared/*": ["./src/app/shared/*"],
+      "@interventionForm/*": ["./src/app/modules/intervention-form/*"]
     },
     "target": "es2015",
     "typeRoots": [

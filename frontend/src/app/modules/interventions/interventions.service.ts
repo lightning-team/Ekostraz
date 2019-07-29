@@ -7,7 +7,8 @@ import { MatSnackBar } from '@angular/material';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, catchError, delay } from 'rxjs/operators';
 
-import {PostInterventionData, Intervention, InterventionFormData, RawServerIntervention, InterventionFormSubmitData} from './types';
+import { InterventionPostData, InterventionFormData } from '@interventionForm/types';
+import { Intervention, RawServerIntervention } from './types';
 import { getFakeData } from './fakedata';
 
 const BASE_API_URL = 'https://devkodawanie.azurewebsites.net/api/';
@@ -42,15 +43,15 @@ export class InterventionsService {
 
   fetchInterventions(): Observable<Intervention[]> {
     // return this.http.get<any>(GetAllRequestsUrl)
-    //   .pipe(map(data => data.map(item => new PostInterventionData(item))));
+    //   .pipe(map(data => data.map(item => new InterventionPostData(item))));
     return of(getFakeData().map(item => new Intervention(item))).pipe(
         delay(2000),
         catchError(this.handleError.bind(this)),
     );
   }
 
-  private postForm(formData: InterventionFormData, interventionId: string, APIUrl: string): Subscription {
-    return this.http.post(APIUrl, new PostInterventionData(formData, interventionId), HTTP_OPTIONS)
+  private postForm(formData: InterventionFormData, APIUrl: string): Subscription {
+    return this.http.post(APIUrl, new InterventionPostData(formData), HTTP_OPTIONS)
         .subscribe({
           next: this.onPostSuccess.bind(this),
           error: this.onPostError.bind(this)
@@ -58,12 +59,11 @@ export class InterventionsService {
   }
 
   postPublicForm(formData: InterventionFormData): Subscription {
-    return this.postForm(formData, null, AddPublicFormUrl);
+    return this.postForm(formData, AddPublicFormUrl);
   }
 
-  postPrivateForm(eventData: InterventionFormSubmitData): Subscription {
-    const {formValue, interventionId} = eventData;
-    return this.postForm(formValue, interventionId, AddPrivateFormUrl);
+  postPrivateForm(formData: InterventionFormData): Subscription {
+    return this.postForm(formData, AddPrivateFormUrl);
   }
 
   delete(id: string, phone: string) {

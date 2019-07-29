@@ -1,12 +1,12 @@
 <mat-spinner [diameter]="40" *ngIf="loading$ | async; else form"></mat-spinner>
 
 <ng-template #form>
-    <app-interventions-form *ngIf="initialData"
-            [intervention]="initialData"
-            [inPrivateMode]="true"
-            [formTitle]="'Edytuj interwencję'"
-            [buttonText]="'Zapisz'"
-            (formSubmit)="onSubmit($event)"
-    ></app-interventions-form>
+    <app-intervention-form *ngIf="initialData"
+                           [intervention]="initialData"
+                           [inPrivateMode]="true"
+                           [formTitle]="'Edytuj interwencję'"
+                           [buttonText]="'Zapisz'"
+                           (formSubmit)="onSubmit($event)"
+    ></app-intervention-form>
     <h3 *ngIf="!initialData">Nie udało się pobrać danych z serwera!</h3>
 </ng-template>

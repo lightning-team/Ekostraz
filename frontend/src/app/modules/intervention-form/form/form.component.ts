@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Intervention, InterventionFormData, InterventionFormSubmitData} from '../types';
-import {InterventionStatus} from '../intervention.status';
-import {formatDate} from '@angular/common';
+
+import {InterventionStatus} from '@shared/intervention.status';
+import {InterventionFormData} from '../types';
 
 
 const interventionStatuses = [
@@ -30,21 +30,21 @@ const interventionStatuses = [
  * It does not implement any API-related logic - only exposes form data through formSubmit event.
  */
 @Component({
-  selector: 'app-interventions-form',
+  selector: 'app-intervention-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InterventionsFormComponent implements OnInit {
+export class InterventionFormComponent implements OnInit {
   /** Flag to decide whether the form should be in extended private mode for Ekostraż workers only. */
   @Input() inPrivateMode = false;
   @Input() formTitle = 'Zgłoś interwencję';
   @Input() buttonText = 'Wyślij zgłoszenie';
   /** Intervention data to fill the form with. */
-  @Input() intervention: Intervention | null = null;
+  @Input() intervention: InterventionFormData | null = null;
 
   /** Event emitted on form submit */
-  @Output() formSubmit = new EventEmitter<InterventionFormSubmitData>();
+  @Output() formSubmit = new EventEmitter<InterventionFormData>();
 
   /** Intervention status value map used for select input generation */
   interventionStatuses = interventionStatuses;
@@ -55,7 +55,7 @@ export class InterventionsFormComponent implements OnInit {
 
   ngOnInit() {
     if (this.intervention) {
-      this.interventionForm.patchValue(transformToFormData(this.intervention));
+      this.interventionForm.patchValue(this.intervention);
     }
   }
 
@@ -63,6 +63,7 @@ export class InterventionsFormComponent implements OnInit {
     const statusValidators = this.inPrivateMode ? [Validators.required] : [];
 
     return this.formBuilder.group({
+      id: [{value: '0', hidden: true}],
       date: [{ value: '', disabled: true }],
       name: [''],
       description: ['', Validators.required],
@@ -78,35 +79,16 @@ export class InterventionsFormComponent implements OnInit {
   }
 
   onSubmit(formValue: InterventionFormData) {
-    if (!this.interventionForm.valid) return;
-    const interventionId = this.intervention ? this.intervention.id : null;
-    this.formSubmit.emit( {formValue, interventionId});
+    if (!this.isFormValid()) return;
+    this.formSubmit.emit(formValue);
   }
 
-  isInvalid(controlName: string) {
+  isControlInvalid(controlName: string) {
     return !this.interventionForm.get(controlName).valid
            && this.interventionForm.get(controlName).touched;
   }
-}
 
-/** Transforms Intervention to form data */
-function transformToFormData(interventionData: Intervention): InterventionFormData {
-  return {
-    date: formatDate(interventionData.creationDate, 'medium', 'pl'),
-    name: interventionData.fullName,
-    description: interventionData.description,
-    phone: interventionData.phone,
-    email: interventionData.email,
-    status: interventionData.status,
-    address: transformToFormAddress(interventionData.address),
-  } as InterventionFormData;
-}
-
-function transformToFormAddress(address: string) {
-  const addressParts = address.split(',').map(part => part.trim());
-  return {
-    street: addressParts[0] || '',
-    number: addressParts[1] || '',
-    city: addressParts[2] || '',
-  };
+  private isFormValid(): boolean {
+    return this.interventionForm.valid;
+  }
 }

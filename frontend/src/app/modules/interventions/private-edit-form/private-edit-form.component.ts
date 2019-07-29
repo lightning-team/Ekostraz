@@ -1,10 +1,14 @@
 import {Component} from '@angular/core';
+import {formatDate} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
-import {EditableFormContainer} from '@shared/base';
 
 import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-import {Intervention, InterventionFormSubmitData} from '../types';
+import {EditableFormContainer} from '@shared/base';
+import {InterventionFormData} from '@interventionForm/types';
+
+import {Intervention} from '../types';
 import {InterventionsService} from '../interventions.service';
 
 
@@ -13,12 +17,37 @@ import {InterventionsService} from '../interventions.service';
   templateUrl: './private-edit-form.component.html',
   styleUrls: ['./private-edit-form.component.scss']
 })
-export class PrivateEditFormComponent extends EditableFormContainer<InterventionFormSubmitData, Intervention> {
+export class PrivateEditFormComponent extends EditableFormContainer<InterventionFormData> {
   constructor(private activatedRoute: ActivatedRoute, private interventionsService: InterventionsService) {
     super(interventionsService.postPrivateForm.bind(interventionsService));
   }
 
-  protected getInitialData$(): Observable<Intervention> {
-    return this.interventionsService.getIntervention(this.activatedRoute.params);
+  protected getInitialData$(): Observable<InterventionFormData> {
+    return this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
+        map(intervention => transformToFormData(intervention)),
+    );
   }
+}
+
+/** Transforms Intervention to form data */
+function transformToFormData(interventionData: Intervention): InterventionFormData {
+  return {
+    id: interventionData.id,
+    date: formatDate(interventionData.creationDate, 'medium', 'pl'),
+    name: interventionData.fullName,
+    description: interventionData.description,
+    phone: interventionData.phone,
+    email: interventionData.email,
+    status: interventionData.status,
+    address: transformToFormAddress(interventionData.address),
+  } as InterventionFormData;
+}
+
+function transformToFormAddress(address: string) {
+  const addressParts = address.split(',').map(part => part.trim());
+  return {
+    street: addressParts[0] || '',
+    number: addressParts[1] || '',
+    city: addressParts[2] || '',
+  };
 }

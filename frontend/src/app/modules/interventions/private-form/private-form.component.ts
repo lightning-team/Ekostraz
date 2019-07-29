@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {FormContainer} from '@shared/base';
 
-import {InterventionFormSubmitData} from '../types';
+import {FormContainer} from '@shared/base';
+import {InterventionFormData} from '@interventionForm/types';
+
 import {InterventionsService} from '../interventions.service';
 
 @Component({
@@ -9,7 +10,7 @@ import {InterventionsService} from '../interventions.service';
   templateUrl: './private-form.component.html',
   styleUrls: ['./private-form.component.scss']
 })
-export class PrivateFormComponent extends FormContainer<InterventionFormSubmitData> {
+export class PrivateFormComponent extends FormContainer<InterventionFormData> {
   constructor(interventionsService: InterventionsService) {
     super(interventionsService.postPrivateForm.bind(interventionsService));
   }

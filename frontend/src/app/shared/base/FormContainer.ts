@@ -16,9 +16,9 @@ export abstract class FormContainer<SubmitDataType> extends ComponentWithSubscri
     }
 }
 
-export abstract class EditableFormContainer<SubmitDataType, InitialData> extends LoadingComponent<InitialData>
-                                                                         implements SubmittableForm<SubmitDataType> {
-    protected constructor(private submitFormFunction: (eventData: SubmitDataType) => Subscription) {
+export abstract class EditableFormContainer<InitialData> extends LoadingComponent<InitialData>
+                                                                         implements SubmittableForm<InitialData> {
+    protected constructor(private submitFormFunction: (eventData: InitialData) => Subscription) {
         super();
     }
 
