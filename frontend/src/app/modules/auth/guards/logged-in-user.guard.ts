@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { take, tap} from 'rxjs/operators';
 import { AuthModule } from '../auth.module';
 import { AuthService } from '../auth.service';
 
@@ -13,6 +13,7 @@ export class LoggedInUserGuard implements CanLoad {
 
   canLoad(): Observable<boolean> {
     return this.authService.isLoggedIn$.pipe(
+      take(1),
       tap(loggedIn => {
         if (!loggedIn) {
             // TODO: Add login flow later
