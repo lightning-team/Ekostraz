@@ -3,9 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoggedOutGuard } from './modules/auth/guards/logged-out.guard';
-import { LoggedInUserGuard } from './modules/auth/guards/logged-in-user.guard';
+import { LoggedInGuard } from './modules/auth/guards/logged-in-guard.service';
 import { PublicFormComponent } from './modules/public-form/public-form/public-form.component';
-import {LoginComponent} from './modules/auth/login/login.component';
+import { LoginComponent } from './modules/auth/login/login.component';
 
 const routes: Routes = [
   {
@@ -25,7 +25,8 @@ const routes: Routes = [
   {
     path: 'interwencje',
     loadChildren: './modules/interventions/interventions.module#InterventionsModule',
-    canLoad: [LoggedInUserGuard],
+    canLoad: [LoggedInGuard],
+    canActivateChild: [LoggedInGuard],
   },
   { path: '**', redirectTo: '' }
 ];

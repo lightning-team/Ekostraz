@@ -10,22 +10,18 @@ import { EditFormComponent } from './edit-form/edit-form.component';
 const routes: Routes = [{
   path: '',
   component: ListComponent,
-  canActivate: [LoggedInMemberGuard],
 }, {
   path: 'zglos',
   component: NewFormComponent,
 }, {
   path: 'mapa',
   component: MapComponent,
-  canActivate: [LoggedInMemberGuard],
 }, {
   path: ':interventionId',
   component: DetailsContainerComponent,
-  canActivate: [LoggedInMemberGuard],
 }, {
   path: ':interventionId/edytuj',
   component: EditFormComponent,
-  canActivate: [LoggedInMemberGuard],
 }];
 
 @NgModule({
