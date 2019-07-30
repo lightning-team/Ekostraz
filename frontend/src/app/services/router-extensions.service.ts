@@ -5,11 +5,11 @@ import {
     NavigationError,
     NavigationStart,
     Router,
-    RouterEvent, RoutesRecognized
+    RouterEvent
 } from '@angular/router';
 
 import {merge, MonoTypeOperatorFunction, Observable} from 'rxjs';
-import {filter, map, mapTo, pairwise} from 'rxjs/operators';
+import {filter, mapTo} from 'rxjs/operators';
 
 
 type RouterEventFilter =
@@ -23,21 +23,9 @@ const ofEventType: RouterEventFilter = (eventConstructor) => filter(event => eve
 })
 export class RouterExtensionsService {
     isRouteLoading$: Observable<boolean>;
-    previousUrl = '';
 
     constructor(router: Router) {
         this.isRouteLoading$ = createRouteLoadingObservable(router);
-        this.observeUrlChanges(router);
-    }
-
-    private observeUrlChanges(router: Router): void {
-        router.events.pipe(
-            ofEventType(RoutesRecognized),
-            map(e => e.url),
-            pairwise(),
-        ).subscribe(urls => {
-            this.previousUrl = urls[0];
-        });
     }
 }
 

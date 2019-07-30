@@ -11,20 +11,25 @@ import {AuthService} from '../auth.service';
 export class LoggedInGuard implements CanLoad, CanActivateChild {
     constructor(private authService: AuthService, private router: Router) {}
 
-    canLoad(): Observable<boolean> {
-        return this.isLoggedIn();
+    canLoad(route, urlSegments): Observable<boolean> {
+        const url = `/${urlSegments.map(segment => segment.path).join('/')}`;
+        return this.isLoggedIn(url);
     }
 
-    canActivateChild(): Observable<boolean> {
-        return this.isLoggedIn();
+    canActivateChild(childRoute, routerState): Observable<boolean> {
+        return this.isLoggedIn(routerState.url);
     }
 
-    private isLoggedIn() {
+    private isLoggedIn(previousUrl: string) {
         return this.authService.isLoggedIn$.pipe(
             take(1),
             tap(loggedIn => {
                 if (!loggedIn) {
-                    this.router.navigate(['zaloguj']);
+                    this.router.navigate(['zaloguj'], {
+                        queryParams: {
+                            previous: previousUrl,
+                        }
+                    });
                 }
             })
         );

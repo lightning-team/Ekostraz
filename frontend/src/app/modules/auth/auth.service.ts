@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import {RouterExtensionsService} from '../../services/router-extensions.service';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map, pluck, take, tap} from 'rxjs/operators';
 
 const SUCCESSFUL_LOGIN_ROUTE = '/interwencje';
 
@@ -16,24 +15,29 @@ export class AuthService {
       map(userData => !!userData),
   );
 
-  constructor(private router: Router, private routerExtensions: RouterExtensionsService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
 
   navigateToLoginPage() {
     this.router.navigate(['zaloguj']);
   }
 
-  logIn(fromRouteGuard = false) {
+  logIn() {
     // TODO: Add proper login with API call
     this.user.next({});
-    if (fromRouteGuard) {
-      this.router.navigateByUrl(this.routerExtensions.previousUrl);
-    } else {
-      this.router.navigateByUrl(SUCCESSFUL_LOGIN_ROUTE);
-    }
+    this.navigateAfterLogin();
   }
 
   logOut() {
     this.user.next(null);
     this.router.navigate(['']);
+  }
+
+  private navigateAfterLogin() {
+      this.activatedRoute.queryParams.pipe(
+          take(1),
+          pluck('previous'),
+          map(previous => previous || SUCCESSFUL_LOGIN_ROUTE),
+          tap(url => this.router.navigateByUrl(url))
+      ).subscribe();
   }
 }
