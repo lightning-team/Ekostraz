@@ -1,10 +1,8 @@
 import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {HttpClientTestingModule, HttpTestingController, TestRequest} from '@angular/common/http/testing';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
-
-import {of} from 'rxjs';
 
 import {PublicFormService} from './public-form.service';
 import {InterventionStatus} from '@shared/intervention.status';
@@ -14,21 +12,22 @@ import {InterventionFormData, InterventionPostData} from '@interventionForm/type
 const POST_FORM_URL = 'https://devkodawanie.azurewebsites.net/api/AddPublicForm';
 
 const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
-const snackBarRefMock = {
-    afterDismissed: jasmine.createSpy('afterDismissed').and.returnValue(of({}))
-};
 const snackBarMock = {
-    open: jasmine.createSpy('open').and.returnValue(snackBarRefMock)
+    open: jasmine.createSpy('open')
+};
+const SNACK_BAR_META = {
+    action: 'Zamknij',
+    config: {
+        duration: 5000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+    },
 };
 
-const SNACKBAR_CONFIG = {
-    duration: 5000,
-    verticalPosition: 'bottom',
-    horizontalPosition: 'right',
-};
+const expectSnackBarOpened = (message: string) =>
+                                expect(snackBarMock.open).toHaveBeenCalledWith(message, SNACK_BAR_META.action, SNACK_BAR_META.config);
 
-function createTestFormData() {
-    return {
+const createTestFormData = () => ({
         id: '0',
         date: null,
         name: 'Test Name',
@@ -37,14 +36,12 @@ function createTestFormData() {
         email: 'test@ekostraz.pl',
         status: InterventionStatus.ToVerify,
         address: {number: '15', city: 'New York', street: 'Wall street'},
-    } as InterventionFormData;
-}
+    } as InterventionFormData
+);
 
 
-fdescribe('PublicFormService', () => {
+describe('PublicFormService', () => {
     let service: PublicFormService;
-    let httpClient: HttpClient;
-    let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -56,14 +53,10 @@ fdescribe('PublicFormService', () => {
             ],
         });
 
-        httpClient = TestBed.get(HttpClient);
-        httpTestingController = TestBed.get(HttpTestingController);
         service = TestBed.get(PublicFormService);
     });
 
     afterEach(() => {
-        httpClient = null;
-        httpTestingController = null;
         service = null;
     });
 
@@ -72,41 +65,50 @@ fdescribe('PublicFormService', () => {
     });
 
     describe('postPublicForm', () => {
+        let httpClient: HttpClient;
+        let httpTestingController: HttpTestingController;
+        let requestMock: TestRequest;
+
+        beforeEach(() => {
+            httpClient = TestBed.get(HttpClient);
+            httpTestingController = TestBed.get(HttpTestingController);
+
+            spyOn(Date.prototype, 'toISOString').and.returnValue('2019-07-30T11:34:07.791Z');
+
+            service.postPublicForm(createTestFormData());
+            requestMock = httpTestingController.expectOne(POST_FORM_URL);
+        });
+
+        afterEach(() => {
+            httpClient = null;
+            httpTestingController = null;
+            requestMock = null;
+        });
+
         it('should send correct data to the backend', () => {
-            const formData = createTestFormData();
-            const expectedRequestData = new InterventionPostData(formData);
+            const expectedRequestData = new InterventionPostData(createTestFormData());
 
-            service.postPublicForm(formData);
-
-            const requestMock = httpTestingController.expectOne(POST_FORM_URL);
             expect(requestMock.request.method).toEqual('POST');
             expect(requestMock.request.withCredentials).toEqual(false);
             expect(requestMock.request.body).toEqual(expectedRequestData);
         });
 
         it('should open snack bar on success and navigate to home page', () => {
-            const expectedMessage = 'Twoje zgłoszenie zostało przyjęte!';
+            const expectedMessage = 'Dziękujemy! Twoje zgłoszenie zostało przyjęte!';
 
-            service.postPublicForm(createTestFormData());
-
-            const requestMock = httpTestingController.expectOne(POST_FORM_URL);
             requestMock.flush({});
 
-            expect(snackBarRefMock.afterDismissed).toHaveBeenCalled();
-            expect(snackBarMock.open).toHaveBeenCalledWith(expectedMessage, 'Zamknij', SNACKBAR_CONFIG);
+            expectSnackBarOpened(expectedMessage);
             expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('');
         });
 
-        fit('should open snack bar on error', () => {
+        it('should open snack bar on error', () => {
             const expectedMessage = 'Niestety, nie udało się przyjąć Twojego zgłoszenia!';
             const errorEvent = new ErrorEvent('some error');
 
-            service.postPublicForm(createTestFormData());
-
-            const requestMock = httpTestingController.expectOne(POST_FORM_URL);
             requestMock.error(errorEvent);
 
-            expect(snackBarMock.open).toHaveBeenCalledWith(expectedMessage, 'Zamknij', SNACKBAR_CONFIG);
+            expectSnackBarOpened(expectedMessage);
         });
     });
 });

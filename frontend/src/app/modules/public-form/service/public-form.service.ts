@@ -35,21 +35,19 @@ export class PublicFormService {
     }
 
     private onPostSuccess() {
-        const snackBarRef = this.openSnackBar('Twoje zgłoszenie zostało przyjęte!', 'Zamknij!');
-        snackBarRef.afterDismissed().subscribe(() => {
-            this.router.navigateByUrl('');
-        });
+        this.openSnackBar('Dziękujemy! Twoje zgłoszenie zostało przyjęte!');
+        this.router.navigateByUrl('');
     }
 
     private onPostError() {
-        this.openSnackBar('Niestety, nie udało się przyjąć Twojego zgłoszenia!', 'Zamknij');
+        this.openSnackBar('Niestety, nie udało się przyjąć Twojego zgłoszenia!');
     }
 
-    private openSnackBar(message: string, action: string) {
-        return this.snackBar.open(message, action, {
+    private openSnackBar(message: string) {
+        return this.snackBar.open(message, 'Zamknij', {
             duration: 5000,
-            verticalPosition: 'bottom',
-            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
         });
     }
 }
