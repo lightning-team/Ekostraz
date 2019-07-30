@@ -11,6 +11,7 @@ import { InterventionPostData, InterventionFormData } from '@interventionForm/ty
 import { Intervention, RawServerIntervention } from './types';
 import { getFakeData } from './fakedata';
 
+// TODO: Move to a common API file.
 const BASE_API_URL = 'https://devkodawanie.azurewebsites.net/api/';
 const AddPublicFormUrl = BASE_API_URL + 'AddPublicForm';
 const AddPrivateFormUrl = BASE_API_URL + 'PrivateForm';
@@ -56,10 +57,6 @@ export class InterventionsService {
           next: this.onPostSuccess.bind(this),
           error: this.onPostError.bind(this)
         });
-  }
-
-  postPublicForm(formData: InterventionFormData): Subscription {
-    return this.postForm(formData, AddPublicFormUrl);
   }
 
   postPrivateForm(formData: InterventionFormData): Subscription {

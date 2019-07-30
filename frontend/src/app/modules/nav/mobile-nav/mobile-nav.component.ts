@@ -29,7 +29,7 @@ const menuItems = {
     {
       text: 'Zgłoś interwencję',
       icon: null,
-      routeLink: '/interwencje/zglos-publiczny',
+      routeLink: '/zglos-interwencje',
       showWhenAuthenticated: false,
     },
     {

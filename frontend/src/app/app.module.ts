@@ -1,13 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule, MatProgressBarModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthService } from './modules/auth/auth.service';
 import { AppRoutingModule } from './app-routing.module';
 import { NavModule } from './modules/nav/nav.module';
+import { PublicFormModule} from './modules/public-form/public-form.module';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -28,6 +31,8 @@ registerLocaleData(localePl);
     MatButtonModule,
     MatProgressBarModule,
     NavModule,
+    PublicFormModule,
+    HttpClientModule,
   ],
   providers: [
     AuthService,
