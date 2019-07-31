@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrivateEditFormComponent } from './private-edit-form.component';
+import { EditFormComponent } from './edit-form.component';
 
-describe('PrivateEditFormComponent', () => {
-  let component: PrivateEditFormComponent;
-  let fixture: ComponentFixture<PrivateEditFormComponent>;
+describe('EditFormComponent', () => {
+  let component: EditFormComponent;
+  let fixture: ComponentFixture<EditFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PrivateEditFormComponent ]
+      declarations: [ EditFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrivateEditFormComponent);
+    fixture = TestBed.createComponent(EditFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

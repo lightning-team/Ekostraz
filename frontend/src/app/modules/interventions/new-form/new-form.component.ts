@@ -7,10 +7,10 @@ import {InterventionsService} from '../interventions.service';
 
 @Component({
   selector: 'app-private-intervention-form',
-  templateUrl: './private-form.component.html',
-  styleUrls: ['./private-form.component.scss']
+  templateUrl: './new-form.component.html',
+  styleUrls: ['./new-form.component.scss']
 })
-export class PrivateFormComponent extends FormContainer<InterventionFormData> {
+export class NewFormComponent extends FormContainer<InterventionFormData> {
   constructor(interventionsService: InterventionsService) {
     super(interventionsService.postPrivateForm.bind(interventionsService));
   }

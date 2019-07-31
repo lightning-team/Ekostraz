@@ -22,7 +22,7 @@ import {Intervention} from '../types';
         }
     `]
 })
-export class InterventionDetailsContainerComponent extends LoadingComponent<Intervention> {
+export class DetailsContainerComponent extends LoadingComponent<Intervention> {
     constructor(
         private interventionsService: InterventionsService,
         private activatedRoute: ActivatedRoute,

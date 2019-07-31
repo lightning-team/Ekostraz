@@ -11,7 +11,7 @@ import {LoadingComponent} from '@shared/base';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class InterventionsListComponent extends LoadingComponent<Intervention[], ListIntervention[]> {
+export class ListComponent extends LoadingComponent<Intervention[], ListIntervention[]> {
   protected mapInitialData = mapToTableData;
 
   constructor(private router: Router, private interventionsService: InterventionsService) {

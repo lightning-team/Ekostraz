@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Intervention, InterventionRouterState } from '../types';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteInterventionDialog } from './delete.dialog';
+import { DeleteDialog } from './delete.dialog';
 import { InterventionsService } from '../interventions.service';
 import { ComponentWithSubscriptions } from '@shared/base';
 
@@ -11,7 +11,7 @@ import { ComponentWithSubscriptions } from '@shared/base';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class InterventionDetailsComponent extends ComponentWithSubscriptions {
+export class DetailsComponent extends ComponentWithSubscriptions {
   @Input() intervention: Intervention;
   @Input() embedded?: boolean;
 
@@ -20,18 +20,20 @@ export class InterventionDetailsComponent extends ComponentWithSubscriptions {
   }
 
   showDeleteDialog() {
-    const dialogRef = this.dialog.open(DeleteInterventionDialog);
+    const dialogRef = this.dialog.open(DeleteDialog);
     const dialogCloseSubscription = dialogRef.afterClosed().subscribe(result => this.onDialogClose(result));
     this.subscriptions.add(dialogCloseSubscription);
   }
 
   private onDialogClose(shouldDelete: boolean) {
-    if (shouldDelete) {
-      this.subscriptions.add(
-          this.interventionService.delete(this.intervention.id, this.intervention.phone)
-              .subscribe(() => this.router.navigate(['interwencje']))
-      );
-    }
+    if (shouldDelete) this.deleteIntervention();
+  }
+
+  private deleteIntervention() {
+    this.subscriptions.add(
+        this.interventionService.delete(this.intervention.id, this.intervention.phone)
+            .subscribe(() => this.router.navigate(['interwencje']))
+    );
   }
 
   navigateToEditView() {

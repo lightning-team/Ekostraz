@@ -1,30 +1,30 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { InterventionsListComponent } from './list/list.component';
-import { InterventionDetailsContainerComponent } from './details/details.container.component';
-import { InterventionsMapComponent } from './list/map/map.component';
+import { ListComponent } from './list/list.component';
+import { DetailsContainerComponent } from './details/details.container.component';
+import { MapComponent } from './map/map.component';
 import { LoggedInMemberGuard } from '../auth/guards/logged-in-member.guard';
-import {PrivateFormComponent} from './private-form/private-form.component';
-import {PrivateEditFormComponent} from './private-edit-form/private-edit-form.component';
+import { NewFormComponent } from './new-form/new-form.component';
+import { EditFormComponent } from './edit-form/edit-form.component';
 
 const routes: Routes = [{
   path: '',
-  component: InterventionsListComponent,
+  component: ListComponent,
   canActivate: [LoggedInMemberGuard],
 }, {
   path: 'zglos',
-  component: PrivateFormComponent,
+  component: NewFormComponent,
 }, {
   path: 'mapa',
-  component: InterventionsMapComponent,
+  component: MapComponent,
   canActivate: [LoggedInMemberGuard],
 }, {
   path: ':interventionId',
-  component: InterventionDetailsContainerComponent,
+  component: DetailsContainerComponent,
   canActivate: [LoggedInMemberGuard],
 }, {
   path: ':interventionId/edytuj',
-  component: PrivateEditFormComponent,
+  component: EditFormComponent,
   canActivate: [LoggedInMemberGuard],
 }];
 

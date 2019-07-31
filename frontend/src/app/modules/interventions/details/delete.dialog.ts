@@ -13,4 +13,4 @@ import { Component } from '@angular/core';
         </mat-dialog-actions>
     `,
 })
-export class DeleteInterventionDialog { }
+export class DeleteDialog { }

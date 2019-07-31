@@ -13,11 +13,11 @@ import {InterventionsService} from '../interventions.service';
 
 
 @Component({
-  selector: 'app-private-edit-intervention-form',
-  templateUrl: './private-edit-form.component.html',
-  styleUrls: ['./private-edit-form.component.scss']
+  selector: 'app-edit-intervention-form',
+  templateUrl: './edit-form.component.html',
+  styleUrls: ['./edit-form.component.scss']
 })
-export class PrivateEditFormComponent extends EditableFormContainer<InterventionFormData> {
+export class EditFormComponent extends EditableFormContainer<InterventionFormData> {
   constructor(private activatedRoute: ActivatedRoute, private interventionsService: InterventionsService) {
     super(interventionsService.postPrivateForm.bind(interventionsService));
   }

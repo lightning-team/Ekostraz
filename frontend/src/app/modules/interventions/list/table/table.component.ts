@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class InterventionsTableComponent implements OnChanges {
+export class TableComponent implements OnChanges {
   displayedColumns = ['position', 'name', 'status', 'phone', 'date', 'description'];
   dataSource: MatTableDataSource<Intervention>;
 

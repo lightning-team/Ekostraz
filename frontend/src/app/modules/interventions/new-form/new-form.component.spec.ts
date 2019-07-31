@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InterventionsMapComponent } from './map.component';
+import { NewFormComponent } from './new-form.component';
 
-describe('MapComponent', () => {
-  let component: InterventionsMapComponent;
-  let fixture: ComponentFixture<InterventionsMapComponent>;
+describe('NewFormComponent', () => {
+  let component: NewFormComponent;
+  let fixture: ComponentFixture<NewFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InterventionsMapComponent ]
+      declarations: [ NewFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InterventionsMapComponent);
+    fixture = TestBed.createComponent(NewFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

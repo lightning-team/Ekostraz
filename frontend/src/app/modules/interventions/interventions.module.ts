@@ -16,15 +16,15 @@ import {
 import { AgmCoreModule } from '@agm/core';
 
 import { InterventionsRoutingModule } from './interventions-routing.module';
-import { InterventionsListComponent } from './list/list.component';
-import { InterventionDetailsComponent } from './details/details.component';
-import { InterventionDetailsContainerComponent } from './details/details.container.component';
+import { ListComponent } from './list/list.component';
+import { DetailsComponent } from './details/details.component';
+import { DetailsContainerComponent } from './details/details.container.component';
 import { InterventionsService } from './interventions.service';
-import { InterventionsTableComponent } from './list/table/table.component';
-import { InterventionsMapComponent } from './list/map/map.component';
-import { DeleteInterventionDialog } from './details/delete.dialog';
-import { PrivateFormComponent } from './private-form/private-form.component';
-import { PrivateEditFormComponent } from './private-edit-form/private-edit-form.component';
+import { TableComponent } from './list/table/table.component';
+import { MapComponent } from './map/map.component';
+import { DeleteDialog } from './details/delete.dialog';
+import { NewFormComponent } from './new-form/new-form.component';
+import { EditFormComponent } from './edit-form/edit-form.component';
 import {InterventionFormModule} from '@interventionForm/intervention-form.module';
 
 const MaterialImports = [
@@ -41,17 +41,17 @@ const MaterialImports = [
 
 @NgModule({
   declarations: [
-    InterventionsListComponent,
-    InterventionDetailsComponent,
-    InterventionDetailsContainerComponent,
-    InterventionsTableComponent,
-    InterventionsMapComponent,
-    DeleteInterventionDialog,
-    PrivateFormComponent,
-    PrivateEditFormComponent,
+    ListComponent,
+    DetailsComponent,
+    DetailsContainerComponent,
+    TableComponent,
+    MapComponent,
+    DeleteDialog,
+    NewFormComponent,
+    EditFormComponent,
   ],
   entryComponents: [
-    DeleteInterventionDialog,
+    DeleteDialog,
   ],
   imports: [
     CommonModule,
