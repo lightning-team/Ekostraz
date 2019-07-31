@@ -6,7 +6,7 @@
     "deprecation": {
       "severity": "warn"
     },
-    "component-class-suffix": true,
+    "component-class-suffix": [true, "Dialog", "Component"],
     "contextual-lifecycle": true,
     "curly": [true, "ignore-same-line"],
     "directive-class-suffix": true,
