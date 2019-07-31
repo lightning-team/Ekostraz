@@ -9,9 +9,10 @@
   height: 100%;
 }
 
+$font-size: 15px;
 .auth-buttons-container {
   .greeting {
-    font-size: 14px;
+    font-size: $font-size;
     margin-right: 5px;
   }
 
@@ -28,6 +29,7 @@
 
 .mat-button {
   height: 100%;
+  font-size: $font-size;
   .material-icons {
     margin-right: 5px;
   }

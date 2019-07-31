@@ -2,17 +2,22 @@
 @import 'breakpoints';
 
 $navbar-height: 64px;
+$mobile-navbar-height: 56px;
 .app-navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
-  height: 64px;
+
+  height: $navbar-height;
+  justify-content: space-between;
+
   @include mat-elevation(5);
 
   @media (max-width: $break-mobile) {
-    padding-left: 5px;
+    height: $mobile-navbar-height;
+    padding: 0 5px 0 10px;
   }
 }
 
@@ -23,6 +28,11 @@ $navbar-height: 64px;
 .logo-text {
   height: $navbar-height;
   line-height: $navbar-height;
+  @media (max-width: $break-mobile) {
+    height: $mobile-navbar-height;
+    line-height: $mobile-navbar-height;
+  }
+
   min-width: auto;
   padding: 0 20px 0 55px;
 

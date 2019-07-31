@@ -28,7 +28,7 @@ const menuItems = {
   navigationLinks: [
     {
       text: 'Zgłoś interwencję',
-      icon: null,
+      icon: 'notifications_active',
       routeLink: '/zglos-interwencje',
       showWhenAuthenticated: false,
     },
@@ -40,15 +40,15 @@ const menuItems = {
       routeExact: true,
     },
     {
-      text: 'Zgłoś',
-      icon: 'notifications_active',
-      routeLink: '/interwencje/zglos',
-      showWhenAuthenticated: true,
-    },
-    {
       text: 'Mapa',
       icon: 'map',
       routeLink: '/interwencje/mapa',
+      showWhenAuthenticated: true,
+    },
+    {
+      text: 'Zgłoś',
+      icon: 'notifications_active',
+      routeLink: '/interwencje/zglos',
       showWhenAuthenticated: true,
     },
   ],
