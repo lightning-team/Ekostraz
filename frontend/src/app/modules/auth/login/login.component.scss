@@ -1,4 +1,5 @@
 @import 'theme';
+@import 'breakpoints';
 
 $primary-color: map-get($my-app-primary, 'default');
 .login-dialog-backdrop {
@@ -7,6 +8,11 @@ $primary-color: map-get($my-app-primary, 'default');
   background-repeat: no-repeat;
   background-size: 300px, 100%;
   background-position: center 40px, top;
+
+  @media (max-width: $break-mobile) {
+    background-size: 220px, 100%;
+    background-position: center 25px, top;
+  }
 }
 
 .login-dialog-panel {
@@ -16,10 +22,24 @@ $primary-color: map-get($my-app-primary, 'default');
     display: flex;
     flex-direction: column;
 
-    // TODO: Rethink/clean-up. These are temporary rules for mocked dialog to fit one screen size for now.
+    // TODO: Check for styles when the dialog is filled up with form/social login buttons.
     height: 400px;
     width: 340px;
     margin-top: 120px;
+
+    @media (max-width: $break-mobile) {
+      margin-top: 75px;
+    }
+
+    @media (max-height: 500px) {
+      margin-top: 0;
+      // TODO: If we want to make login dialog a perfect fit on Chrome in Android, then
+      // we should utilize custom css variables here in the future and set them from JS in Angular.
+      // Max-height set to 80vh below is just a quick solution, because Chrome on Android takes browser address bar
+      // into account during visible height calculations.
+      max-height: 80vh;
+      overflow-y: scroll;
+    }
   }
 
   .mat-dialog-title {
