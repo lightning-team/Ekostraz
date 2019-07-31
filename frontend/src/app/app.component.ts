@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 
 import {Observable} from 'rxjs';
 
-import {RouterExtensionsService} from './services/router-extensions.service';
+import {RouterExtensionsService} from '@shared/services/router-extensions.service';
 import {routeFader} from '@shared/animations/routeFader';
 
 
