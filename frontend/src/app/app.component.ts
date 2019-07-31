@@ -7,7 +7,7 @@ import {
 import {merge, MonoTypeOperatorFunction, Observable} from 'rxjs';
 import {filter, mapTo} from 'rxjs/operators';
 
-import {routeFader} from './animations/routeFader';
+import {routeFader} from '@shared/animations/routeFader';
 
 type RouterEventFilter = (eventConstructor: new (...args: any[]) => RouterEvent) => MonoTypeOperatorFunction<RouterEvent>;
 

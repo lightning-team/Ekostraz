@@ -3,7 +3,7 @@ import {MatSidenav} from '@angular/material';
 import {ComponentWithSubscriptions} from '@shared/base';
 
 import {AuthService} from '../../auth/auth.service';
-import {BreakpointService} from '../../../services/breakpoint.service';
+import {BreakpointService} from '../../../shared/services/breakpoint.service';
 
 interface MenuItem {
   text: string;
