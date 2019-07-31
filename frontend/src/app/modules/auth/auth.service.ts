@@ -17,8 +17,9 @@ export class AuthService {
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
 
-  navigateToLoginPage() {
-    this.router.navigate(['zaloguj']);
+  navigateToLoginPage(previousUrl?: string) {
+    const extras = previousUrl ? {queryParams: {previousUrl}} : undefined;
+    this.router.navigate(['zaloguj'], extras);
   }
 
   logIn() {
@@ -35,8 +36,8 @@ export class AuthService {
   private navigateAfterLogin() {
       this.activatedRoute.queryParams.pipe(
           take(1),
-          pluck('previous'),
-          map(previous => previous || SUCCESSFUL_LOGIN_ROUTE),
+          pluck('previousUrl'),
+          map(previousUrl => previousUrl || SUCCESSFUL_LOGIN_ROUTE),
           tap(url => this.router.navigateByUrl(url))
       ).subscribe();
   }

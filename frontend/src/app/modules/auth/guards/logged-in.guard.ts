@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivateChild, CanLoad, Router} from '@angular/router';
+import {CanActivateChild, CanLoad} from '@angular/router';
 import {Observable} from 'rxjs';
 import {take, tap} from 'rxjs/operators';
 import {AuthModule} from '../auth.module';
@@ -9,7 +9,7 @@ import {AuthService} from '../auth.service';
     providedIn: AuthModule,
 })
 export class LoggedInGuard implements CanLoad, CanActivateChild {
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private authService: AuthService) {}
 
     canLoad(route, urlSegments): Observable<boolean> {
         const url = `/${urlSegments.map(segment => segment.path).join('/')}`;
@@ -23,15 +23,7 @@ export class LoggedInGuard implements CanLoad, CanActivateChild {
     private isLoggedIn(previousUrl: string) {
         return this.authService.isLoggedIn$.pipe(
             take(1),
-            tap(loggedIn => {
-                if (!loggedIn) {
-                    this.router.navigate(['zaloguj'], {
-                        queryParams: {
-                            previous: previousUrl,
-                        }
-                    });
-                }
-            })
+            tap(loggedIn => !loggedIn ? this.authService.navigateToLoginPage(previousUrl) : null)
         );
     }
 }
