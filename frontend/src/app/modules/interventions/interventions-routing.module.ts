@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { ListComponent } from './list/list.component';
 import { DetailsContainerComponent } from './details/details.container.component';
 import { MapComponent } from './map/map.component';
-import { LoggedInMemberGuard } from '../auth/guards/logged-in-member.guard';
 import { NewFormComponent } from './new-form/new-form.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
 
