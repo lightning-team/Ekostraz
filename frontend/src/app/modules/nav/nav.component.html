@@ -6,7 +6,7 @@
                 (click)='sideNavToggle.emit()'>
             <mat-icon>menu</mat-icon>
         </button>
-        <a class="logo-text" title="Strona główna" routerLink='/'>Ekostraż</a>
+        <a mat-button class="logo-text" title="Strona główna" routerLink='/'>Ekostraż</a>
         <app-desktop-nav
             *ngIf="!(isMobileView$ | async)"
             [isLoggedIn]="isLoggedIn$ | async"

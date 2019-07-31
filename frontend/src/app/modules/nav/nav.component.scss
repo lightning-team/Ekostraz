@@ -1,12 +1,14 @@
 @import '~@angular/material/theming';
 @import 'breakpoints';
 
+$navbar-height: 64px;
 .app-navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
+  height: 64px;
   @include mat-elevation(5);
 
   @media (max-width: $break-mobile) {
@@ -19,10 +21,17 @@
 }
 
 .logo-text {
-  color: white;
-  margin-right: 30px;
+  height: $navbar-height;
+  line-height: $navbar-height;
+  min-width: auto;
+  padding: 0 20px 0 55px;
+
+  background: url("~src/assets/logo_animals_bw1.svg") left no-repeat;
+  background-size: 44px;
+
+  font-size: 20px;
   text-transform: uppercase;
-  text-decoration: none;
+  letter-spacing: 1px;
 
   &:focus,
   &:visited {
