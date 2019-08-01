@@ -11,16 +11,10 @@ import {Intervention} from '../types';
 @Component({
     selector: 'app-intervention-details-container',
     template: `
-        <mat-spinner [diameter]="40" *ngIf="loading$ | async; else details"></mat-spinner>
-        <ng-template #details>
+        <app-loader [loading$]="loading$">
             <app-intervention-details [intervention]='initialData'></app-intervention-details>
-        </ng-template>
+        </app-loader>
     `,
-    styles: [`
-        mat-spinner {
-            margin: auto;
-        }
-    `]
 })
 export class DetailsContainerComponent extends LoadingComponent<Intervention> {
     constructor(
