@@ -5,7 +5,7 @@ import {ComponentWithSubscriptions} from './ComponentWithSubscriptions';
 
 
 export abstract class LoadingComponent<ViewData> extends ComponentWithSubscriptions implements OnInit {
-    loading$: BehaviorSubject<boolean | null> = new BehaviorSubject(true);
+    loading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     initialData: ViewData|null = null;
 
     ngOnInit() {
