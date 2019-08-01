@@ -25,7 +25,8 @@ import { MapComponent } from './map/map.component';
 import { DeleteDialog } from './details/delete.dialog';
 import { NewFormComponent } from './new-form/new-form.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
-import {InterventionFormModule} from '@interventionForm/intervention-form.module';
+import { InterventionFormModule } from '@interventionForm/intervention-form.module';
+import { SharedModule } from '../shared/shared.module';
 
 const MaterialImports = [
   MatButtonModule,
@@ -55,6 +56,7 @@ const MaterialImports = [
   ],
   imports: [
     CommonModule,
+    SharedModule,
     InterventionsRoutingModule,
     InterventionFormModule,
     AgmCoreModule.forRoot({
