@@ -19,8 +19,13 @@ export class TableComponent implements OnChanges {
   constructor(private router: Router) {}
 
   ngOnChanges(changes: any) {
-    if (changes.interventions.currentValue !== changes.interventions.previousValue) {
-      this.dataSource = new MatTableDataSource<Intervention>(changes.interventions.currentValue);
+    this.checkInterventions(changes.interventions.currentValue, changes.interventions.previousValue);
+  }
+
+  private checkInterventions(currentInterventions?: Intervention[], previousInterventions?: Intervention[]) {
+    const interventionsChanged = !!currentInterventions && (currentInterventions !== previousInterventions);
+    if (interventionsChanged) {
+      this.dataSource = new MatTableDataSource<Intervention>(currentInterventions);
       this.dataSource.paginator = this.paginator;
     }
   }
