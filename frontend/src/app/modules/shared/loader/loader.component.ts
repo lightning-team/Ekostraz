@@ -1,6 +1,8 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {Observable} from 'rxjs';
 
+import {Required} from '@shared/decorators';
+
 @Component({
     selector: 'app-loader',
     template: `
@@ -15,6 +17,6 @@ import {Observable} from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoaderComponent {
-    @Input() loading$: Observable<boolean>;
+    @Input() @Required() loading$: Observable<boolean>;
 }
 
