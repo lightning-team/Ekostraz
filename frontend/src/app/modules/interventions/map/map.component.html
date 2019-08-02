@@ -1,17 +1,14 @@
-    <mat-card>
-        <app-loader [loading$]="loading$">
-            <agm-map *ngIf="initialData"
-                     (idle)="onMapIdle()"
-                     [latitude]="initialData[0].geoLat"
-                     [longitude]="initialData[0].geoLng">
-                <agm-marker *ngFor="let intervention of initialData.slice(0,200)" [latitude]="intervention.geoLat"
-                            [longitude]="intervention.geoLng">
-                    <agm-info-window [disableAutoPan]="false">
-                        <app-intervention-details [intervention]='intervention' embedded="true">
-                        </app-intervention-details>
-                    </agm-info-window>
-                </agm-marker>
-            </agm-map>
-        </app-loader>
-    </mat-card>
-
+<app-loader [loading$]="loading$">
+    <agm-map *ngIf="initialData"
+             (idle)="onMapIdle()"
+             [latitude]="initialData[0].geoLat"
+             [longitude]="initialData[0].geoLng">
+        <agm-marker *ngFor="let intervention of initialData.slice(0,200)" [latitude]="intervention.geoLat"
+                    [longitude]="intervention.geoLng">
+            <agm-info-window [disableAutoPan]="false">
+                <app-intervention-details [intervention]='intervention' embedded="true">
+                </app-intervention-details>
+            </agm-info-window>
+        </agm-marker>
+    </agm-map>
+</app-loader>
