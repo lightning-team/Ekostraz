@@ -1,6 +1,8 @@
     <mat-card>
         <app-loader [loading$]="loading$">
-            <agm-map *ngIf="initialData" [latitude]="initialData[0].geoLat"
+            <agm-map *ngIf="initialData"
+                     (idle)="onMapIdle()"
+                     [latitude]="initialData[0].geoLat"
                      [longitude]="initialData[0].geoLng">
                 <agm-marker *ngFor="let intervention of initialData.slice(0,200)" [latitude]="intervention.geoLat"
                             [longitude]="intervention.geoLng">
