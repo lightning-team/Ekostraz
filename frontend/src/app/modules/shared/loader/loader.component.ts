@@ -14,7 +14,12 @@ import {fadeInOut} from '../animations';
             <mat-spinner [diameter]="40"></mat-spinner>
             <h3 *ngIf="!!loaderText" class="mat-h4">{{loaderText}}</h3>
         </div>
+
+        <!-- NOTE: We use ngClass below to make sure that content-wrapper is hidden in CSS
+             before Angular animations get applied. This way we don't get any temporary glitches. -->
+        <!-- TODO: Clean up common logic from the template -->
         <div class='content-wrapper'
+             [ngClass]="(loading$ | async) && renderHiddenBeforeLoaded ? 'hidden' : ''"
              [@fadeInOut]="(loading$ | async) && renderHiddenBeforeLoaded ? 'hidden' : ''"
              *ngIf="(loading$ | async) === false || renderHiddenBeforeLoaded">
             <ng-content></ng-content>

@@ -34,3 +34,8 @@ $primary-color: map-get($my-app-primary, 'default');
     to { opacity: 0; }
   }
 }
+
+.content-wrapper.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
