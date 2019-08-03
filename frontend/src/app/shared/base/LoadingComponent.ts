@@ -9,7 +9,7 @@ export abstract class LoadingComponent<ViewData> extends ComponentWithSubscripti
     initialData: ViewData | null = null;
 
     /**
-     * Override with custom observable or add pipe actions, if you want some effects to happen before
+     * Override with custom observable, if you want some effects to happen before
      * the loader is hidden, but after initial data has already been loaded.
      * Defaults to an empty observable that completes immediately.
      */
