@@ -8,16 +8,17 @@ import {fadeInOut} from '../animations';
 @Component({
     selector: 'app-loader',
     template: `
-        <div class="app-spinner-container" [@fadeInOut]
-             *ngIf="loading$ | async; else content">
+        <div class="app-loader-container"
+             [@fadeInOut]
+             *ngIf="loading$ | async">
             <mat-spinner [diameter]="40"></mat-spinner>
+            <h3 *ngIf="!!loaderText" class="mat-h4">{{loaderText}}</h3>
         </div>
-        <ng-template #content>
-        <!-- Animations does not seem to work directly on ng-content nor ng-template -->
-            <div class='animation-wrapper' [@fadeInOut]>
-                <ng-content></ng-content>
-            </div>
-        </ng-template>
+        <div class='content-wrapper'
+             [@fadeInOut]="(loading$ | async) && renderHiddenBeforeLoaded ? 'hidden' : ''"
+             *ngIf="(loading$ | async) === false || renderHiddenBeforeLoaded">
+            <ng-content></ng-content>
+        </div>
     `,
     styleUrls: ['./loader.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,5 +26,8 @@ import {fadeInOut} from '../animations';
 })
 export class LoaderComponent {
     @Input() @Required() loading$: Observable<boolean>;
+    @Input() loaderText = '';
+    /** Flag deciding whether the content should be rendered before load finished, but hidden by CSS. */
+    @Input() renderHiddenBeforeLoaded = false;
 }
 

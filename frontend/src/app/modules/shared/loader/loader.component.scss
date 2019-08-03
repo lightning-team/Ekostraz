@@ -1,5 +1,9 @@
-.app-spinner-container {
+@import 'theme';
+
+$primary-color: map-get($my-app-primary, 'default');
+.app-loader-container {
   display: flex;
+  flex-direction: column;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -8,8 +12,25 @@
   background: #ffffff88;
   pointer-events: none;
 
-  .mat-spinner {
+  & > mat-spinner:first-child {
+    margin: auto auto 40px auto;
+  }
+
+  & > mat-spinner:last-child {
     margin: auto;
   }
-}
 
+  & > h3 {
+    display: inline-block;
+    color: $primary-color;
+    text-transform: uppercase;
+    margin: 0 auto auto auto;
+    animation: fadeInOut 4s linear infinite;
+  }
+
+  @keyframes fadeInOut {
+    from { opacity: 0; }
+    50% { opacity: 1; }
+    to { opacity: 0; }
+  }
+}
