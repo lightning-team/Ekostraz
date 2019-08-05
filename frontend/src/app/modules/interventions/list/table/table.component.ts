@@ -23,8 +23,7 @@ export class TableComponent implements OnChanges {
   }
 
   private checkInterventions(currentInterventions?: Intervention[], previousInterventions?: Intervention[]) {
-    const interventionsChanged = !!currentInterventions && (currentInterventions !== previousInterventions);
-    if (interventionsChanged) {
+    if (currentInterventions !== previousInterventions) {
       this.dataSource = new MatTableDataSource<Intervention>(currentInterventions);
       this.dataSource.paginator = this.paginator;
     }

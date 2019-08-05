@@ -6,7 +6,7 @@ import {ComponentWithSubscriptions} from './ComponentWithSubscriptions';
 
 export abstract class LoadingComponent<ViewData> extends ComponentWithSubscriptions implements OnInit, AfterViewInit {
     loading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
-    initialData: ViewData | null = null;
+    initialData: ViewData|null;
     private viewInitSubject: BehaviorSubject<any> = new BehaviorSubject(false);
 
     /**
@@ -56,7 +56,7 @@ export abstract class LoadingComponent<ViewData> extends ComponentWithSubscripti
     protected abstract getInitialData$(): Observable<ViewData>;
 
     private setInitialData(data: ViewData) {
-        this.initialData = data;
+        this.initialData = data || null;
     }
 
     private finishLoading() {
