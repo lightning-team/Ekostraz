@@ -1,11 +1,11 @@
-<mat-card [ngClass]="{
-        'mat-elevation-z4': !embedded,
-        'embedded': !!embedded
-        }">
+<mat-card *ngIf="intervention"
+          [ngClass]="{'mat-elevation-z4': !embedded, 'embedded': !!embedded}">
+
     <div class="title-wrapper">
         <mat-card-title>Zgłoszenie z dnia {{intervention.creationDate | date: 'medium' }}</mat-card-title>
         <mat-card-subtitle>Identyfikator zgłoszenia: {{intervention.id}}</mat-card-subtitle>
     </div>
+
     <mat-card-actions align="end">
         <button mat-raised-button color="primary" title='Edytuj' (click)="navigateToEditView()">
             {{embedded ? '' : 'Edytuj'}}<mat-icon>edit</mat-icon>
@@ -32,6 +32,7 @@
             <mat-icon>location_on</mat-icon> {{intervention.address}}
         </mat-list-item>
     </mat-list>
+
     <mat-card-content>
         {{intervention.description}}
 
@@ -42,4 +43,5 @@
             </agm-map>
         </section>
     </mat-card-content>
+
 </mat-card>
