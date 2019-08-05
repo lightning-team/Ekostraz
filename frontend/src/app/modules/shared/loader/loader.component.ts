@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy} from '@angular/core';
 
 import {Observable} from 'rxjs';
 
@@ -29,10 +29,19 @@ import {fadeInOut} from '../animations';
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [fadeInOut],
 })
-export class LoaderComponent {
+export class LoaderComponent implements OnDestroy {
     @Input() @Required() loading$: Observable<boolean>;
     @Input() loaderText = '';
     /** Flag deciding whether the content should be rendered before load finished, but hidden by CSS. */
     @Input() renderHiddenBeforeLoaded = false;
+
+    ngOnDestroy() {
+        // Angular will reuse this component instance, however the templates
+        // that call this instance may vary per view basis. Some templates might be missing
+        // the required properties. Setting those props as undefined in onDestroy ensures that
+        // the error will be thrown when required property is missing.
+        // See the internals of Required decorator for a deeper understanding.
+        this.loading$ = undefined;
+    }
 }
 

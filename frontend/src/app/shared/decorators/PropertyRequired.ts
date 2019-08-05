@@ -1,10 +1,17 @@
 export const Required = () => (target: object, propertyKey: string) => {
+    const internalPropKey = propertyKey + 'RequiredInternal';
+    target[internalPropKey] = undefined;
+
     Object.defineProperty(target, propertyKey, {
         get() {
-            throw new Error(`Attribute ${propertyKey} is required`);
+            const value = target[internalPropKey];
+            if (!value) {
+                throw new Error(`Attribute ${propertyKey} is required`);
+            }
+            return value;
         },
         set(value) {
-            Object.defineProperty(target, propertyKey, { value, writable: true, configurable: true });
-        },
+            target[internalPropKey] = value;
+        }
     });
 };
