@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {LoadingComponent} from '@shared/base';
 
@@ -20,8 +20,9 @@ export class DetailsContainerComponent extends LoadingComponent<Intervention> {
     constructor(
         private interventionsService: InterventionsService,
         private activatedRoute: ActivatedRoute,
+        changeDetector: ChangeDetectorRef
     ) {
-        super();
+        super(changeDetector);
     }
 
     getInitialData$(): Observable<Intervention> {

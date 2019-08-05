@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {Observable} from 'rxjs';
@@ -15,8 +15,10 @@ import {InterventionsService} from '../interventions.service';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent extends LoadingComponent<ListIntervention[]> {
-  constructor(private router: Router, private interventionsService: InterventionsService) {
-    super();
+  constructor(private router: Router,
+              private interventionsService: InterventionsService,
+              changeDetector: ChangeDetectorRef) {
+    super(changeDetector);
   }
 
   getInitialData$(): Observable<ListIntervention[]> {

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {formatDate} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 
@@ -18,8 +18,10 @@ import {InterventionsService} from '../interventions.service';
   styleUrls: ['./edit-form.component.scss']
 })
 export class EditFormComponent extends EditableFormContainer<InterventionFormData> {
-  constructor(private activatedRoute: ActivatedRoute, private interventionsService: InterventionsService) {
-    super(interventionsService.postPrivateForm.bind(interventionsService));
+  constructor(private activatedRoute: ActivatedRoute,
+              private interventionsService: InterventionsService,
+              changeDetector: ChangeDetectorRef) {
+    super(interventionsService.postPrivateForm.bind(interventionsService), changeDetector);
   }
 
   protected getInitialData$(): Observable<InterventionFormData> {

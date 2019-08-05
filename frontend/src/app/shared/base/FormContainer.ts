@@ -1,6 +1,7 @@
 import {Subscription} from 'rxjs';
 import {ComponentWithSubscriptions} from './ComponentWithSubscriptions';
 import {LoadingComponent} from './LoadingComponent';
+import {ChangeDetectorRef} from '@angular/core';
 
 export declare interface SubmittableForm<SubmitDataType> {
     onSubmit(eventData: SubmitDataType);
@@ -18,8 +19,9 @@ export abstract class FormContainer<SubmitDataType> extends ComponentWithSubscri
 
 export abstract class EditableFormContainer<InitialData> extends LoadingComponent<InitialData>
                                                                          implements SubmittableForm<InitialData> {
-    protected constructor(private submitFormFunction: (eventData: InitialData) => Subscription) {
-        super();
+    protected constructor(private submitFormFunction: (eventData: InitialData) => Subscription,
+                          changeDetector: ChangeDetectorRef) {
+        super(changeDetector);
     }
 
     onSubmit(eventData) {
