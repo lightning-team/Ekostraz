@@ -89,8 +89,12 @@ export class InterventionsService {
   }
 
   fetchIntervention(id: string): Observable<Intervention> {
-    return this.http.post<RawServerIntervention>(GetOneRequestsUrl, { id }).pipe(
-      map(rawIntervention => new Intervention(rawIntervention))
+    // return this.http.post<RawServerIntervention>(GetOneRequestsUrl, { id }).pipe(
+    //   map(rawIntervention => new Intervention(rawIntervention))
+    // );
+    return of(new Intervention(getFakeData()[0])).pipe(
+        delay(2000),
+        catchError(this.handleError.bind(this)),
     );
   }
 
