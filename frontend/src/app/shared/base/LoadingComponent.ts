@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {concatMapTo, filter, finalize, switchMapTo, take, tap} from 'rxjs/operators';
+import {concatMapTo, filter, switchMapTo, take, tap} from 'rxjs/operators';
 import {ComponentWithSubscriptions} from './ComponentWithSubscriptions';
 
 
@@ -38,7 +38,7 @@ export abstract class LoadingComponent<ViewData> extends ComponentWithSubscripti
                 switchMapTo(initialData$),
                 concatMapTo(this.getViewInitFinished$()),
                 concatMapTo(this.afterDataLoaded$),
-                finalize(() => this.finishLoading()),
+                tap(() => this.finishLoading()),
             ).subscribe()
         );
     }
