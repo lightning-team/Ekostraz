@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomePageComponent } from './home-page/home-page.component';
-import { LoginFormComponent } from './auth/login-form/login-form.component';
-import { LoggedOutGuard } from './auth/guards/logged-out.guard';
-import { LoggedInUserGuard } from './auth/guards/logged-in-user.guard';
+import { LoggedOutGuard } from './modules/auth/guards/logged-out.guard';
+import { LoggedInGuard } from './modules/auth/guards/logged-in.guard';
+import { PublicFormComponent } from './modules/public-form/public-form/public-form.component';
+import { LoginComponent } from './modules/auth/login/login.component';
 
 const routes: Routes = [
   {
@@ -12,14 +13,20 @@ const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'login',
-    component: LoginFormComponent,
-    canActivate: [LoggedOutGuard]
+    path: 'zaloguj',
+    component: LoginComponent,
+    canActivate: [LoggedOutGuard],
   },
   {
-    path: 'interventions',
-    loadChildren: './interventions/interventions.module#InterventionsModule',
-    canLoad: [LoggedInUserGuard],
+    path: 'zglos-interwencje',
+    component: PublicFormComponent,
+    canActivate: [LoggedOutGuard],
+  },
+  {
+    path: 'interwencje',
+    loadChildren: './modules/interventions/interventions.module#InterventionsModule',
+    canLoad: [LoggedInGuard],
+    canActivateChild: [LoggedInGuard],
   },
   { path: '**', redirectTo: '' }
 ];

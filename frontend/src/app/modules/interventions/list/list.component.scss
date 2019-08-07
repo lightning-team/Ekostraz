@@ -1,0 +1,13 @@
+.InterventionsList {
+    padding: 30px;
+    & > button {
+        float: right;
+        .mat-icon {
+            margin-left: 6px;
+        }
+    }
+    & .mat-h1 {
+        margin-bottom: 20px;
+        display: inline-block;
+    }
+}

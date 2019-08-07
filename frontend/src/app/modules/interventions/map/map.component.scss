@@ -1,0 +1,12 @@
+$top-offset: 50px;
+agm-map {
+    position: fixed;
+    // Top offset is needed here, so that the app header will not cover map marker popups.
+    top: $top-offset;
+    left: 0;
+    width: 100%;
+    // NOTE: I am not sure whether it is a browser bug or AgmMaps bug or maybe this is how
+    // CSS spec wants calc() to work with position:fixed (I'd say it is a bug), but $top-offset needs to be
+    // divided by 2 here - calc() subtracts the value as if it was 2 times bigger.
+    height: calc(100% - #{$top-offset/2});
+}

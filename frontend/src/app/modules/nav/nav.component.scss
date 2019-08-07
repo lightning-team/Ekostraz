@@ -1,0 +1,50 @@
+@import '~@angular/material/theming';
+@import 'breakpoints';
+
+$navbar-height: 64px;
+$mobile-navbar-height: 56px;
+.app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+
+  height: $navbar-height;
+  justify-content: space-between;
+
+  @include mat-elevation(5);
+
+  @media (max-width: $break-mobile) {
+    height: $mobile-navbar-height;
+    padding: 0 5px 0 10px;
+  }
+}
+
+.hamburger-menu {
+  margin-right: 5px;
+}
+
+.logo-text {
+  height: $navbar-height;
+  line-height: $navbar-height;
+  @media (max-width: $break-mobile) {
+    height: $mobile-navbar-height;
+    line-height: $mobile-navbar-height;
+  }
+
+  min-width: auto;
+  padding: 0 20px 0 55px;
+
+  background: url("~src/assets/logo_animals_bw1.svg") left no-repeat;
+  background-size: 44px;
+
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  &:focus,
+  &:visited {
+    color: white;
+  }
+}

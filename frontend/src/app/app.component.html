@@ -1,16 +1,11 @@
-<mat-toolbar class='app-navbar mat-elevation-z6' color='primary'>
-    <a class="logo-text" title="Strona główna" [routerLink]="['']">Ekostraż</a>
-    <div class='nav-buttons-container'>
-        <button mat-button routerLink='/interventions'>Interwencje</button>
-        <button mat-button routerLink='/interventions/map'>Mapa</button>
-        <button mat-button routerLink='/interventions/new'>Zgłoś</button>
-    </div>
-    <div class='auth-buttons-container'>
-        <button *ngIf='!isLoggedIn()' mat-button routerLink='/login'>Login</button>
-        <button *ngIf='isLoggedIn()' mat-button>Logout</button>
-    </div>
-</mat-toolbar>
+<mat-progress-bar *ngIf="isRouteLoading$ | async" [mode]="'indeterminate'" [color]="'accent'"></mat-progress-bar>
+<app-nav (sideNavToggle)='sidenav.toggle()'></app-nav>
+<app-mobile-nav #sidenav>
+    <ng-container *ngTemplateOutlet="main"></ng-container>
+</app-mobile-nav>
 
-<section class='container'>
-    <router-outlet></router-outlet>
-</section>
+<ng-template #main>
+    <main [@routeAnimation]="o.isActivated ? o.activatedRoute : ''" class='container'>
+        <router-outlet #o='outlet'></router-outlet>
+    </main>
+</ng-template>

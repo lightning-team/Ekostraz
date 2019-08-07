@@ -7,7 +7,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build-optimized": "ng build --prod --aot --build-optimizer",
+    "build-with-stats": "ng build --prod --aot --build-optimizer --stats-json",
+    "analyze": "func() { webpack-bundle-analyzer dist/ekostraz/${1}; }; func"
   },
   "private": true,
   "dependencies": {
@@ -31,9 +34,9 @@
     "@angular/cli": "~8.0.4",
     "@angular/compiler-cli": "~8.0.1",
     "@angular/language-service": "~8.0.1",
-    "@types/node": "~8.9.4",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
     "codelyzer": "^5.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -45,6 +48,7 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.4.3"
+    "typescript": "~3.4.3",
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }

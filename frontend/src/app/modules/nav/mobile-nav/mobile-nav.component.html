@@ -1,0 +1,61 @@
+<mat-sidenav-container>
+    <mat-sidenav #sidenav [autoFocus]="false">
+        <mat-nav-list>
+
+            <ng-container *ngIf="isLoggedIn$ | async">
+                <mat-list-item>Witaj, Inspektorze!</mat-list-item>
+                <mat-divider></mat-divider>
+            </ng-container>
+
+            <ng-container *ngTemplateOutlet="navLinks"></ng-container>
+            <mat-divider></mat-divider>
+            <ng-container *ngTemplateOutlet="authLinks"></ng-container>
+
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <ng-content></ng-content>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+<ng-template #navLinks>
+    <ul class="nav-links-list">
+        <ng-container *ngFor="let item of menuItems.navigationLinks">
+            <li *ngIf="item.showWhenAuthenticated === (isLoggedIn$ | async)">
+                <ng-container *ngTemplateOutlet="navAnchor; context:{item:item}"></ng-container>
+            </li>
+        </ng-container>
+    </ul>
+</ng-template>
+
+<ng-template #navAnchor let-item="item">
+    <a mat-list-item
+       (click)="sidenav.close()"
+       [routerLink]="item.routeLink"
+       [routerLinkActiveOptions]="{exact: !!item.routeExact}"
+       routerLinkActive="active">
+        <mat-icon matListIcon *ngIf="!!item.icon"> {{ item.icon }} </mat-icon>
+        {{item.text}}
+    </a>
+</ng-template>
+
+<ng-template #authLinks>
+    <a *ngIf="!(isLoggedIn$ | async) && menuItems.logIn as item"
+       mat-list-item
+       (click)="logIn()">
+        <mat-icon matListIcon> {{ item.icon }} </mat-icon>
+        {{item.text}}
+    </a>
+
+    <ng-container *ngIf="(isLoggedIn$ | async) && menuItems.logOut as item">
+        <a  mat-list-item
+            (click)="logOut()"
+            title="{{item.title}}">
+            <mat-icon matListIcon>{{item.icon}}</mat-icon>
+            {{item.text}}
+        </a>
+    </ng-container>
+
+</ng-template>

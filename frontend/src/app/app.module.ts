@@ -1,17 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
-import { MatToolbarModule, MatButtonModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule, MatProgressBarModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AuthModule } from './auth/auth.module';
-import { AuthService } from './auth/auth.service';
+import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
+import { NavModule } from './modules/nav/nav.module';
+import { PublicFormModule} from './modules/public-form/public-form.module';
+
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
 import localePl from '@angular/common/locales/pl';
 registerLocaleData(localePl);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,11 +26,13 @@ registerLocaleData(localePl);
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
     MatButtonModule,
+    MatProgressBarModule,
+    NavModule,
+    PublicFormModule,
+    HttpClientModule,
   ],
   providers: [
-    AuthService,
     { provide: LOCALE_ID, useValue: 'pl' }
   ],
   bootstrap: [AppComponent]

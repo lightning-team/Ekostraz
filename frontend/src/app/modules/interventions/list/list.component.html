@@ -1,0 +1,10 @@
+<section class="InterventionsList">
+    <h1 class="mat-h1">Lista interwencji</h1>
+    <button (click)='showMap()' color="primary" mat-raised-button [disabled]="!initialData">
+        Sprawdź na mapie!
+        <mat-icon>map</mat-icon>
+    </button>
+    <app-loader [loading$]="loading$">
+        <app-interventions-table [interventions]="initialData"></app-interventions-table>
+    </app-loader>
+</section>
