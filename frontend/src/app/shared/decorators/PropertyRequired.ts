@@ -1,8 +1,10 @@
-export const Required = () => (target: object, propertyKey: string) => {
-    const internalPropKey = propertyKey + 'RequiredInternal';
-    defineComponentProp(target, internalPropKey, propertyKey);
-    resetInternalPropOnDestroy(target, internalPropKey);
-};
+export function Required() {
+    return (target: object, propertyKey: string) => {
+        const internalPropKey = propertyKey + 'RequiredInternal';
+        defineComponentProp(target, internalPropKey, propertyKey);
+        resetInternalPropOnDestroy(target, internalPropKey);
+    };
+}
 
 function defineComponentProp(target: object, internalPropKey: string, propertyKey: string) {
     target[internalPropKey] = undefined;
