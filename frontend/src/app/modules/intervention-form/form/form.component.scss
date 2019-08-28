@@ -1,5 +1,5 @@
 .InterventionFormCard {
-    max-width: 600px;
+    max-width: 500px;
     padding: 30px;
     margin: auto;
 
@@ -9,11 +9,12 @@
 
     & form {
         display: grid;
-        grid-auto-columns: 1fr;
+        // prevent columns overflowing grid
+        grid-auto-columns: minmax(0, 1fr);
 
         .mat-form-field {
-            max-width: 400px;
             margin-bottom: 10px;
+            width: 100%;
         }
 
         & textarea {
@@ -21,23 +22,26 @@
         }
 
         & [type="submit"] {
-            width: 300px;
             margin: auto;
             margin-top: 20px;
             display: block;
         }
-
-        & .address {
-            display: grid;
-            grid-auto-columns: 1fr 1fr 1fr;
-            grid-gap: 15px;
-
-            &--street {
-                grid-column: 1 / 3;
-            }
-
-            &--number {
-                grid-column: 3;
+        @media (min-width: 400px) {
+            & .address {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0,33.3%));
+                grid-gap: 15px;
+    
+                &--street {
+                    grid-column: 1 / span 2;
+                }
+    
+                &--number {
+                    grid-column: 3 / span 1;
+                }
+                &--city {
+                    grid-column: 1 / span 2;
+                }
             }
         }
     }   

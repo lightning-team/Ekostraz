@@ -2,6 +2,12 @@
     max-width: 1170px;
     margin: auto;
     position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
+    @media(min-width: 400px) {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }
 
 .mat-progress-bar {
