@@ -21,6 +21,7 @@ namespace EkoFunkcje
             [Blob("files/{name}", FileAccess.Write , Connection = "DefaultEndpointsProtocol=https;AccountName=ekoststorage;AccountKey=PU2SpmrVyjwBuofntWwdTB7gjgZgOK2fUwwffK3Mt5nebprjIRzZfXMZyDPfN1yWMk6wXP0UM1HFkrl9zUUIyQ==;EndpointSuffix=core.windows.net")]Stream myBlob,
             ILogger log)
         {
+            // TODO
             log.LogInformation("C# HTTP trigger function processed a request.");
 
 
