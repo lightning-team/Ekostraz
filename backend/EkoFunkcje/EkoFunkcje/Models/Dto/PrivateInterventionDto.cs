@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace EkoFunkcje
+
+namespace EkoFunkcje.Models.Dto
 {
     public class PrivateInterventionDto
     {

@@ -1,13 +1,14 @@
+using System.Linq;
+using System.Threading.Tasks;
+using EkoFunkcje.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace EkoFunkcje
+namespace EkoFunkcje.Features.Interventions
 {
     public static class DeleteRequestFunction
     {

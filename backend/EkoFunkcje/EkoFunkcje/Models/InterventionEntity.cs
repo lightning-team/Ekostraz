@@ -1,7 +1,7 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
-using System;
+﻿using System;
+using Microsoft.WindowsAzure.Storage.Table;
 
-namespace EkoFunkcje
+namespace EkoFunkcje.Models
 {
     public class InterventionEntity : TableEntity
     {

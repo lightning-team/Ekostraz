@@ -1,30 +1,30 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
+using EkoFunkcje.Models;
+using EkoFunkcje.Models.Respones;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace EkoFunkcje
+namespace EkoFunkcje.Features.Interventions
 {
-    public class GetAllRequestsFunction
+    public class GetAllInterventionsFunction
     {
         private readonly IMapper _mapper;
 
-        public GetAllRequestsFunction()
+        public GetAllInterventionsFunction()
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionListItemResponse>()
                 .ForMember(dest => dest.Id,
                     opts => opts.MapFrom(src => src.RowKey)));
             _mapper = config.CreateMapper();
         }
-        [FunctionName("GetAllRequestsFunction")]
+        [FunctionName("GetAllInterventions")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,

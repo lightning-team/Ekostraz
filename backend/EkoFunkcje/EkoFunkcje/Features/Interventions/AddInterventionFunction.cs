@@ -1,29 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using EkoFunkcje.Models;
+using EkoFunkcje.Models.Dto;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
-namespace EkoFunkcje
+namespace EkoFunkcje.Features.Interventions
 {
-    public class AddPublicFormFunction
+    public class AddInterventionFunction
     {
         private readonly IAddressConverter _addressConverter;
-        public AddPublicFormFunction(IAddressConverter addressConverter)
+        public AddInterventionFunction(IAddressConverter addressConverter)
         {
             _addressConverter = addressConverter;
         }
 
-        [FunctionName("AddPublicForm")]
+        [FunctionName("AddIntervention")]
         public async Task<ActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-            PrivateInterventionDto intervention, 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] PrivateInterventionDto intervention, 
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)]IAsyncCollector<InterventionEntity> interventions,
             ILogger log)
         {

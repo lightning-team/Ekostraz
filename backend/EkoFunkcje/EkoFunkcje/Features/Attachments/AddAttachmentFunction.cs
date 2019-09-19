@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -6,20 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Newtonsoft.Json;
 
-namespace EkoFunkcje
+namespace EkoFunkcje.Features.Attachments
 {
-    public static class UploadFileFunction
+    public static class AddAttachmentFunction
     {
-        [FunctionName("UploadFileFunction")]
+        [FunctionName("AddAttachment")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequestMessage req,
             [Blob("files/{name}", FileAccess.Write , Connection = "DefaultEndpointsProtocol=https;AccountName=ekoststorage;AccountKey=PU2SpmrVyjwBuofntWwdTB7gjgZgOK2fUwwffK3Mt5nebprjIRzZfXMZyDPfN1yWMk6wXP0UM1HFkrl9zUUIyQ==;EndpointSuffix=core.windows.net")]Stream myBlob,
-            ILogger log)
+            string name, ILogger log)
         {
             // TODO
             log.LogInformation("C# HTTP trigger function processed a request.");
