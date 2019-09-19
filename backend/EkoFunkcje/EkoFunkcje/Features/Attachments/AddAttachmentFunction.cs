@@ -13,7 +13,7 @@ namespace EkoFunkcje.Features.Attachments
     {
         [FunctionName("AddAttachment")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "AddIntervention/{interventionId}")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddIntervention/{interventionId}")] HttpRequestMessage req,
             [Blob("attachments/{interventionId}", FileAccess.Write , Connection = Config.StorageConnectionName)] Stream myBlob,
             string interventionId, ILogger log)
         {

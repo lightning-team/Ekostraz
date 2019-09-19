@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,8 @@ namespace EkoFunkcje.Features.Comments
     {
         [FunctionName("AddComment")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "AddComment")] AddCommentDto commentDto,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddComment")]
+            [RequestBodyType(typeof(AddCommentDto), "AddCommentDto")]AddCommentDto commentDto,
             [Table(Config.CommentsTableName, Connection = Config.StorageConnectionName)]CloudTable cloudTable,
             ILogger log)
         {

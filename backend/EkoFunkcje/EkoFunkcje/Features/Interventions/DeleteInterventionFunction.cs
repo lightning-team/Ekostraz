@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
+using EkoFunkcje.Models.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -10,11 +12,12 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace EkoFunkcje.Features.Interventions
 {
-    public static class DeleteRequestFunction
+    public static class DeleteInterventionFunction
     {
-        [FunctionName("DeleteRequestFunction")]
+        [FunctionName("DeleteIntervention")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DeleteIntervention")] DeletionRequest request, 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DeleteIntervention")]
+            [RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]DeletionRequest request, 
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)]CloudTable interventions,
             ILogger log)
         {

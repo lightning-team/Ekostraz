@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +24,8 @@ namespace EkoFunkcje.Features.Interventions
 
         [FunctionName("AddIntervention")]
         public async Task<ActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddIntervention")] InterventionDto intervention, 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddIntervention")]
+            [RequestBodyType(typeof(InterventionDto), "InterventionDto")]InterventionDto intervention, 
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] IAsyncCollector<InterventionEntity> interventions,
             ILogger log)
         {

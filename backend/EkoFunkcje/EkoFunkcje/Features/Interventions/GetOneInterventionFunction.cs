@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Respones;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,8 @@ namespace EkoFunkcje.Features.Interventions
 
         [FunctionName("GetOneIntervention")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] IdRequest request,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "GetOneIntervention")]
+            [RequestBodyType(typeof(IdRequest), "IdRequest")]IdRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable commentsTable,
             ILogger log)
