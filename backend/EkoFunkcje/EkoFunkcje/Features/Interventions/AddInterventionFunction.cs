@@ -23,8 +23,8 @@ namespace EkoFunkcje.Features.Interventions
 
         [FunctionName("AddIntervention")]
         public async Task<ActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] PrivateInterventionDto intervention, 
-            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)]IAsyncCollector<InterventionEntity> interventions,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddIntervention")] InterventionDto intervention, 
+            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] IAsyncCollector<InterventionEntity> interventions,
             ILogger log)
         {
             var results = new List<ValidationResult>();
@@ -63,7 +63,7 @@ namespace EkoFunkcje.Features.Interventions
             };
             await interventions.AddAsync(interventionEntity);
             await interventions.FlushAsync();
-            return new JsonResult(new { Message = "Data Added"});
+            return new JsonResult(new { Message = "Intervention Added"});
         }
     }
 }

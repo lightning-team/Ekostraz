@@ -25,13 +25,13 @@ namespace EkoFunkcje.Features.Interventions
 
         [FunctionName("GetOneIntervention")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] IdReqest reqest,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] IdRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable commentsTable,
             ILogger log)
         {
             var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
-                TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, reqest.Id)).Take(1), null);
+                TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, request.Id)).Take(1), null);
             var interventionItemResponses = queryResult.Results.Select(x => _mapper.Map<InterventionItemResponse>(x)).FirstOrDefault();
 
             TableContinuationToken token = null;
@@ -42,7 +42,7 @@ namespace EkoFunkcje.Features.Interventions
                 do
                 {
                     var result = await commentsTable.ExecuteQuerySegmentedAsync(new TableQuery<CommentEntity>().Where(
-                        TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionItemResponses.Id)), token);
+                        TableQuery.GenerateFilterCondition("InterventionId", QueryComparisons.Equal, interventionItemResponses.Id)), token);
                     result.Results.ForEach(entity => entities.Add(entity.Comment));
                     token = result.ContinuationToken;
                 } while (token != null);
@@ -52,7 +52,7 @@ namespace EkoFunkcje.Features.Interventions
             return new JsonResult(interventionItemResponses);
         }
 
-        public class IdReqest
+        public class IdRequest
         {
             public string Id { get; set; }
         }

@@ -16,7 +16,7 @@ namespace EkoFunkcje.Features.Interventions
     {
         [FunctionName("GetAllGeoInterventions")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequestMessage req, 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllGeoInterventions")] HttpRequestMessage req, 
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
             ILogger log)
         {

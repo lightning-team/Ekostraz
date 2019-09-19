@@ -24,9 +24,10 @@ namespace EkoFunkcje.Features.Interventions
                     opts => opts.MapFrom(src => src.RowKey)));
             _mapper = config.CreateMapper();
         }
+
         [FunctionName("GetAllInterventions")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllInterventions")] HttpRequest req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
             ILogger log)
         {

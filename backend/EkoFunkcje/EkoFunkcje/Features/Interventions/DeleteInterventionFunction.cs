@@ -14,7 +14,7 @@ namespace EkoFunkcje.Features.Interventions
     {
         [FunctionName("DeleteRequestFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] DeletionRequest request, 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DeleteIntervention")] DeletionRequest request, 
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)]CloudTable interventions,
             ILogger log)
         {
