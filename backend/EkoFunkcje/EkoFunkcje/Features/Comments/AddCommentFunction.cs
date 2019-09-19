@@ -19,10 +19,9 @@ namespace EkoFunkcje.Features.Comments
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddComment")]
             [RequestBodyType(typeof(AddCommentDto), "AddCommentDto")]AddCommentDto commentDto,
-            [Table(Config.CommentsTableName, Connection = Config.StorageConnectionName)]CloudTable cloudTable,
+            [Table(Config.CommentsTableName, Connection = Config.StorageConnectionName)]CloudTable commentsTable,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
             var results = new List<ValidationResult>();
             if (!Validator.TryValidateObject(commentDto, new ValidationContext(commentDto, null, null), results, true))
             {
@@ -40,8 +39,8 @@ namespace EkoFunkcje.Features.Comments
             commentEntity.InterventionId = commentDto.InterventionId;
             commentEntity.Comment = commentDto.Comment;
             TableOperation insertOperation = TableOperation.Insert(commentEntity);
-            await cloudTable.ExecuteAsync(insertOperation);
-            return new JsonResult($"Data Added");
+            await commentsTable.ExecuteAsync(insertOperation);
+            return new JsonResult("Comment Added");
         }
     }
 }

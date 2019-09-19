@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
+using EkoFunkcje.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -29,11 +30,6 @@ namespace EkoFunkcje.Features.Interventions
                 return new StatusCodeResult(StatusCodes.Status404NotFound);
             await interventions.ExecuteAsync(TableOperation.Delete(requestedIntervention));
             return new StatusCodeResult(StatusCodes.Status200OK);
-        }
-
-        public class DeletionRequest
-        {
-            public string Id { get; set; }
         }
     }
 
