@@ -21,7 +21,7 @@ namespace EkoFunkcje.Features.Comments
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DeleteComment")]
             [RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]DeletionRequest request,
-            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)]CloudTable commentsTable,
+            [Table(Config.CommentsTableName, Connection = Config.StorageConnectionName)]CloudTable commentsTable,
             ILogger log)
         {
             var results = await commentsTable.ExecuteQuerySegmentedAsync(

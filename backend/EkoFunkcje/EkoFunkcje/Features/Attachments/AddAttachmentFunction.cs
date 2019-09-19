@@ -1,4 +1,5 @@
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -6,29 +7,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace EkoFunkcje.Features.Attachments
 {
     public static class AddAttachmentFunction
     {
         [FunctionName("AddAttachment")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddIntervention/{interventionId}")] HttpRequestMessage req,
-            [Blob("attachments/{interventionId}", FileAccess.Write , Connection = Config.StorageConnectionName)] Stream myBlob,
-            string interventionId, ILogger log)
+        public static async Task<HttpResponseMessage> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddAttachment/{interventionId}/{fileName}")] HttpRequestMessage req,
+            [Blob("http://127.0.0.1:10000/devstoreaccount1/attachments/12345/av-2102622222.jpg", FileAccess.Write , Connection = Config.StorageConnectionName)] CloudBlockBlob newBlob,
+            ILogger log)
         {
-            // TODO
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
-            var readAsString = await req.Content.ReadAsStringAsync();
-
-            using (Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(readAsString)))
+            if (req.Content.Headers.ContentLength != 0)
             {
-                await stream.CopyToAsync(myBlob);
+                if (!await newBlob.ExistsAsync())
+                {
+                    var imageStream = await req.Content.ReadAsStreamAsync();
+                    await newBlob.UploadFromStreamAsync(imageStream);
+                    return await Task.FromResult(req.CreateResponse(HttpStatusCode.OK, "Attachment successfully uploaded"));
+                }
+                return req.CreateErrorResponse(HttpStatusCode.BadRequest, "File under that path already exists");
+
             }
-
-
-            return new OkObjectResult($"Hello,");
+            return req.CreateErrorResponse(HttpStatusCode.BadRequest, "No attachment sent");
         }
     }
 }
