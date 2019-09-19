@@ -3,15 +3,13 @@ using System;
 
 namespace EkoFunkcje
 {
-    class InterventionEntity : TableEntity
+    public class InterventionEntity : TableEntity
     {
-        public InterventionEntity(string rowKey)
+        public InterventionEntity()
         {
-            this.PartitionKey = Guid.NewGuid().ToString();
-            this.RowKey = rowKey.ToString();
+            this.PartitionKey = DateTime.UtcNow.Date.ToShortDateString();
+            this.RowKey = Guid.NewGuid().ToString();
         }
-
-        public InterventionEntity() { }
 
         public DateTime CreationDate { get; set; }
 
@@ -22,8 +20,8 @@ namespace EkoFunkcje
         public string PhoneNumber { get; set; }
 
         public string Email { get; set; }
-
-        public string Status { get; set; }
+         
+        public int Status { get; set; }
 
         public string Address { get; set; }
 

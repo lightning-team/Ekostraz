@@ -13,47 +13,42 @@ using EkoFunkcje.Models;
 
 namespace EkoFunkcje
 {
-    public static class GetOneRequestsFunction
+    public class GetOneRequestsFunction
     {
-        [FunctionName("GetOneRequestsFunction")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] IdReqest reqest,
-            ILogger log)
+        private IMapper _mapper;
+        public GetOneRequestsFunction()
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionItemResponse>()
                 .ForMember(dest => dest.Id,
-                    opts => opts.MapFrom(src => src.PartitionKey)));
-            var mapperIntervention = config.CreateMapper();
+                    opts => opts.MapFrom(src => src.RowKey)));
+            _mapper = config.CreateMapper();
+        }
 
-            var mapperComments = new MapperConfiguration(cfg => cfg
-                .CreateMap<CommentEntity, InterventionItemResponse>()
-                .ForMember(dest => dest.Id,
-                    opts => opts.MapFrom(src => src.PartitionKey))).CreateMapper();
-
-            var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString", EnvironmentVariableTarget.Process);
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-            CloudTable interventionTable = tableClient.GetTableReference("Intervention");
-
-            var queryResult = await interventionTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
-                TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, reqest.Id)), null);
-            //tylko 1 
-            var interventionItemResponses = queryResult.Results.Select(x => mapperIntervention.Map<InterventionItemResponse>(x)).FirstOrDefault();
+        [FunctionName("GetOneRequestsFunction")]
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] IdReqest reqest,
+            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
+            ILogger log)
+        {
+            var queryResult = await cloudTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
+                TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, reqest.Id)).Take(1), null);
+            var interventionItemResponses = queryResult.Results.Select(x => _mapper.Map<InterventionItemResponse>(x)).FirstOrDefault();
 
             TableContinuationToken token = null;
-            CloudTable commentsTable = tableClient.GetTableReference("Comments");
-            var entities = new List<string>();
-            do
-            {
-                var result = await commentsTable.ExecuteQuerySegmentedAsync(new TableQuery<CommentEntity>().Where(
-                    TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionItemResponses.Id)), token);
-                result.Results.ForEach(entity => entities.Add(entity.Comment));
-                token = result.ContinuationToken;
-            } while (token != null);
+            // Comment: Here It's example that we should have comments direct with intervention 
 
-            interventionItemResponses.Comments = entities;
+
+            //CloudTable commentsTable = tableClient.GetTableReference("Comments");
+            //var entities = new List<string>();
+            //do
+            //{
+            //    var result = await commentsTable.ExecuteQuerySegmentedAsync(new TableQuery<CommentEntity>().Where(
+            //        TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionItemResponses.Id)), token);
+            //    result.Results.ForEach(entity => entities.Add(entity.Comment));
+            //    token = result.ContinuationToken;
+            //} while (token != null);
+
+            //interventionItemResponses.Comments = entities;
 
             return new JsonResult(interventionItemResponses);
         }

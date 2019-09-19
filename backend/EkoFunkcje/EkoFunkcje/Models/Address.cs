@@ -1,9 +1,8 @@
 ﻿namespace EkoFunkcje.Models
 {
-    class Address
+    public class Address
     {
-        public double lng { get; set; }
-
-        public double lat { get; set; }
+        public double Lognitude { get; set; }
+        public double Latitude { get; set; }
     }
 }

@@ -13,31 +13,31 @@ using System.Threading.Tasks;
 
 namespace EkoFunkcje
 {
-    public static class GetAllRequestsFunction
+    public class GetAllRequestsFunction
     {
-        [FunctionName("GetAllRequestsFunction")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-            ILogger log)
-        {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+        private readonly IMapper _mapper;
 
+        public GetAllRequestsFunction()
+        {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionListItemResponse>()
                 .ForMember(dest => dest.Id,
-                    opts => opts.MapFrom(src => src.PartitionKey)));
-            var mapper = config.CreateMapper();
-
-            var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString", EnvironmentVariableTarget.Process);
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-            CloudTable interventionTable = tableClient.GetTableReference("Intervention");
+                    opts => opts.MapFrom(src => src.RowKey)));
+            _mapper = config.CreateMapper();
+        }
+        [FunctionName("GetAllRequestsFunction")]
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
+            ILogger log)
+        {
+            TableQuery<InterventionEntity> rangeQuery = new TableQuery<InterventionEntity>().Select(new List<string>() { "RowKey", "GeoLat", "GeoLng" }).Take(100);
 
             TableContinuationToken token = null;
             var entities = new List<InterventionListItemResponse>();
             do
             {
-                var queryResult = await interventionTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>(), token);
-                entities.AddRange(queryResult.Results.Select(x => mapper.Map<InterventionListItemResponse>(x)));
+                var queryResult = await cloudTable.ExecuteQuerySegmentedAsync(rangeQuery, token);
+                entities.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);
 

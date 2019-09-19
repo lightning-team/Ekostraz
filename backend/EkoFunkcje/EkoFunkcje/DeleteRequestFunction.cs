@@ -1,14 +1,11 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using Newtonsoft.Json;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EkoFunkcje
 {
@@ -16,34 +13,23 @@ namespace EkoFunkcje
     {
         [FunctionName("DeleteRequestFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] DeletionRequest request,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] DeletionRequest request, 
+            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)]CloudTable interventions,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
-            var storageAccountConnectionString = Environment.GetEnvironmentVariable("StorageAccountConnectionString", EnvironmentVariableTarget.Process);
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-            CloudTable interventionTable = tableClient.GetTableReference("Intervention");
-
-            TableOperation retrieveOperation = TableOperation.Retrieve<InterventionEntity>(request.PartitionKey, request.RowKey);
-            TableResult retrievedResult = await interventionTable.ExecuteAsync(retrieveOperation);
-            InterventionEntity deleteEntity = (InterventionEntity)retrievedResult.Result;
-
-            if (deleteEntity != null)
-            {
-                TableOperation deleteOperation = TableOperation.Delete(deleteEntity);
-                await interventionTable.ExecuteAsync(deleteOperation);
-                return new OkResult();
-            }
-
-            return new BadRequestResult();
+            var results = await interventions.ExecuteQuerySegmentedAsync(
+                new TableQuery<InterventionEntity>().Where(
+                    TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, request.Id)), new TableContinuationToken());
+            var requestedIntervention = results.Results.FirstOrDefault();
+            if (requestedIntervention == null)
+                return new StatusCodeResult(StatusCodes.Status404NotFound);
+            await interventions.ExecuteAsync(TableOperation.Delete(requestedIntervention));
+            return new StatusCodeResult(StatusCodes.Status200OK);
         }
 
         public class DeletionRequest
         {
-            public string PartitionKey { get; set; }
-            public string RowKey { get; set; }
+            public string Id { get; set; }
         }
     }
 
