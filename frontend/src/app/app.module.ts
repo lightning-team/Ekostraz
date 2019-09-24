@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
-import { registerLocaleData } from '@angular/common';
+import { ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule, MatProgressBarModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,8 +12,8 @@ import { PublicFormModule} from './modules/public-form/public-form.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
-import localePl from '@angular/common/locales/pl';
-registerLocaleData(localePl);
+import { errorHandlerFactory, localeProviderFactory } from './providerFactories';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,8 @@ registerLocaleData(localePl);
     HttpClientModule,
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'pl' }
+    {provide: LOCALE_ID, useFactory: localeProviderFactory},
+    {provide: ErrorHandler, useFactory: errorHandlerFactory(environment.useSentry, environment.sentryDSN)}
   ],
   bootstrap: [AppComponent]
 })
