@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  useSentry: false, // switch on this flag to test Sentry locally
+  sentryDSN: 'https://bc6889e92f5d4c9d941ed23760f38d37@sentry.io/1548140',
 };
 
 /*
@@ -13,4 +15,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+import 'zone.js/dist/zone-error';  // Included with Angular CLI.
