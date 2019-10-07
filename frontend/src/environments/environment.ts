@@ -2,10 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+import {commonEnvironment, Environment} from './environment.common';
+
+export const environment: Environment = {
   production: false,
-  useSentry: false, // switch on this flag to test Sentry locally
-  sentryDSN: 'https://bc6889e92f5d4c9d941ed23760f38d37@sentry.io/1548140',
+  useSentry: false,
+  useGoogleTagManager: false,
+  ...commonEnvironment,
 };
 
 /*
