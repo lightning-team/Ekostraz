@@ -32,6 +32,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  // NOTE: Remember to change GoogleTagManager history triggers if we decide to drop
+  // the url 'useHash' strategy.
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
