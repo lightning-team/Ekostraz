@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material';
 
 import { LoaderComponent } from './loader/loader.component';
+import { GtmContextDirective } from './google-tag-manager/gtm-context.directive';
 
 @NgModule({
-  declarations: [LoaderComponent],
+  declarations: [LoaderComponent, GtmContextDirective],
   imports: [
       MatProgressSpinnerModule,
       CommonModule
   ],
-  exports: [LoaderComponent]
+  exports: [LoaderComponent, GtmContextDirective]
 })
 export class SharedModule { }
