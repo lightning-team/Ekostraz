@@ -14,6 +14,7 @@
       true,
       "attribute",
       "app",
+      "with",
       "camelCase"
     ],
     "component-selector": [
