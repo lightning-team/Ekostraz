@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
 import { errorHandlerFactory, localeProviderFactory } from './providerFactories';
-import { environment } from '../environments/environment';
+import { environment } from '@environment';
 
 @NgModule({
   declarations: [
