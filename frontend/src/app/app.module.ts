@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule, MatProgressBarModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { environment } from '@environment';
+
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { NavModule } from './modules/nav/nav.module';
@@ -13,7 +15,8 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
 import { errorHandlerFactory, localeProviderFactory } from './providerFactories';
-import { environment } from '@environment';
+import { GTM_CONTEXTS } from './modules/shared/google-tag-manager/gtm-contexts';
+import { EKOSTRAZ_GTM_CONTEXTS } from './ekostraz-gtm-contexts';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,7 @@ import { environment } from '@environment';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatButtonModule,
     MatProgressBarModule,
     NavModule,
@@ -33,7 +37,8 @@ import { environment } from '@environment';
   ],
   providers: [
     {provide: LOCALE_ID, useFactory: localeProviderFactory},
-    {provide: ErrorHandler, useFactory: errorHandlerFactory(environment.useSentry, environment.sentryDSN)}
+    {provide: GTM_CONTEXTS, useValue: EKOSTRAZ_GTM_CONTEXTS},
+    {provide: ErrorHandler, useFactory: errorHandlerFactory(environment.useSentry, environment.sentryDSN)},
   ],
   bootstrap: [AppComponent]
 })
