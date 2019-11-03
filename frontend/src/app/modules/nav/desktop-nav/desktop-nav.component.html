@@ -1,4 +1,4 @@
-<div class='nav-buttons-container'>
+<div class='nav-buttons-container' [withGtmContext]="gtmContext">
     <ng-container *ngIf="isLoggedIn">
         <button mat-button routerLink='/interwencje'
                 routerLinkActive="active"
@@ -21,7 +21,7 @@
         Zgłoś interwencję
     </button>
 </div>
-<div class='auth-buttons-container'>
+<div class='auth-buttons-container' [withGtmContext]="gtmContext">
     <button *ngIf='!isLoggedIn' class="login" mat-button (click)='logIn.emit()'>
         <mat-icon>account_circle</mat-icon>
         Zaloguj

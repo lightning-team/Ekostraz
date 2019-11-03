@@ -10,6 +10,7 @@ import {
 } from '@angular/material';
 
 import {InterventionFormComponent} from './form/form.component';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
     declarations: [InterventionFormComponent],
@@ -21,6 +22,7 @@ import {InterventionFormComponent} from './form/form.component';
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
+        SharedModule,
     ],
     exports: [InterventionFormComponent],
 })

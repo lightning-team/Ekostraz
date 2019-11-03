@@ -1,6 +1,6 @@
 <mat-sidenav-container>
     <mat-sidenav #sidenav [autoFocus]="false">
-        <mat-nav-list>
+        <mat-nav-list [withGtmContext]="mobileNavGtmContext">
 
             <ng-container *ngIf="isLoggedIn$ | async">
                 <mat-list-item>Witaj, Inspektorze!</mat-list-item>

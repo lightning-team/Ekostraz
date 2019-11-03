@@ -8,6 +8,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@
 })
 export class DesktopNavComponent {
     @Input() isLoggedIn = false;
+    @Input() gtmContext;
     @Output() logIn = new EventEmitter();
     @Output() logOut = new EventEmitter();
 }

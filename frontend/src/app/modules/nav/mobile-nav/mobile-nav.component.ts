@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {MatSidenav} from '@angular/material';
 import {ComponentWithSubscriptions} from '@shared/base';
 
 import {AuthService} from '../../auth/auth.service';
 import {BreakpointService} from '../../../shared/services/breakpoint.service';
+import {GTM_CONTEXTS} from '../../shared/google-tag-manager/gtm-contexts';
 
 interface MenuItem {
   text: string;
@@ -71,11 +72,17 @@ const menuItems = {
 })
 export class MobileNavComponent extends ComponentWithSubscriptions implements OnInit {
   menuItems: MenuItems = menuItems;
+  mobileNavGtmContext: string;
   isLoggedIn$ = this.authService.isLoggedIn$;
   @ViewChild('sidenav', {static: false}) sidenav: MatSidenav;
 
-  constructor(private authService: AuthService, private breakpointService: BreakpointService) {
+  constructor(
+      private authService: AuthService,
+      private breakpointService: BreakpointService,
+      @Inject(GTM_CONTEXTS) gtmContexts,
+  ) {
     super();
+    this.mobileNavGtmContext = gtmContexts.mobileNav;
   }
 
   ngOnInit() {

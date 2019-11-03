@@ -1,4 +1,4 @@
-<section class="InterventionsList">
+<section class="InterventionsList" [withGtmContext]="interventionsListGtmContext">
     <h1 class="mat-h1">Lista interwencji</h1>
     <button (click)='showMap()' color="primary" mat-raised-button [disabled]="!initialData">
         Sprawdź na mapie!

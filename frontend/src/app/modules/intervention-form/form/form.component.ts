@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {InterventionStatus} from '@shared/intervention.status';
 import {InterventionFormData} from '../types';
+import {GTM_CONTEXTS} from '../../shared/google-tag-manager/gtm-contexts';
 
 
 const interventionStatuses = [
@@ -42,21 +43,27 @@ export class InterventionFormComponent implements OnInit {
   @Input() buttonText = 'Wyślij zgłoszenie';
   /** Intervention data to fill the form with. */
   @Input() intervention: InterventionFormData | null = null;
-
-  /** Event emitted on form submit */
   @Output() formSubmit = new EventEmitter<InterventionFormData>();
-
-  /** Intervention status value map used for select input generation */
   interventionStatuses = interventionStatuses;
-  /** Main form component displayed on the screen */
   interventionForm = this.buildForm();
+  interventionFormGtmContext: string;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, @Inject(GTM_CONTEXTS) private gtmContexts) {}
 
   ngOnInit() {
+    this.initGtmContext();
+    this.maybePatchFormValue();
+  }
+
+  private maybePatchFormValue() {
     if (this.intervention) {
       this.interventionForm.patchValue(this.intervention);
     }
+  }
+
+  private initGtmContext() {
+    this.interventionFormGtmContext =
+        this.inPrivateMode ? this.gtmContexts.privateInterventionForm : this.gtmContexts.publicInterventionForm;
   }
 
   private buildForm(): FormGroup {

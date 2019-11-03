@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {Component, Inject, Input} from '@angular/core';
 import { Router } from '@angular/router';
 import { Intervention, InterventionRouterState } from '../types';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete.dialog';
 import { InterventionsService } from '../interventions.service';
 import { ComponentWithSubscriptions } from '@shared/base';
+import {GTM_CONTEXTS} from '../../shared/google-tag-manager/gtm-contexts';
 
 @Component({
   selector: 'app-intervention-details',
@@ -14,9 +15,16 @@ import { ComponentWithSubscriptions } from '@shared/base';
 export class DetailsComponent extends ComponentWithSubscriptions {
   @Input() intervention: Intervention;
   @Input() embedded?: boolean;
+  interventionDetailsGtmContext: string;
 
-  constructor(private router: Router, private dialog: MatDialog, private interventionService: InterventionsService) {
+  constructor(
+      private router: Router,
+      private dialog: MatDialog,
+      private interventionService: InterventionsService,
+      @Inject(GTM_CONTEXTS) gtmContexts,
+  ) {
     super();
+    this.interventionDetailsGtmContext = gtmContexts.interventionDetails;
   }
 
   showDeleteDialog() {
