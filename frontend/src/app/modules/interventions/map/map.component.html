@@ -2,6 +2,7 @@
             [loaderText]="'Ładowanie mapy...'"
             [renderHiddenBeforeLoaded]="true">
     <agm-map *ngIf="initialData"
+             [withGtmContext]="interventionMap"
              [latitude]="initialData[0].geoLat"
              [longitude]="initialData[0].geoLng"
              (tilesLoaded)="onTilesLoaded()">

@@ -2,8 +2,12 @@
     <mat-card-title>{{formTitle}}</mat-card-title>
 
     <mat-card-content>
-        <form [formGroup]='interventionForm' (ngSubmit)="onSubmit(interventionForm.value)">
+        <form [formGroup]='interventionForm'
+              (ngSubmit)="onSubmit(interventionForm.value)"
+              [withGtmContext]="interventionFormGtmContext">
+
             <input type="text" hidden formControlName="id" />
+
             <mat-form-field *ngIf='inPrivateMode && intervention'>
                 <input type='text' formControlName="date" matInput placeholder="Data utworzenia" />
             </mat-form-field>

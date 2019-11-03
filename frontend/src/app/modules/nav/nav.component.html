@@ -4,6 +4,7 @@
         <app-desktop-nav
                 *ngIf="!(isMobileView$ | async)"
                 [isLoggedIn]="isLoggedIn$ | async"
+                [gtmContext]="desktopNavGtmContext"
                 (logIn)="logIn()"
                 (logOut)="logOut()">
         </app-desktop-nav>
@@ -15,6 +16,7 @@
     <button *ngIf="isMobileView$ | async"
             class="hamburger-menu"
             mat-icon-button
+            [withGtmContext]="hamburgerMenuButtonGtmContext"
             (click)='sideNavToggle.emit()'>
         <mat-icon>menu</mat-icon>
     </button>

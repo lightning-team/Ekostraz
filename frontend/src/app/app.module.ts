@@ -9,7 +9,8 @@ import { environment } from '@environment';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { NavModule } from './modules/nav/nav.module';
-import { PublicFormModule} from './modules/public-form/public-form.module';
+import { PublicFormModule } from './modules/public-form/public-form.module';
+import { SharedModule } from './modules/shared/shared.module';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -33,7 +34,7 @@ import { EKOSTRAZ_GTM_CONTEXTS } from './ekostraz-gtm-contexts';
     MatProgressBarModule,
     NavModule,
     PublicFormModule,
-    HttpClientModule,
+    SharedModule,
   ],
   providers: [
     {provide: LOCALE_ID, useFactory: localeProviderFactory},
