@@ -13,6 +13,11 @@
     "build-with-stats": "ng build --prod --aot --build-optimizer --stats-json",
     "analyze": "func() { webpack-bundle-analyzer dist/ekostraz/${1}; }; func"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "private": true,
   "dependencies": {
     "@agm/core": "^1.0.0",
@@ -49,6 +54,7 @@
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "prettier": "^1.18.2",
+    "pretty-quick": "^2.0.1",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
