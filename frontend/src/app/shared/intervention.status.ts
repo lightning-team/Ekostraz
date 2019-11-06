@@ -1,6 +1,6 @@
 export enum InterventionStatus {
-    ToVerify = 'ToVerify',
-    ActionRequired = 'ActionRequired',
-    InProgress = 'InProgress',
-    Closed = 'Closed',
+  ToVerify = 'ToVerify',
+  ActionRequired = 'ActionRequired',
+  InProgress = 'InProgress',
+  Closed = 'Closed',
 }

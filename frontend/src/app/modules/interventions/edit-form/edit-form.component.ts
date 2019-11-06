@@ -1,33 +1,34 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
-import {formatDate} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { formatDate } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import {EditableFormContainer} from '@shared/base';
-import {InterventionFormData} from '@interventionForm/types';
+import { EditableFormContainer } from '@shared/base';
+import { InterventionFormData } from '@interventionForm/types';
 
-import {Intervention} from '../types';
-import {InterventionsService} from '../interventions.service';
-
+import { Intervention } from '../types';
+import { InterventionsService } from '../interventions.service';
 
 @Component({
   selector: 'app-edit-intervention-form',
   templateUrl: './edit-form.component.html',
-  styleUrls: ['./edit-form.component.scss']
+  styleUrls: ['./edit-form.component.scss'],
 })
 export class EditFormComponent extends EditableFormContainer<InterventionFormData> {
-  constructor(private activatedRoute: ActivatedRoute,
-              private interventionsService: InterventionsService,
-              changeDetector: ChangeDetectorRef) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private interventionsService: InterventionsService,
+    changeDetector: ChangeDetectorRef,
+  ) {
     super(interventionsService.postPrivateForm.bind(interventionsService), changeDetector);
   }
 
   protected getInitialData$(): Observable<InterventionFormData> {
-    return this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
-        map(intervention => transformToFormData(intervention)),
-    );
+    return this.interventionsService
+      .getIntervention(this.activatedRoute.params)
+      .pipe(map(intervention => transformToFormData(intervention)));
   }
 }
 

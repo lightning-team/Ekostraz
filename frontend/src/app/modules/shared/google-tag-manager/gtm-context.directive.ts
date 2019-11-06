@@ -1,11 +1,11 @@
-import {Directive, ElementRef, Input, OnInit} from '@angular/core';
+import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 
 interface GtmData {
   [key: string]: string;
 }
 
 @Directive({
-  selector: '[withGtmContext]'
+  selector: '[withGtmContext]',
 })
 export class GtmContextDirective implements OnInit {
   @Input('withGtmContext') context: string;
@@ -33,4 +33,4 @@ const addGtmDataToDataset = (gtmData: GtmData, element: HTMLElement) => {
 };
 
 const addGtmPrefix = (unprefixedName: string): string =>
-    'gtm' + unprefixedName[0].toUpperCase() + unprefixedName.slice(1);
+  'gtm' + unprefixedName[0].toUpperCase() + unprefixedName.slice(1);

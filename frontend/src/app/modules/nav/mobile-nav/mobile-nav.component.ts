@@ -1,10 +1,10 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {MatSidenav} from '@angular/material';
-import {ComponentWithSubscriptions} from '@shared/base';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material';
+import { ComponentWithSubscriptions } from '@shared/base';
 
-import {AuthService} from '../../auth/auth.service';
-import {BreakpointService} from '../../../shared/services/breakpoint.service';
-import {GTM_CONTEXTS} from '../../shared/google-tag-manager/gtm-contexts';
+import { AuthService } from '../../auth/auth.service';
+import { BreakpointService } from '../../../shared/services/breakpoint.service';
+import { GTM_CONTEXTS } from '../../shared/google-tag-manager/gtm-contexts';
 
 interface MenuItem {
   text: string;
@@ -68,18 +68,18 @@ const menuItems = {
 @Component({
   selector: 'app-mobile-nav',
   templateUrl: './mobile-nav.component.html',
-  styleUrls: ['./mobile-nav.component.scss']
+  styleUrls: ['./mobile-nav.component.scss'],
 })
 export class MobileNavComponent extends ComponentWithSubscriptions implements OnInit {
   menuItems: MenuItems = menuItems;
   mobileNavGtmContext: string;
   isLoggedIn$ = this.authService.isLoggedIn$;
-  @ViewChild('sidenav', {static: false}) sidenav: MatSidenav;
+  @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
 
   constructor(
-      private authService: AuthService,
-      private breakpointService: BreakpointService,
-      @Inject(GTM_CONTEXTS) gtmContexts,
+    private authService: AuthService,
+    private breakpointService: BreakpointService,
+    @Inject(GTM_CONTEXTS) gtmContexts,
   ) {
     super();
     this.mobileNavGtmContext = gtmContexts.mobileNav;
@@ -87,9 +87,9 @@ export class MobileNavComponent extends ComponentWithSubscriptions implements On
 
   ngOnInit() {
     this.subscriptions.add(
-        this.breakpointService.isMobileView$.subscribe(() => {
-          if (this.sidenav.opened) this.sidenav.close();
-        })
+      this.breakpointService.isMobileView$.subscribe(() => {
+        if (this.sidenav.opened) this.sidenav.close();
+      }),
     );
   }
 

@@ -28,13 +28,13 @@ const routes: Routes = [
     canLoad: [LoggedInGuard],
     canActivateChild: [LoggedInGuard],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
   // NOTE: Remember to change GoogleTagManager history triggers if we decide to drop
   // the url 'useHash' strategy.
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

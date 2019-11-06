@@ -10,7 +10,7 @@ import {
   MatPaginatorModule,
   MatListModule,
   MatDialogModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
 } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
@@ -51,21 +51,17 @@ const MaterialImports = [
     NewFormComponent,
     EditFormComponent,
   ],
-  entryComponents: [
-    DeleteDialog,
-  ],
+  entryComponents: [DeleteDialog],
   imports: [
     CommonModule,
     SharedModule,
     InterventionsRoutingModule,
     InterventionFormModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBmQtE0I9s8Z8M8m73B0Er9LU9tJDt0n1s'
+      apiKey: 'AIzaSyBmQtE0I9s8Z8M8m73B0Er9LU9tJDt0n1s',
     }),
     ...MaterialImports,
   ],
-  providers: [
-    InterventionsService
-  ]
+  providers: [InterventionsService],
 })
-export class InterventionsModule { }
+export class InterventionsModule {}

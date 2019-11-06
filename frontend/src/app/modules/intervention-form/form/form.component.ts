@@ -1,10 +1,9 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {InterventionStatus} from '@shared/intervention.status';
-import {InterventionFormData} from '../types';
-import {GTM_CONTEXTS} from '../../shared/google-tag-manager/gtm-contexts';
-
+import { InterventionStatus } from '@shared/intervention.status';
+import { InterventionFormData } from '../types';
+import { GTM_CONTEXTS } from '../../shared/google-tag-manager/gtm-contexts';
 
 const interventionStatuses = [
   {
@@ -24,7 +23,6 @@ const interventionStatuses = [
     viewValue: 'Zamknięta',
   },
 ];
-
 
 /**
  * Main reusable form component to report and edit interventions.
@@ -62,15 +60,16 @@ export class InterventionFormComponent implements OnInit {
   }
 
   private initGtmContext() {
-    this.interventionFormGtmContext =
-        this.inPrivateMode ? this.gtmContexts.privateInterventionForm : this.gtmContexts.publicInterventionForm;
+    this.interventionFormGtmContext = this.inPrivateMode
+      ? this.gtmContexts.privateInterventionForm
+      : this.gtmContexts.publicInterventionForm;
   }
 
   private buildForm(): FormGroup {
     const statusValidators = this.inPrivateMode ? [Validators.required] : [];
 
     return this.formBuilder.group({
-      id: [{value: '0', hidden: true}],
+      id: [{ value: '0', hidden: true }],
       date: [{ value: '', disabled: true }],
       name: [''],
       description: ['', Validators.required],
@@ -91,8 +90,7 @@ export class InterventionFormComponent implements OnInit {
   }
 
   isControlInvalid(controlName: string) {
-    return !this.interventionForm.get(controlName).valid
-           && this.interventionForm.get(controlName).touched;
+    return !this.interventionForm.get(controlName).valid && this.interventionForm.get(controlName).touched;
   }
 
   private isFormValid(): boolean {

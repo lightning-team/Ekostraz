@@ -1,13 +1,12 @@
-import {BreakpointObserver} from '@angular/cdk/layout';
-import {TestScheduler} from 'rxjs/testing';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { TestScheduler } from 'rxjs/testing';
 
-import {BreakpointService} from './breakpoint.service';
-import {Observable, of} from 'rxjs';
+import { BreakpointService } from './breakpoint.service';
+import { Observable, of } from 'rxjs';
 
 const testScheduler = new TestScheduler((actual, expected) => {
   expect(actual).toEqual(expected);
 });
-
 
 describe('BreakpointService', () => {
   let service;
@@ -18,7 +17,7 @@ describe('BreakpointService', () => {
     };
     spyOn(breakpointObserver, 'observe').and.returnValue(sourceObservable);
 
-    return new BreakpointService(breakpointObserver as unknown as BreakpointObserver);
+    return new BreakpointService((breakpointObserver as unknown) as BreakpointObserver);
   }
 
   afterEach(() => {
@@ -27,8 +26,11 @@ describe('BreakpointService', () => {
 
   it('should return correct observable values on multiple subscriptions', () => {
     testScheduler.run(({ hot, expectObservable }) => {
-      const emittedMarbleValues = {a: {matches: true}, b: {matches: false}};
-      const expectedMarbleValues = {a: true, b: false};
+      const emittedMarbleValues = {
+        a: { matches: true },
+        b: { matches: false },
+      };
+      const expectedMarbleValues = { a: true, b: false };
 
       const hotSource = hot('--a--a--b--a--a-', emittedMarbleValues);
       const sub1 = '         ---^--------!';
@@ -36,7 +38,7 @@ describe('BreakpointService', () => {
       const sub2 = '         ---------^--------!';
       const expect2 = '      ---------b-a--a-';
 
-      service =  setup(hotSource);
+      service = setup(hotSource);
 
       expectObservable(service.isMobileView$, sub1).toBe(expect1, expectedMarbleValues);
       expectObservable(service.isMobileView$, sub2).toBe(expect2, expectedMarbleValues);

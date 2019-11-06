@@ -2,13 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import {commonEnvironment, Environment} from './environment.common';
+import { commonEnvironment, Environment } from "./environment.common";
 
 export const environment: Environment = {
   production: false,
   useSentry: false,
   useGoogleTagManager: false,
-  ...commonEnvironment,
+  ...commonEnvironment
 };
 
 /*
@@ -18,4 +18,4 @@ export const environment: Environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+import "zone.js/dist/zone-error"; // Included with Angular CLI.

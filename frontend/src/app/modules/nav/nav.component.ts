@@ -1,14 +1,14 @@
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {Observable} from 'rxjs';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import {AuthService} from '../auth/auth.service';
-import {BreakpointService} from '../../shared/services/breakpoint.service';
-import {GTM_CONTEXTS} from '../shared/google-tag-manager/gtm-contexts';
+import { AuthService } from '../auth/auth.service';
+import { BreakpointService } from '../../shared/services/breakpoint.service';
+import { GTM_CONTEXTS } from '../shared/google-tag-manager/gtm-contexts';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss']
+  styleUrls: ['./nav.component.scss'],
 })
 export class NavComponent implements OnInit {
   desktopNavGtmContext: string;
@@ -20,9 +20,9 @@ export class NavComponent implements OnInit {
   @Output() sideNavToggle = new EventEmitter();
 
   constructor(
-      private breakpointService: BreakpointService,
-      private authService: AuthService,
-      @Inject(GTM_CONTEXTS) gtmContexts,
+    private breakpointService: BreakpointService,
+    private authService: AuthService,
+    @Inject(GTM_CONTEXTS) gtmContexts,
   ) {
     this.desktopNavGtmContext = gtmContexts.desktopNav;
     this.hamburgerMenuButtonGtmContext = gtmContexts.hamburgerMenuButton;
