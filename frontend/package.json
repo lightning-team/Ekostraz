@@ -7,6 +7,7 @@
     "build": "ng build --aot",
     "test": "ng test",
     "lint": "ng lint",
+    "prettier": "prettier \"**/*.ts\" --write",
     "e2e": "ng e2e",
     "build-optimized": "ng build --prod --aot --build-optimizer",
     "build-with-stats": "ng build --prod --aot --build-optimizer --stats-json",
@@ -39,6 +40,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "^5.0.0",
+    "husky": "^3.0.9",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.1.0",
@@ -46,9 +48,11 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "prettier": "^1.18.2",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "~3.4.3",
     "webpack-bundle-analyzer": "^3.3.2"
   }
