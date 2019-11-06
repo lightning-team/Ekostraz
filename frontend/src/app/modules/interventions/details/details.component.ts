@@ -1,16 +1,16 @@
-import {Component, Inject, Input} from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Intervention, InterventionRouterState } from '../types';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete.dialog';
 import { InterventionsService } from '../interventions.service';
 import { ComponentWithSubscriptions } from '@shared/base';
-import {GTM_CONTEXTS} from '../../shared/google-tag-manager/gtm-contexts';
+import { GTM_CONTEXTS } from '../../shared/google-tag-manager/gtm-contexts';
 
 @Component({
   selector: 'app-intervention-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent extends ComponentWithSubscriptions {
   @Input() intervention: Intervention;
@@ -18,10 +18,10 @@ export class DetailsComponent extends ComponentWithSubscriptions {
   interventionDetailsGtmContext: string;
 
   constructor(
-      private router: Router,
-      private dialog: MatDialog,
-      private interventionService: InterventionsService,
-      @Inject(GTM_CONTEXTS) gtmContexts,
+    private router: Router,
+    private dialog: MatDialog,
+    private interventionService: InterventionsService,
+    @Inject(GTM_CONTEXTS) gtmContexts,
   ) {
     super();
     this.interventionDetailsGtmContext = gtmContexts.interventionDetails;
@@ -39,15 +39,15 @@ export class DetailsComponent extends ComponentWithSubscriptions {
 
   private deleteIntervention() {
     this.subscriptions.add(
-        this.interventionService.delete(this.intervention.id, this.intervention.phone)
-            .subscribe(() => this.router.navigate(['interwencje']))
+      this.interventionService
+        .delete(this.intervention.id, this.intervention.phone)
+        .subscribe(() => this.router.navigate(['interwencje'])),
     );
   }
 
   navigateToEditView() {
-    this.router.navigate(
-          ['interwencje', this.intervention.id, 'edytuj'],
-          {state: {intervention: this.intervention}} as InterventionRouterState
-        );
+    this.router.navigate(['interwencje', this.intervention.id, 'edytuj'], {
+      state: { intervention: this.intervention },
+    } as InterventionRouterState);
   }
 }

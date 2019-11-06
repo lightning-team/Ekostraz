@@ -21,42 +21,39 @@ const GetOneRequestsUrl = BASE_API_URL + 'GetOneRequestsFunction';
 
 const HTTP_OPTIONS = {
   headers: new HttpHeaders({
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
     // 'Authorization': 'my-auth-token'
-  })
+  }),
 };
 
 @Injectable()
 export class InterventionsService {
   constructor(
-      private http: HttpClient,
-      private router: Router,
-      private snackBar: MatSnackBar,
-      private location: Location,
-  ) { }
+    private http: HttpClient,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private location: Location,
+  ) {}
 
   getInterventions(): Observable<Intervention[]> {
     const interventions = getFromLocationState(this.location, 'interventions') as Intervention[];
-    return interventions ? of(interventions) : this.fetchInterventions().pipe(
-        catchError(this.handleError.bind(this))
-    );
+    return interventions ? of(interventions) : this.fetchInterventions().pipe(catchError(this.handleError.bind(this)));
   }
 
   fetchInterventions(): Observable<Intervention[]> {
     // return this.http.get<any>(GetAllRequestsUrl)
     //   .pipe(map(data => data.map(item => new InterventionPostData(item))));
     return of(getFakeData().map(item => new Intervention(item))).pipe(
-        delay(2000),
-        catchError(this.handleError.bind(this)),
+      delay(2000),
+      catchError(this.handleError.bind(this)),
     );
   }
 
   private postForm(formData: InterventionFormData, APIUrl: string): Subscription {
-    return this.http.post(APIUrl, new InterventionPostData(formData), HTTP_OPTIONS)
-        .subscribe({
-          next: this.onPostSuccess.bind(this),
-          error: this.onPostError.bind(this)
-        });
+    return this.http.post(APIUrl, new InterventionPostData(formData), HTTP_OPTIONS).subscribe({
+      next: this.onPostSuccess.bind(this),
+      error: this.onPostError.bind(this),
+    });
   }
 
   postPrivateForm(formData: InterventionFormData): Subscription {
@@ -64,14 +61,14 @@ export class InterventionsService {
   }
 
   delete(id: string, phone: string) {
-    return this.http.post(DeleteRequestUrl, {partitionKey: id, rowKey: phone}, HTTP_OPTIONS);
+    return this.http.post(DeleteRequestUrl, { partitionKey: id, rowKey: phone }, HTTP_OPTIONS);
   }
 
-  getIntervention(routeParams: Observable<Params> ): Observable<Intervention | null> {
+  getIntervention(routeParams: Observable<Params>): Observable<Intervention | null> {
     const intervention = getFromLocationState(this.location, 'intervention') as Intervention;
-    return intervention ? of(intervention) : this.getActiveRouteIntervention(routeParams).pipe(
-        catchError(this.handleError.bind(this))
-    );
+    return intervention
+      ? of(intervention)
+      : this.getActiveRouteIntervention(routeParams).pipe(catchError(this.handleError.bind(this)));
   }
 
   private handleError(e) {
@@ -81,10 +78,7 @@ export class InterventionsService {
 
   private getActiveRouteIntervention(routeParams: Observable<Params>): Observable<Intervention | null> {
     return routeParams.pipe(
-        switchMap(params => params.interventionId ?
-            this.fetchIntervention(params.interventionId as string) :
-            of(null)
-        )
+      switchMap(params => (params.interventionId ? this.fetchIntervention(params.interventionId as string) : of(null))),
     );
   }
 
@@ -93,8 +87,8 @@ export class InterventionsService {
     //   map(rawIntervention => new Intervention(rawIntervention))
     // );
     return of(new Intervention(getFakeData()[0])).pipe(
-        delay(2000),
-        catchError(this.handleError.bind(this)),
+      delay(2000),
+      catchError(this.handleError.bind(this)),
     );
   }
 

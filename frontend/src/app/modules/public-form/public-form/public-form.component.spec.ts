@@ -8,9 +8,8 @@ describe('PublicFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PublicFormComponent ]
-    })
-    .compileComponents();
+      declarations: [PublicFormComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

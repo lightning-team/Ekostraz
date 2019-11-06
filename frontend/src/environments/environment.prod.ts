@@ -1,4 +1,4 @@
-import {commonEnvironment, Environment} from './environment.common';
+import { commonEnvironment, Environment } from './environment.common';
 
 export const environment: Environment = {
   production: true,

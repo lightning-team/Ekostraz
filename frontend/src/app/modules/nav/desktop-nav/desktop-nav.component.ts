@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-desktop-nav',
@@ -7,8 +7,8 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DesktopNavComponent {
-    @Input() isLoggedIn = false;
-    @Input() gtmContext;
-    @Output() logIn = new EventEmitter();
-    @Output() logOut = new EventEmitter();
+  @Input() isLoggedIn = false;
+  @Input() gtmContext;
+  @Output() logIn = new EventEmitter();
+  @Output() logOut = new EventEmitter();
 }

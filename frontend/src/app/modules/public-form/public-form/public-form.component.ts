@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {FormContainer} from '@shared/base';
+import { Component } from '@angular/core';
+import { FormContainer } from '@shared/base';
 
-import {InterventionFormData} from '@interventionForm/types';
-import {PublicFormService} from '../service/public-form.service';
+import { InterventionFormData } from '@interventionForm/types';
+import { PublicFormService } from '../service/public-form.service';
 
 @Component({
   selector: 'app-public-intervention-form',

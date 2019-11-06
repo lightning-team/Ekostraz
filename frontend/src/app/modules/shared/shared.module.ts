@@ -7,10 +7,7 @@ import { GtmContextDirective } from './google-tag-manager/gtm-context.directive'
 
 @NgModule({
   declarations: [LoaderComponent, GtmContextDirective],
-  imports: [
-      MatProgressSpinnerModule,
-      CommonModule
-  ],
-  exports: [LoaderComponent, GtmContextDirective]
+  imports: [MatProgressSpinnerModule, CommonModule],
+  exports: [LoaderComponent, GtmContextDirective],
 })
-export class SharedModule { }
+export class SharedModule {}

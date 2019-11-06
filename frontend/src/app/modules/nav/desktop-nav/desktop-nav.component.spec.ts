@@ -8,9 +8,8 @@ describe('DesktopNavComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DesktopNavComponent ]
-    })
-    .compileComponents();
+      declarations: [DesktopNavComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,14 +1,14 @@
-import {Component, Input, ViewChild, OnChanges, AfterViewInit} from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTable, MatTableDataSource} from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 
 import { Intervention, InterventionRouterState } from '../../types';
 
 @Component({
   selector: 'app-interventions-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  styleUrls: ['./table.component.scss'],
 })
 export class TableComponent implements OnChanges, AfterViewInit {
   displayedColumns = ['position', 'name', 'status', 'phone', 'date', 'description'];
@@ -17,7 +17,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
   @Input() interventions: Intervention[] = [];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatTable, {static: true}) table: MatTable<any>;
+  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
   constructor(private router: Router) {}
 
@@ -33,9 +33,9 @@ export class TableComponent implements OnChanges, AfterViewInit {
   }
 
   showDetails(intervention: Intervention) {
-    this.router.navigate(
-        ['interwencje', intervention.id],
-        { state: {intervention}} as InterventionRouterState);
+    this.router.navigate(['interwencje', intervention.id], {
+      state: { intervention },
+    } as InterventionRouterState);
   }
 
   ngAfterViewInit() {
