@@ -4,8 +4,8 @@ import { Intervention, InterventionRouterState } from '../types';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete.dialog';
 import { InterventionsService } from '../interventions.service';
-import { ComponentWithSubscriptions } from '@shared/base';
-import { GTM_CONTEXTS } from '../../shared/google-tag-manager/gtm-contexts';
+import { ComponentWithSubscriptions } from '@shared/components/base';
+import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
 @Component({
   selector: 'app-intervention-details',

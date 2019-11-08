@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { GTM_CONTEXTS } from '../modules/shared/google-tag-manager/gtm-contexts';
+import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
 @Component({
   selector: 'app-home-page',

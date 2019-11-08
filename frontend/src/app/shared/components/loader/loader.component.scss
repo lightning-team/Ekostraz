@@ -29,9 +29,15 @@ $primary-color: map-get($my-app-primary, 'default');
   }
 
   @keyframes fadeInOut {
-    from { opacity: 0; }
-    50% { opacity: 1; }
-    to { opacity: 0; }
+    from {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
   }
 }
 

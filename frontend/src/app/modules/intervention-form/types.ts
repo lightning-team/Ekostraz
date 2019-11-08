@@ -1,4 +1,4 @@
-import { InterventionStatus } from '@shared/intervention.status';
+import { InterventionStatus } from '@shared/domain/intervention.status';
 
 export interface InterventionFormData {
   id: string | null | undefined;

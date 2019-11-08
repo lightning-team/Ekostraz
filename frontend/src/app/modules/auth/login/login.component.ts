@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { ComponentWithSubscriptions } from '@shared/base';
+import { ComponentWithSubscriptions } from '@shared/components/base';
 import { AuthService } from '../auth.service';
-import { GTM_CONTEXTS } from '../../shared/google-tag-manager/gtm-contexts';
+import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
 const DIALOG_BACKDROP_CLASS = 'login-dialog-backdrop';
 const DIALOG_PANEL_CLASS = 'login-dialog-panel';

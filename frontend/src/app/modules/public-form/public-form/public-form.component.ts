@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormContainer } from '@shared/base';
+import { FormContainer } from '@shared/components/base';
 
 import { InterventionFormData } from '@interventionForm/types';
 import { PublicFormService } from '../service/public-form.service';

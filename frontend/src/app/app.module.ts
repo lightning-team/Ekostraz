@@ -10,13 +10,13 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { NavModule } from './modules/nav/nav.module';
 import { PublicFormModule } from './modules/public-form/public-form.module';
-import { SharedModule } from './modules/shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
 import { errorHandlerFactory, localeProviderFactory } from './providerFactories';
-import { GTM_CONTEXTS } from './modules/shared/google-tag-manager/gtm-contexts';
+import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { EKOSTRAZ_GTM_CONTEXTS } from './ekostraz-gtm-contexts';
 
 @NgModule({

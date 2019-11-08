@@ -11,19 +11,13 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "paths": {
-      "@shared/base": ["./src/app/shared/base/index.ts"],
       "@shared/*": ["./src/app/shared/*"],
       "@interventionForm/*": ["./src/app/modules/intervention-form/*"],
       "@environment": ["./src/environments/environment.ts"]
     },
     "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"]
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true

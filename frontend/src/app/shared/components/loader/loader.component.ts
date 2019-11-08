@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Required } from '@shared/decorators';
-import { fadeInOut } from '../animations';
+import { Required } from '@shared/components/decorators';
+import { fadeInOut } from '../../animations';
 
 @Component({
   selector: 'app-loader',

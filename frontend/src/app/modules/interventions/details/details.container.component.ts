@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LoadingComponent } from '@shared/base';
+import { LoadingComponent } from '@shared/components/base';
 
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
