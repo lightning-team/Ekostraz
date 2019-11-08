@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 
 import { InterventionFormComponent } from './form/form.component';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [InterventionFormComponent],

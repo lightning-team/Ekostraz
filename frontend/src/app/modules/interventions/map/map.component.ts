@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, Inject } from '@angular/core';
-import { LoadingComponent } from '@shared/base';
+import { LoadingComponent } from '@shared/components/base';
 
 import { Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Intervention } from '../types';
 import { InterventionsService } from '../interventions.service';
-import { GTM_CONTEXTS } from '../../shared/google-tag-manager/gtm-contexts';
+import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
 @Component({
   selector: 'app-interventions-map',

@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { EditableFormContainer } from '@shared/base';
+import { EditableFormContainer } from '@shared/components/base';
 import { InterventionFormData } from '@interventionForm/types';
 
 import { Intervention } from '../types';

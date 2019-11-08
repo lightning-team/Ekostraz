@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { InterventionStatus } from '@shared/intervention.status';
+import { InterventionStatus } from '@shared/domain/intervention.status';
+import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { InterventionFormData } from '../types';
-import { GTM_CONTEXTS } from '../../shared/google-tag-manager/gtm-contexts';
 
 const interventionStatuses = [
   {

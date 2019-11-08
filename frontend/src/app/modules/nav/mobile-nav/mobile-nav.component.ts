@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
-import { ComponentWithSubscriptions } from '@shared/base';
+import { ComponentWithSubscriptions } from '@shared/components/base';
 
 import { AuthService } from '../../auth/auth.service';
-import { BreakpointService } from '../../../shared/services/breakpoint.service';
-import { GTM_CONTEXTS } from '../../shared/google-tag-manager/gtm-contexts';
+import { BreakpointService } from '@shared/services/breakpoint.service';
+import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
 interface MenuItem {
   text: string;

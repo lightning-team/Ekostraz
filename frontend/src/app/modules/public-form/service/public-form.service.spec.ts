@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
 import { PublicFormService } from './public-form.service';
-import { InterventionStatus } from '@shared/intervention.status';
+import { InterventionStatus } from '@shared/domain/intervention.status';
 import { InterventionFormData, InterventionPostData } from '@interventionForm/types';
 
 const POST_FORM_URL = 'https://devkodawanie.azurewebsites.net/api/AddPublicForm';

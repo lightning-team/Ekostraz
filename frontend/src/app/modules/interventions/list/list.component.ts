@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { LoadingComponent } from '@shared/base';
+import { LoadingComponent } from '@shared/components/base';
 import { Intervention, InterventionListRouterState, ListIntervention } from '../types';
 import { InterventionsService } from '../interventions.service';
-import { GTM_CONTEXTS } from '../../shared/google-tag-manager/gtm-contexts';
+import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
 @Component({
   selector: 'app-list',
