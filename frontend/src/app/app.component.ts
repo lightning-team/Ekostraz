@@ -1,10 +1,8 @@
-import { Component, Inject, Renderer2, ViewChild } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '@environment';
 import { RouterExtensionsService } from '@shared/services/router-extensions.service';
-import { renderGTMInitScript } from '@shared/google-tag-manager/gtm-script';
 
 import { routeFader } from './routeFader.animation';
 
@@ -15,15 +13,14 @@ import { routeFader } from './routeFader.animation';
   animations: [routeFader],
 })
 export class AppComponent {
+  useGoogleTagManager = environment.useGoogleTagManager;
+  tagManagerId = environment.tagManagerId;
+
   isRouteLoading$: Observable<boolean>;
 
   @ViewChild('sidenav', { static: true }) sidenav;
 
-  constructor(routerExtensions: RouterExtensionsService, renderer2: Renderer2, @Inject(DOCUMENT) document) {
+  constructor(routerExtensions: RouterExtensionsService) {
     this.isRouteLoading$ = routerExtensions.isRouteLoading$;
-
-    if (environment.useGoogleTagManager) {
-      renderGTMInitScript(renderer2, document.body);
-    }
   }
 }
