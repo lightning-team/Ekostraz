@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Respones;
+using EkoFunkcje.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -35,7 +36,7 @@ namespace EkoFunkcje.Features.Interventions
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, ILogger log)
         {
-            var geoHash = GeoHash.Encode(double.Parse(latitude), double.Parse(longitude), Config.GeoHashPrecision);
+            var geoHash = GeoHasher.GetGeoHash(latitude, longitude);
             TableContinuationToken token = null;
 
             var entities = new List<InterventionListItemResponse>();

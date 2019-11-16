@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -25,6 +25,7 @@ namespace EkoFunkcje.Features.Interventions
             _mapper = config.CreateMapper();
         }
 
+        //TODO okreslic po jakich filtrach bedą pobierane interwencje dla widoku listy
         [FunctionName("GetAllInterventions")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "interventions")] HttpRequest req,
