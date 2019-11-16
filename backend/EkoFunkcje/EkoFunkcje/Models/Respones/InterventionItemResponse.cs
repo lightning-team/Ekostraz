@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EkoFunkcje
+namespace EkoFunkcje.Models.Respones
 {
     public class InterventionItemResponse
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EkoFunkcje
+﻿namespace EkoFunkcje.Models.Respones
 {
     public class GeoListItemResponse
     {

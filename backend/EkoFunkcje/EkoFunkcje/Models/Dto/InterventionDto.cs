@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace EkoFunkcje
+
+namespace EkoFunkcje.Models.Dto
 {
-    public class PrivateInterventionDto
+    public class InterventionDto
     {
         [Required(ErrorMessage = "No full name")]
         public string FullName { get; set; }

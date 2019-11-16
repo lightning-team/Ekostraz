@@ -1,4 +1,4 @@
-﻿namespace EkoFunkcje
+﻿namespace EkoFunkcje.Models
 {
     enum InterventionStatus
     {

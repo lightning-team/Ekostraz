@@ -1,23 +1,22 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using EkoFunkcje.Models;
+using EkoFunkcje.Models.Respones;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace EkoFunkcje
+namespace EkoFunkcje.Features.Interventions
 {
-    public static class GetAllGeoDataFunction
+    public static class GetAllGeoInterventionsFunction
     {
-        [FunctionName("GetAllGeoDataFunction")]
+        [FunctionName("GetAllGeoInterventions")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllGeoInterventions")] HttpRequestMessage req, 
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
             ILogger log)
         {
