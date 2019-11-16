@@ -1,23 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Respones;
-using Microsoft.AspNetCore.Http;
+using EkoFunkcje.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
+using NGeoHash;
 
 namespace EkoFunkcje.Features.Interventions
 {
-    public class GetAllInterventionsFunction
+
+    public class GetInterventionsInArea
     {
         private readonly IMapper _mapper;
 
-        public GetAllInterventionsFunction()
+        public GetInterventionsInArea()
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionListItemResponse>()
                 .ForMember(dest => dest.Id,
@@ -25,20 +30,20 @@ namespace EkoFunkcje.Features.Interventions
             _mapper = config.CreateMapper();
         }
 
-        //TODO okreslic po jakich filtrach bedą pobierane interwencje dla widoku listy
-        [FunctionName("GetAllInterventions")]
+        [FunctionName("GetInterventionsInArea")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "interventions")] HttpRequest req,
-            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "interventions/{latitude}/{longitude}")] HttpRequestMessage req,
+            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
+            string latitude, string longitude, ILogger log)
         {
-            TableQuery<InterventionEntity> rangeQuery = new TableQuery<InterventionEntity>().Select(new List<string>() { "RowKey", "GeoLat", "GeoLng" }).Take(100);
-
+            var geoHash = GeoHasher.GetGeoHash(latitude, longitude);
             TableContinuationToken token = null;
+
             var entities = new List<InterventionListItemResponse>();
             do
             {
-                var queryResult = await cloudTable.ExecuteQuerySegmentedAsync(rangeQuery, token);
+                var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, geoHash)), null);
                 entities.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);

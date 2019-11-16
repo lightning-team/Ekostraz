@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EkoFunkcje.Models.Dto;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
@@ -10,8 +11,8 @@ namespace EkoFunkcje.Models
     {
         public InterventionEntity()
         {
-            this.PartitionKey = DateTime.UtcNow.Date.ToShortDateString();
             this.RowKey = Guid.NewGuid().ToString();
+            this._commentsCollection = new List<CommentDto>();
         }
 
         public DateTime CreationDate { get; set; }
@@ -31,18 +32,43 @@ namespace EkoFunkcje.Models
         public double GeoLat { get; set; }
 
         public double GeoLng { get; set; }
-        public string CommentsJson { get; set; }
+        private string _commentsJson; 
 
-        [IgnoreProperty]
-        public ICollection<CommentDto> Comments {
-            get
-            {
-                return JsonConvert.DeserializeObject<ICollection<CommentDto>>(CommentsJson);
-            }
+        public string CommentsJson
+        {
+            get => _commentsJson;
             set
             {
-                CommentsJson = JsonConvert.SerializeObject(value);
+                _commentsJson = value;
+                _commentsCollection = JsonConvert.DeserializeObject<ICollection<CommentDto>>(value);
             }
+        }
+
+        private ICollection<CommentDto> _commentsCollection;
+
+        public void AddComment(CommentDto commentDto)
+        {
+            _commentsCollection.Add(commentDto);
+            _commentsJson = JsonConvert.SerializeObject(_commentsCollection);
+        }
+
+        public void EditComment(string commentId, string newValue)
+        {
+            var commentToEdit = _commentsCollection.First(x => x.Id == commentId);
+            commentToEdit.Comment = newValue;
+            _commentsJson = JsonConvert.SerializeObject(_commentsCollection);
+        }
+
+        public void DeleteComment(string commentId)
+        {
+            var commentToDelete = _commentsCollection.First(x => x.Id == commentId);
+            _commentsCollection.Remove(commentToDelete);
+            _commentsJson = JsonConvert.SerializeObject(_commentsCollection);
+        }
+
+        public ICollection<CommentDto> GetComments()
+        {
+            return _commentsCollection;
         }
     }
 }

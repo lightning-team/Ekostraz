@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
+using EkoFunkcje.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -19,26 +20,33 @@ namespace EkoFunkcje.Features.Comments
     {
         [FunctionName("DeleteComment")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "interventions/{interventionId}/comments/{commentId}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
             [RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]DeletionRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
-            string interventionId, string commentId, ILogger log)
+            string latitude, string longitude, string interventionId, string commentId, ILogger log)
         {
-            var results = await interventionsTable.ExecuteQuerySegmentedAsync(
-                new TableQuery<InterventionEntity>().Where(
-                    TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId)), new TableContinuationToken());
-            var requestedIntervention = results.Results.FirstOrDefault();
+            var geoHash = GeoHasher.GetGeoHash(latitude, longitude);
+            var finalFilter = InterventionFilterBuilder.GetInterventionFilter(geoHash, interventionId);
+
+            var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
+                finalFilter).Take(1), null); 
+            
+            var requestedIntervention = queryResult.Results.FirstOrDefault();
             if (requestedIntervention == null)
                 return new StatusCodeResult(StatusCodes.Status404NotFound);
 
-            var commentToRemove = requestedIntervention.Comments.FirstOrDefault(x => x.Id == commentId);
-            if (commentToRemove != null)
+            try
             {
-                requestedIntervention.Comments.Remove(commentToRemove);
+                requestedIntervention.DeleteComment(commentId);
                 await interventionsTable.ExecuteAsync(TableOperation.Merge(requestedIntervention));
-                return new StatusCodeResult(StatusCodes.Status200OK);
+
             }
-            return new StatusCodeResult(StatusCodes.Status404NotFound);
+            catch (InvalidOperationException e)
+            {
+                return new StatusCodeResult(StatusCodes.Status404NotFound);
+            }
+
+            return new StatusCodeResult(StatusCodes.Status200OK);
         }
     }
 }
