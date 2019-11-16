@@ -11,6 +11,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
+using NGeoHash;
 
 namespace EkoFunkcje.Features.Interventions
 {
@@ -27,30 +28,28 @@ namespace EkoFunkcje.Features.Interventions
 
         [FunctionName("GetOneIntervention")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "interventions/{interventionId}")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "interventions/{latitude}/{longitude}/{interventionId}")] HttpRequestMessage req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
-            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable commentsTable,
-            string interventionId, ILogger log)
+            string latitude, string longitude, string interventionId, ILogger log)
         {
+            var geoHash = GeoHash.Encode(double.Parse(latitude), double.Parse(longitude), Config.GeoHashPrecision);
+
+            string geoHashFilter = TableQuery.GenerateFilterCondition(
+                "PartitionKey", QueryComparisons.Equal,
+                geoHash);
+            string idFilter = TableQuery.GenerateFilterCondition(
+                "RowKey", QueryComparisons.Equal,
+                interventionId);
+
+            string finalFilter = TableQuery.CombineFilters(
+                    geoHashFilter,
+                    TableOperators.And,
+                    idFilter);
+
             var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
-                TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId)).Take(1), null);
+                finalFilter).Take(1), null);
             var interventionItemResponses = queryResult.Results.Select(x => _mapper.Map<InterventionItemResponse>(x)).FirstOrDefault();
 
-            TableContinuationToken token = null;
-
-            if (interventionItemResponses != null)
-            {
-                var entities = new List<string>();
-                do
-                {
-                    var result = await commentsTable.ExecuteQuerySegmentedAsync(new TableQuery<CommentEntity>().Where(
-                        TableQuery.GenerateFilterCondition("InterventionId", QueryComparisons.Equal, interventionItemResponses.Id)), token);
-                    result.Results.ForEach(entity => entities.Add(entity.Comment));
-                    token = result.ContinuationToken;
-                } while (token != null);
-
-                interventionItemResponses.Comments = entities;
-            }
             return new JsonResult(interventionItemResponses);
         }
     }

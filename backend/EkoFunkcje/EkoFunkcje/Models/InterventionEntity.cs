@@ -10,7 +10,6 @@ namespace EkoFunkcje.Models
     {
         public InterventionEntity()
         {
-            this.PartitionKey = DateTime.UtcNow.Date.ToShortDateString();
             this.RowKey = Guid.NewGuid().ToString();
         }
 
@@ -31,8 +30,6 @@ namespace EkoFunkcje.Models
         public double GeoLat { get; set; }
 
         public double GeoLng { get; set; }
-
-        public string GeoHash { get; set; }
 
         public string CommentsJson { get; set; }
 

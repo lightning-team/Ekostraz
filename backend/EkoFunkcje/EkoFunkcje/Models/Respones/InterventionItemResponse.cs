@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EkoFunkcje.Models.Dto;
 
 namespace EkoFunkcje.Models.Respones
 {
@@ -25,6 +26,6 @@ namespace EkoFunkcje.Models.Respones
 
         public double GeoLng { get; set; }
 
-        public List<string> Comments { get; set; }
+        public ICollection<CommentDto> Comments { get; set; }
     }
 }

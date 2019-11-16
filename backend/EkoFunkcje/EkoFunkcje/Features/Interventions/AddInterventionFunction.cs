@@ -31,7 +31,7 @@ namespace EkoFunkcje.Features.Interventions
             ILogger log)
         {
             var results = new List<ValidationResult>();
-            if (Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results))
+            if (!Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results))
             {
                 var errorList = new List<string>();
                 foreach (var error in results)
@@ -63,7 +63,7 @@ namespace EkoFunkcje.Features.Interventions
                 Status = (int) InterventionStatus.ActionRequired,
                 GeoLat = convertedGeoAddress.Latitude,
                 GeoLng = convertedGeoAddress.Lognitude,
-                GeoHash = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude)
+                PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision)
             };
             await interventions.AddAsync(interventionEntity);
             await interventions.FlushAsync();
