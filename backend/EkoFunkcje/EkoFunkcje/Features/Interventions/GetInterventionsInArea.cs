@@ -32,7 +32,7 @@ namespace EkoFunkcje.Features.Interventions
 
         [FunctionName("GetInterventionsInArea")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "interventions/{latitude}/{longitude}")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}")] HttpRequestMessage req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, ILogger log)
         {

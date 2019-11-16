@@ -20,7 +20,7 @@ namespace EkoFunkcje.Features.Comments
     {
         [FunctionName("EditComment")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "patch", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
+            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
             [RequestBodyType(typeof(EditCommentRequest), "EditCommentRequest")]EditCommentRequest request,
         [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, string commentId, ILogger log)

@@ -28,7 +28,7 @@ namespace EkoFunkcje.Features.Interventions
         //TODO okreslic po jakich filtrach bedą pobierane interwencje dla widoku listy
         [FunctionName("GetAllInterventions")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "interventions")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions")] HttpRequest req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
             ILogger log)
         {
