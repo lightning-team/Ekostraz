@@ -21,7 +21,7 @@ namespace EkoFunkcje.Features.Comments
     {
         [FunctionName("AddComment")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments")]
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments")]
             [RequestBodyType(typeof(AddCommentDto), "AddCommentDto")]AddCommentDto commentDto,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, ILogger log)

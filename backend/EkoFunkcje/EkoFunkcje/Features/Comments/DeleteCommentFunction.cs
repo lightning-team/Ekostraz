@@ -20,7 +20,7 @@ namespace EkoFunkcje.Features.Comments
     {
         [FunctionName("DeleteComment")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
             [RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]DeletionRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, string commentId, ILogger log)

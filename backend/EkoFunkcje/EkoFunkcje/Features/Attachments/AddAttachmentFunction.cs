@@ -15,7 +15,7 @@ namespace EkoFunkcje.Features.Attachments
     {
         [FunctionName("AddAttachment")]
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
             [Blob("attachments/{interventionId}/{rand-guid}", FileAccess.Write , Connection = Config.StorageConnectionName)] CloudBlockBlob newBlob,
             ILogger log)
         {

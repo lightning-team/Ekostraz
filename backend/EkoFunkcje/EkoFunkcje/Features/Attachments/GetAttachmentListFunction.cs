@@ -18,7 +18,7 @@ namespace EkoFunkcje.Features.Attachments
     {
         [FunctionName("GetAttachmentList")]
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
             [Blob("attachments/{interventionId}", FileAccess.Read, Connection = Config.StorageConnectionName)] CloudBlobContainer blobContainer,
             ILogger log)
         {
