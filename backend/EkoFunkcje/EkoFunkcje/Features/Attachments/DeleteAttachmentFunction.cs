@@ -16,8 +16,8 @@ namespace EkoFunkcje.Features.Attachments
     {
         [FunctionName("DeleteAttachment")]
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DeleteAttachment/{interventionId}/{fileName}")] HttpRequestMessage req,
-            [Blob("attachments/{interventionId}/{fileName}", FileAccess.Write, Connection = Config.StorageConnectionName)] CloudBlockBlob blobToDelete,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "interventions/{interventionId}/attachments/{fileId}")] HttpRequestMessage req,
+            [Blob("attachments/{interventionId}/{fileId}", FileAccess.Write, Connection = Config.StorageConnectionName)] CloudBlockBlob blobToDelete,
             ILogger log)
         {
             try

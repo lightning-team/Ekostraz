@@ -19,21 +19,26 @@ namespace EkoFunkcje.Features.Comments
     {
         [FunctionName("EditComment")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "EditComment")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "patch", Route = "interventions/{interventionId}/comments/{commentId}")]
             [RequestBodyType(typeof(EditCommentRequest), "EditCommentRequest")]EditCommentRequest request,
-            [Table(Config.CommentsTableName, Connection = Config.StorageConnectionName)]CloudTable commentsTable,
-            ILogger log)
+        [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
+        string interventionId, string commentId, ILogger log)
         {
-            var results = await commentsTable.ExecuteQuerySegmentedAsync(
-                new TableQuery<CommentEntity>().Where(
-                    TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, request.Id)), new TableContinuationToken());
-            var requestedComment = results.Results.FirstOrDefault();
-            if (requestedComment == null)
+            var results = await interventionsTable.ExecuteQuerySegmentedAsync(
+                new TableQuery<InterventionEntity>().Where(
+                    TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId)), new TableContinuationToken());
+            var requestedIntervention = results.Results.FirstOrDefault();
+            if (requestedIntervention == null)
                 return new StatusCodeResult(StatusCodes.Status404NotFound);
 
-            requestedComment.Comment = request.NewValue;
-            await commentsTable.ExecuteAsync(TableOperation.Merge(requestedComment));
-            return new StatusCodeResult(StatusCodes.Status200OK);
+            var commentToEdit = requestedIntervention.Comments.FirstOrDefault(x => x.Id == commentId);
+            if (commentToEdit != null)
+            {
+                commentToEdit.Comment = request.NewValue;
+                await interventionsTable.ExecuteAsync(TableOperation.Merge(requestedIntervention));
+                return new StatusCodeResult(StatusCodes.Status200OK);
+            }
+            return new StatusCodeResult(StatusCodes.Status404NotFound);
         }
     }
 }

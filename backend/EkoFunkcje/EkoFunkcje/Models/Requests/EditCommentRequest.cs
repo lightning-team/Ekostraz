@@ -6,7 +6,6 @@ namespace EkoFunkcje.Models.Requests
 {
     public class EditCommentRequest
     {
-        public string Id { get; set; }
         public string NewValue { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace EkoFunkcje.Features.Interventions
 
         [FunctionName("AddIntervention")]
         public async Task<ActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddIntervention")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "interventions")]
             [RequestBodyType(typeof(InterventionDto), "InterventionDto")]InterventionDto intervention, 
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] IAsyncCollector<InterventionEntity> interventions,
             ILogger log)

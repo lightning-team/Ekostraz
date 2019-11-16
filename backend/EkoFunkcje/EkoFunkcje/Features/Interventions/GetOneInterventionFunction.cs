@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -26,14 +27,13 @@ namespace EkoFunkcje.Features.Interventions
 
         [FunctionName("GetOneIntervention")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "GetOneIntervention")]
-            [RequestBodyType(typeof(IdRequest), "IdRequest")]IdRequest request,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "interventions/{interventionId}")] HttpRequestMessage req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable commentsTable,
-            ILogger log)
+            string interventionId, ILogger log)
         {
             var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
-                TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, request.Id)).Take(1), null);
+                TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId)).Take(1), null);
             var interventionItemResponses = queryResult.Results.Select(x => _mapper.Map<InterventionItemResponse>(x)).FirstOrDefault();
 
             TableContinuationToken token = null;
@@ -52,11 +52,6 @@ namespace EkoFunkcje.Features.Interventions
                 interventionItemResponses.Comments = entities;
             }
             return new JsonResult(interventionItemResponses);
-        }
-
-        public class IdRequest
-        {
-            public string Id { get; set; }
         }
     }
 }

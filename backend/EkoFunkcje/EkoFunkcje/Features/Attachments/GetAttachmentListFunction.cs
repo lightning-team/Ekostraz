@@ -18,7 +18,7 @@ namespace EkoFunkcje.Features.Attachments
     {
         [FunctionName("GetAttachmentList")]
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAttachmentList/{interventionId}")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
             [Blob("attachments/{interventionId}", FileAccess.Read, Connection = Config.StorageConnectionName)] CloudBlobContainer blobContainer,
             ILogger log)
         {
@@ -26,8 +26,8 @@ namespace EkoFunkcje.Features.Attachments
             {
                 var blobs = await blobContainer.ListBlobsSegmentedAsync(String.Empty, true, 
                     BlobListingDetails.All, Int32.MaxValue, null, new BlobRequestOptions(), new OperationContext());
-                var paths = blobs.Results.Select(e => e.Uri.AbsoluteUri);
-                return req.CreateResponse(HttpStatusCode.OK, paths);
+                var fileNames = blobs.Results.Select(e => e.Uri.Segments.Last());
+                return req.CreateResponse(HttpStatusCode.OK, fileNames);
             }
             catch (Exception)
             {

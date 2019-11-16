@@ -20,18 +20,14 @@ namespace EkoFunkcje.Features.Attachments
     {
         [FunctionName("GetAttachment")]
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "GetAttachment")]
-            [RequestBodyType(typeof(GetAttachmentRequest), "GetAttachmentRequest")]GetAttachmentRequest request,
-            IBinder binder, ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "interventions/{interventionId}/attachments/{fileId}")]  HttpRequestMessage req,
+            [Blob("attachments/{interventionId}/{fileId}", FileAccess.Write, Connection = Config.StorageConnectionName)] CloudBlockBlob blob,
+            ILogger log)
         {
             Stream attachmentStream;
             try
             {
-                var attribute = new BlobAttribute($"{request.AbsoluteUri}", FileAccess.Read);
-                attribute.Connection = Config.StorageConnectionName;
-                var attachmentBlob = await binder.BindAsync<CloudBlockBlob>(attribute);
-
-                attachmentStream = await attachmentBlob.OpenReadAsync(AccessCondition.GenerateEmptyCondition(),
+                attachmentStream = await blob.OpenReadAsync(AccessCondition.GenerateEmptyCondition(),
                     new BlobRequestOptions(), new OperationContext());
             }
             catch

@@ -15,8 +15,8 @@ namespace EkoFunkcje.Features.Attachments
     {
         [FunctionName("AddAttachment")]
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddAttachment/{interventionId}/{fileName}")] HttpRequestMessage req,
-            [Blob("http://127.0.0.1:10000/devstoreaccount1/attachments/12345/av-2102622222.jpg", FileAccess.Write , Connection = Config.StorageConnectionName)] CloudBlockBlob newBlob,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
+            [Blob("attachments/{interventionId}/{rand-guid}", FileAccess.Write , Connection = Config.StorageConnectionName)] CloudBlockBlob newBlob,
             ILogger log)
         {
             if (req.Content.Headers.ContentLength != 0)
@@ -27,7 +27,7 @@ namespace EkoFunkcje.Features.Attachments
                     await newBlob.UploadFromStreamAsync(imageStream);
                     return await Task.FromResult(req.CreateResponse(HttpStatusCode.OK, "Attachment successfully uploaded"));
                 }
-                return req.CreateErrorResponse(HttpStatusCode.BadRequest, "File under that path already exists");
+                return req.CreateErrorResponse(HttpStatusCode.Conflict, "File under that path already exists");
 
             }
             return req.CreateErrorResponse(HttpStatusCode.BadRequest, "No attachment sent");

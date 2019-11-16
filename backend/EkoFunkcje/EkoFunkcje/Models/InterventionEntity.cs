@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using EkoFunkcje.Models.Dto;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 
 namespace EkoFunkcje.Models
 {
@@ -28,5 +31,18 @@ namespace EkoFunkcje.Models
         public double GeoLat { get; set; }
 
         public double GeoLng { get; set; }
+        public string CommentsJson { get; set; }
+
+        [IgnoreProperty]
+        public ICollection<CommentDto> Comments {
+            get
+            {
+                return JsonConvert.DeserializeObject<ICollection<CommentDto>>(CommentsJson);
+            }
+            set
+            {
+                CommentsJson = JsonConvert.SerializeObject(value);
+            }
+        }
     }
 }
