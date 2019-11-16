@@ -11,6 +11,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using NGeoHash;
 
 namespace EkoFunkcje.Features.Interventions
 {
@@ -61,7 +62,8 @@ namespace EkoFunkcje.Features.Interventions
                 PhoneNumber = intervention.PhoneNumber,
                 Status = (int) InterventionStatus.ActionRequired,
                 GeoLat = convertedGeoAddress.Latitude,
-                GeoLng = convertedGeoAddress.Lognitude
+                GeoLng = convertedGeoAddress.Lognitude,
+                GeoHash = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude)
             };
             await interventions.AddAsync(interventionEntity);
             await interventions.FlushAsync();

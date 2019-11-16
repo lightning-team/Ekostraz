@@ -31,6 +31,9 @@ namespace EkoFunkcje.Models
         public double GeoLat { get; set; }
 
         public double GeoLng { get; set; }
+
+        public string GeoHash { get; set; }
+
         public string CommentsJson { get; set; }
 
         [IgnoreProperty]
