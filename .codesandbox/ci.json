@@ -1,0 +1,6 @@
+{
+  "installCommand": "install",
+  "buildCommand": "build",
+  "packages": ["frontend"],
+  "sandboxes": ["vanilla", "new"]
+}
