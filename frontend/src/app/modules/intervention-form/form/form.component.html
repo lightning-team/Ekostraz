@@ -1,74 +1,76 @@
-<mat-card class='InterventionFormCard'>
-    <mat-card-title>{{formTitle}}</mat-card-title>
+<mat-card class="InterventionFormCard">
+  <mat-card-title>{{ formTitle }}</mat-card-title>
 
-    <mat-card-content>
-        <form [formGroup]='interventionForm'
-              (ngSubmit)="onSubmit(interventionForm.value)"
-              [withGtmContext]="interventionFormGtmContext">
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" [withGtmContext]="formGtmContext">
+      <input type="text" hidden formControlName="id" />
 
-            <input type="text" hidden formControlName="id" />
+      <mat-form-field *ngIf="inPrivateMode && intervention">
+        <input type="text" formControlName="date" matInput placeholder="Data utworzenia" />
+      </mat-form-field>
 
-            <mat-form-field *ngIf='inPrivateMode && intervention'>
-                <input type='text' formControlName="date" matInput placeholder="Data utworzenia" />
-            </mat-form-field>
+      <mat-form-field>
+        <input type="text" formControlName="name" matInput placeholder="Imię i nazwisko" />
+      </mat-form-field>
 
-            <mat-form-field>
-                <input type='text' formControlName="name" matInput placeholder="Imię i nazwisko" />
-            </mat-form-field>
+      <mat-form-field>
+        <textarea formControlName="description" matInput placeholder="Opis sprawy" required></textarea>
+        <mat-error>
+          <span *ngIf="isControlInvalid('description')">Opis sprawy jest wymagany</span>
+        </mat-error>
+      </mat-form-field>
 
-            <mat-form-field>
-                <textarea formControlName="description" matInput placeholder="Opis sprawy" required></textarea>
-                <mat-error>
-                    <span *ngIf="isControlInvalid('description')">Opis sprawy jest wymagany</span>
-                </mat-error>
-            </mat-form-field>
+      <mat-form-field>
+        <input
+          type="text"
+          formControlName="phone"
+          matInput
+          placeholder="Numer telefonu"
+          pattern="\+?(\d|\s)*"
+          required
+        />
+        <mat-error>
+          <span *ngIf="isControlInvalid('phone')">Numer telefonu jest wymagany</span>
+        </mat-error>
+      </mat-form-field>
 
-            <mat-form-field>
-                <input type='text' formControlName="phone" matInput placeholder="Numer telefonu" pattern='\+?(\d|\s)*'
-                    required />
-                <mat-error>
-                    <span *ngIf="isControlInvalid('phone')">Numer telefonu jest wymagany</span>
-                </mat-error>
-            </mat-form-field>
+      <mat-form-field>
+        <input type="email" formControlName="email" matInput placeholder="Adres e-mail" />
+      </mat-form-field>
 
-            <mat-form-field>
-                <input type='email' formControlName="email" matInput placeholder="Adres e-mail" />
-            </mat-form-field>
+      <mat-form-field *ngIf="inPrivateMode">
+        <mat-label>Status interwencji</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let status of statusOptions" [value]="status.value">
+            {{ status.displayValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-            <mat-form-field *ngIf='inPrivateMode'>
-                <mat-label>Status interwencji</mat-label>
-                <mat-select formControlName="status">
-                    <mat-option *ngFor="let status of interventionStatuses" [value]="status.value">
-                        {{status.viewValue}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+      <div formGroupName="address" class="address">
+        <mat-form-field class="address--street">
+          <input type="text" formControlName="street" matInput placeholder="Ulica" required />
+          <mat-error>
+            <span *ngIf="isControlInvalid('address.street')">Ulica jest wymagana</span>
+          </mat-error>
+        </mat-form-field>
 
+        <mat-form-field class="address--number">
+          <input type="text" formControlName="number" matInput placeholder="Numer lokalu" required />
+          <mat-error>
+            <span *ngIf="isControlInvalid('address.street')">Numer lokalu jest wymagany</span>
+          </mat-error>
+        </mat-form-field>
 
-            <div formGroupName='address' class='address'>
-                <mat-form-field class='address--street'>
-                    <input type='text' formControlName="street" matInput placeholder="Ulica" required />
-                    <mat-error>
-                        <span *ngIf="isControlInvalid('address.street')">Ulica jest wymagana</span>
-                    </mat-error>
-                </mat-form-field>
+        <mat-form-field class="address--city">
+          <input type="text" formControlName="city" matInput placeholder="Miejscowość" required />
+          <mat-error>
+            <span *ngIf="isControlInvalid('address.street')">Miejscowość jest wymagana</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-                <mat-form-field class='address--number'>
-                    <input type='text' formControlName="number" matInput placeholder="Numer lokalu" required />
-                    <mat-error>
-                        <span *ngIf="isControlInvalid('address.street')">Numer lokalu jest wymagany</span>
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field class='address--city'>
-                    <input type='text' formControlName="city" matInput placeholder="Miejscowość" required />
-                    <mat-error>
-                        <span *ngIf="isControlInvalid('address.street')">Miejscowość jest wymagana</span>
-                    </mat-error>
-                </mat-form-field>
-            </div>
-
-            <button type="submit" color="primary" mat-raised-button>{{buttonText}}</button>
-        </form>
-    </mat-card-content>
+      <button type="submit" color="primary" mat-raised-button>{{ buttonText }}</button>
+    </form>
+  </mat-card-content>
 </mat-card>
