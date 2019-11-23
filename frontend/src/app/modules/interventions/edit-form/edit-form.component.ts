@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
-import { first, map, mapTo, startWith, tap } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
 
-import { ComponentWithSubscriptions, SubmittableForm } from '@shared/components/base';
+import { FormContainer } from '@shared/components/base';
 import { InterventionFormData } from '@interventionForm/types';
 
 import { Intervention } from '../types';
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
   templateUrl: './edit-form.component.html',
   styleUrls: ['./edit-form.component.scss'],
 })
-export class EditFormComponent extends ComponentWithSubscriptions implements SubmittableForm<InterventionFormData> {
+export class EditFormComponent extends FormContainer<InterventionFormData> {
   intervention: InterventionFormData;
   loading$: Observable<InterventionFormData> = this.interventionsService
     .getIntervention(this.activatedRoute.params)
@@ -33,11 +33,7 @@ export class EditFormComponent extends ComponentWithSubscriptions implements Sub
     private formService: InterventionsService,
     private interventionsService: InterventionsService,
   ) {
-    super();
-  }
-
-  onSubmit(formData: InterventionFormData) {
-    this.subscriptions.add(this.formService.postPrivateForm(formData));
+    super((formData: InterventionFormData) => this.formService.postPrivateForm(formData));
   }
 }
 
