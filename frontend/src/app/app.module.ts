@@ -12,12 +12,12 @@ import { NavModule } from './modules/nav/nav.module';
 import { PublicFormModule } from './modules/public-form/public-form.module';
 import { SharedModule } from '@shared/shared.module';
 
-import { AppComponent } from './app.component';
+import { AppComponent } from './app-component/app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
-import { errorHandlerFactory, localeProviderFactory } from './providerFactories';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
-import { EKOSTRAZ_GTM_CONTEXTS } from './ekostraz-gtm-contexts';
+import { errorHandlerFactory, localeProviderFactory } from './misc/providerFactories';
+import { EKOSTRAZ_GTM_CONTEXTS } from './misc/ekostraz-gtm-contexts';
 
 @NgModule({
   declarations: [AppComponent, HomePageComponent],
