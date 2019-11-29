@@ -1,56 +1,63 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map, mapTo, startWith, tap } from 'rxjs/operators';
 
-import { EditableFormContainer } from '@shared/components/base';
+import { ComponentWithSubscriptions, SubmittableForm } from '@shared/components/base';
 import { InterventionFormData } from '@interventionForm/types';
 
 import { Intervention } from '../types';
 import { InterventionsService } from '../interventions.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-edit-intervention-form',
   templateUrl: './edit-form.component.html',
   styleUrls: ['./edit-form.component.scss'],
 })
-export class EditFormComponent extends EditableFormContainer<InterventionFormData> {
+export class EditFormComponent extends ComponentWithSubscriptions implements SubmittableForm<InterventionFormData> {
+  intervention: InterventionFormData;
+  loading$: Observable<InterventionFormData> = this.interventionsService
+    .getIntervention(this.activatedRoute.params)
+    .pipe(
+      first(),
+      map(toFormData),
+      tap(formData => {
+        this.intervention = formData;
+      }),
+    );
+
   constructor(
     private activatedRoute: ActivatedRoute,
+    private formService: InterventionsService,
     private interventionsService: InterventionsService,
-    changeDetector: ChangeDetectorRef,
   ) {
-    super(interventionsService.postPrivateForm.bind(interventionsService), changeDetector);
+    super();
   }
 
-  protected getInitialData$(): Observable<InterventionFormData> {
-    return this.interventionsService
-      .getIntervention(this.activatedRoute.params)
-      .pipe(map(intervention => transformToFormData(intervention)));
+  onSubmit(formData: InterventionFormData) {
+    this.subscriptions.add(this.formService.postPrivateForm(formData));
   }
 }
 
-/** Transforms Intervention to form data */
-function transformToFormData(interventionData: Intervention): InterventionFormData {
-  return {
-    id: interventionData.id,
-    date: formatDate(interventionData.creationDate, 'medium', 'pl'),
-    name: interventionData.fullName,
-    description: interventionData.description,
-    phone: interventionData.phone,
-    email: interventionData.email,
-    status: interventionData.status,
-    address: transformToFormAddress(interventionData.address),
-  } as InterventionFormData;
-}
+const toFormData = (intervention: Intervention): InterventionFormData =>
+  ({
+    id: intervention.id,
+    date: formatDate(intervention.creationDate, 'medium', 'pl'),
+    name: intervention.fullName,
+    description: intervention.description,
+    phone: intervention.phone,
+    email: intervention.email,
+    status: intervention.status,
+    address: createAddress(intervention.address),
+  } as InterventionFormData);
 
-function transformToFormAddress(address: string) {
+const createAddress = (address: string) => {
   const addressParts = address.split(',').map(part => part.trim());
   return {
     street: addressParts[0] || '',
     number: addressParts[1] || '',
     city: addressParts[2] || '',
   };
-}
+};

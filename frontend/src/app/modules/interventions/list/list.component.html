@@ -1,10 +1,10 @@
 <section class="InterventionsList" [withGtmContext]="interventionsListGtmContext">
-    <h1 class="mat-h1">Lista interwencji</h1>
-    <button (click)='showMap()' color="primary" mat-raised-button [disabled]="!initialData">
-        Sprawdź na mapie!
-        <mat-icon>map</mat-icon>
-    </button>
-    <app-loader [loading$]="loading$">
-        <app-interventions-table [interventions]="initialData"></app-interventions-table>
-    </app-loader>
+  <h1 class="mat-h1">Lista interwencji</h1>
+  <button (click)="showMap()" color="primary" mat-raised-button [disabled]="!interventions">
+    Sprawdź na mapie!
+    <mat-icon>map</mat-icon>
+  </button>
+  <app-loader [loading$]="loading$">
+    <app-interventions-table [interventions]="interventions"></app-interventions-table>
+  </app-loader>
 </section>
