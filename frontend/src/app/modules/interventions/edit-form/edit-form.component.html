@@ -1,10 +1,11 @@
 <app-loader [loading$]="loading$">
-    <app-intervention-form *ngIf="initialData"
-                           [intervention]="initialData"
-                           [inPrivateMode]="true"
-                           [formTitle]="'Edytuj interwencję'"
-                           [buttonText]="'Zapisz'"
-                           (formSubmit)="onSubmit($event)"
-    ></app-intervention-form>
-    <h3 *ngIf="!initialData">Nie udało się pobrać danych z serwera!</h3>
+  <app-intervention-form
+    *ngIf="intervention"
+    [intervention]="intervention"
+    [inPrivateMode]="true"
+    [formTitle]="'Edytuj interwencję'"
+    [buttonText]="'Zapisz'"
+    (formSubmit)="onSubmit($event)"
+  ></app-intervention-form>
+  <h3 *ngIf="!intervention">Nie udało się pobrać danych z serwera!</h3>
 </app-loader>

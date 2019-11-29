@@ -1,8 +1,7 @@
-import { ChangeDetectorRef, Component, Inject } from '@angular/core';
-import { LoadingComponent } from '@shared/components/base';
+import { Component, Inject } from '@angular/core';
 
 import { Subject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { first, switchMapTo, tap } from 'rxjs/operators';
 
 import { Intervention } from '../types';
 import { InterventionsService } from '../interventions.service';
@@ -13,22 +12,20 @@ import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent extends LoadingComponent<Intervention[]> {
+export class MapComponent {
   tilesLoadedSubject = new Subject();
-  afterDataLoaded$ = this.tilesLoadedSubject.asObservable().pipe(take(1));
-  interventionMap: string;
+  interventions: Intervention[];
+  interventionMapGtmContext: string;
 
-  constructor(
-    private interventionsService: InterventionsService,
-    changeDetector: ChangeDetectorRef,
-    @Inject(GTM_CONTEXTS) gtmContexts,
-  ) {
-    super(changeDetector);
-    this.interventionMap = gtmContexts.interventionMap;
-  }
+  loading$ = this.interventionsService.getInterventions().pipe(
+    tap(data => {
+      this.interventions = data;
+    }),
+    switchMapTo(this.tilesLoadedSubject.asObservable().pipe(first())),
+  );
 
-  getInitialData$() {
-    return this.interventionsService.getInterventions();
+  constructor(private interventionsService: InterventionsService, @Inject(GTM_CONTEXTS) gtmContexts) {
+    this.interventionMapGtmContext = gtmContexts.interventionMap;
   }
 
   onTilesLoaded() {
