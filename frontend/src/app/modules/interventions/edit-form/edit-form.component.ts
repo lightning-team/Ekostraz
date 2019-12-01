@@ -56,8 +56,8 @@ const toFormData = (intervention: Intervention): InterventionFormData =>
 const createAddress = (address: string) => {
   const addressParts = address.split(',').map(part => part.trim());
   return {
-    street: addressParts[0] || '',
-    number: addressParts[1] || '',
-    city: addressParts[2] || '',
+    street: addressParts[0] ?? '',
+    number: addressParts[1] ?? '',
+    city: addressParts[2] ?? '',
   };
 };

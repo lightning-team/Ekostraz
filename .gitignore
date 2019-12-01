@@ -336,4 +336,4 @@ frontend/dist
 **/local.settings.json
 
 # VS Code
-/.vscode
+**/.vscode
