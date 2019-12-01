@@ -1,13 +1,21 @@
 .InterventionsList {
+  padding: 10px;
+  @media (min-width: 700px) {
     padding: 30px;
-    & > button {
-        float: right;
-        .mat-icon {
-            margin-left: 6px;
-        }
+  }
+  & > button {
+    margin-bottom: 10px;
+    display: block;
+    .mat-icon {
+      margin-left: 6px;
     }
-    & .mat-h1 {
-        margin-bottom: 20px;
-        display: inline-block;
+    @media (min-width: 700px) {
+      margin-bottom: 0;
+      float: right;
     }
+  }
+  & .mat-h1 {
+    margin-bottom: 20px;
+    display: inline-block;
+  }
 }

@@ -1,7 +1,6 @@
 import { Component, Input, ViewChild, OnChanges, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource, MatPaginator } from '@angular/material';
 
 import { Intervention, InterventionRouterState } from '../../types';
 
