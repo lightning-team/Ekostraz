@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 import { ComponentWithSubscriptions } from '@shared/components/base';
 
@@ -70,7 +70,7 @@ const menuItems = {
   templateUrl: './mobile-nav.component.html',
   styleUrls: ['./mobile-nav.component.scss'],
 })
-export class MobileNavComponent extends ComponentWithSubscriptions implements OnInit {
+export class MobileNavComponent extends ComponentWithSubscriptions implements AfterViewInit {
   menuItems: MenuItems = menuItems;
   mobileNavGtmContext: string;
   isLoggedIn$ = this.authService.isLoggedIn$;
@@ -85,7 +85,7 @@ export class MobileNavComponent extends ComponentWithSubscriptions implements On
     this.mobileNavGtmContext = gtmContexts.mobileNav;
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.subscriptions.add(
       this.breakpointService.isMobileView$.subscribe(() => {
         if (this.sidenav.opened) this.sidenav.close();
