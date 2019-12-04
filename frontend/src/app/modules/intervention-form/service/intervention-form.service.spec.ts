@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
-import { PublicFormService } from './public-form.service';
+import { InterventionFormService } from './intervention-form.service';
 import { InterventionStatus } from '@shared/domain/intervention.status';
 import { InterventionFormData, InterventionPostData } from '@interventionForm/types';
 
@@ -39,19 +39,19 @@ const createTestFormData = () =>
   } as InterventionFormData);
 
 describe('PublicFormService', () => {
-  let service: PublicFormService;
+  let service: InterventionFormService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        PublicFormService,
+        InterventionFormService,
         { provide: Router, useValue: routerSpy },
         { provide: MatSnackBar, useValue: snackBarMock },
       ],
     });
 
-    service = TestBed.get(PublicFormService);
+    service = TestBed.get(InterventionFormService);
   });
 
   afterEach(() => {
@@ -73,7 +73,7 @@ describe('PublicFormService', () => {
 
       spyOn(Date.prototype, 'toISOString').and.returnValue('2019-07-30T11:34:07.791Z');
 
-      service.postPublicForm(createTestFormData());
+      service.post(createTestFormData(), '');
       requestMock = httpTestingController.expectOne(POST_FORM_URL);
     });
 
