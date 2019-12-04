@@ -1,17 +1,12 @@
 import { Component } from '@angular/core';
 
-import { FormContainer } from '@shared/components/base';
-import { InterventionFormData } from '@interventionForm/types';
-
-import { InterventionsService } from '../interventions.service';
+import { InterventionFormService } from '@interventionForm/service/intervention-form.service';
+import { InterventionFormContainer } from '@interventionForm/form-container/form-container-base';
 
 @Component({
   selector: 'app-private-intervention-form',
   templateUrl: './new-form.component.html',
   styleUrls: ['./new-form.component.scss'],
+  providers: [InterventionFormService],
 })
-export class NewFormComponent extends FormContainer<InterventionFormData> {
-  constructor(interventionsService: InterventionsService) {
-    super(interventionsService.postPrivateForm.bind(interventionsService));
-  }
-}
+export class NewFormComponent extends InterventionFormContainer {}
