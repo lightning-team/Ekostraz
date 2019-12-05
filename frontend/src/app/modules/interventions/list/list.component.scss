@@ -1,6 +1,8 @@
+@import 'breakpoints';
+
 .InterventionsList {
   padding: 10px;
-  @media (min-width: 700px) {
+  @media (min-width: $break-mobile) {
     padding: 30px;
   }
   & > button {
@@ -9,7 +11,7 @@
     .mat-icon {
       margin-left: 6px;
     }
-    @media (min-width: 700px) {
+    @media (min-width: $break-mobile) {
       margin-bottom: 0;
       float: right;
     }
