@@ -36,7 +36,7 @@
     <ng-container matColumnDef="description">
       <mat-header-cell mat-header-cell *matHeaderCellDef>Opis</mat-header-cell>
       <mat-cell mat-cell *matCellDef="let element" title="{{ element.description }}" data-label="Opis">
-        {{ element.description }}
+        <span>{{ element.description }}</span>
       </mat-cell>
     </ng-container>
 

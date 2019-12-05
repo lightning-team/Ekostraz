@@ -1,4 +1,6 @@
-table {
+@import 'breakpoints';
+
+.mat-table {
   width: 100%;
   table-layout: fixed;
 
@@ -8,13 +10,15 @@ table {
   }
 }
 
-.mat-column-description {
+.mat-column-description span {
   line-height: 24px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: block;
 }
-@media screen and (min-width: 701px) {
+
+@media screen and (min-width: $break-mobile) {
   .mat-column-description {
     max-width: 200px;
   }
@@ -23,7 +27,7 @@ table {
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: $break-mobile - 1) {
   .mat-table {
     border: 0;
     vertical-align: middle;
@@ -66,9 +70,6 @@ table {
     }
   }
   .mat-table .mat-cell:before {
-    /** aria-label has no advantage, it won't be read inside a table
-      content: attr(aria-label);
-      */
     content: attr(data-label);
     float: left;
     text-transform: uppercase;
