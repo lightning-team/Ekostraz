@@ -1,47 +1,47 @@
 <div class="mat-elevation-z8">
-  <mat-table mat-table [dataSource]="dataSource">
+  <mat-table [dataSource]="dataSource">
     <!-- Position Column -->
     <ng-container matColumnDef="position">
       <mat-header-cell *matHeaderCellDef>Numer</mat-header-cell>
-      <mat-cell mat-cell *matCellDef="let element" data-label="Numer">{{ element.position }}</mat-cell>
+      <mat-cell *matCellDef="let element" data-label="Numer">{{ element.position }}</mat-cell>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <mat-header-cell mat-header-cell *matHeaderCellDef>Imię i nazwisko</mat-header-cell>
-      <mat-cell mat-cell *matCellDef="let element" data-label="Imię i nazwisko">{{ element.fullName }}</mat-cell>
+      <mat-header-cell *matHeaderCellDef>Imię i nazwisko</mat-header-cell>
+      <mat-cell *matCellDef="let element" data-label="Imię i nazwisko">{{ element.fullName }}</mat-cell>
     </ng-container>
 
     <!-- Status Column -->
     <ng-container matColumnDef="status">
-      <mat-header-cell mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell mat-cell *matCellDef="let element" data-label="Status">{{ element.status }}</mat-cell>
+      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+      <mat-cell *matCellDef="let element" data-label="Status">{{ element.status }}</mat-cell>
     </ng-container>
 
     <!-- Phone Column -->
     <ng-container matColumnDef="phone">
-      <mat-header-cell mat-header-cell *matHeaderCellDef>Telefon</mat-header-cell>
-      <mat-cell mat-cell *matCellDef="let element" data-label="Telefon">{{ element.phone }}</mat-cell>
+      <mat-header-cell *matHeaderCellDef>Telefon</mat-header-cell>
+      <mat-cell *matCellDef="let element" data-label="Telefon">{{ element.phone }}</mat-cell>
     </ng-container>
 
     <!-- Date Column -->
     <ng-container matColumnDef="date">
-      <mat-header-cell mat-header-cell *matHeaderCellDef>Data dodania</mat-header-cell>
-      <mat-cell mat-cell *matCellDef="let element" data-label="Data dodania">{{
+      <mat-header-cell *matHeaderCellDef>Data dodania</mat-header-cell>
+      <mat-cell *matCellDef="let element" data-label="Data dodania">{{
         element.creationDate | date: 'medium'
       }}</mat-cell>
     </ng-container>
 
     <!-- Description Column -->
     <ng-container matColumnDef="description">
-      <mat-header-cell mat-header-cell *matHeaderCellDef>Opis</mat-header-cell>
-      <mat-cell mat-cell *matCellDef="let element" title="{{ element.description }}" data-label="Opis">
+      <mat-header-cell *matHeaderCellDef>Opis</mat-header-cell>
+      <mat-cell *matCellDef="let element" title="{{ element.description }}" data-label="Opis">
         <span>{{ element.description }}</span>
       </mat-cell>
     </ng-container>
 
-    <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row mat-row *matRowDef="let element; columns: displayedColumns" (click)="showDetails(element)"></mat-row>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let element; columns: displayedColumns" (click)="showDetails(element)"></mat-row>
   </mat-table>
 
   <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]"> </mat-paginator>
