@@ -67,7 +67,7 @@ export class InterventionFormComponent implements OnInit {
 
   private buildForm(): FormGroup {
     const formGroupConfig = {
-      id: [{ value: '0', hidden: true }],
+      id: [],
       date: [{ value: '', disabled: true }],
       name: [''],
       description: ['', Validators.required],
