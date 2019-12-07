@@ -1,7 +1,7 @@
 import { InterventionStatus } from '@shared/domain/intervention.status';
 
 export interface InterventionFormData {
-  id: string | null | undefined;
+  id: string | null;
   date: string;
   name: string;
   description: string;
@@ -12,33 +12,25 @@ export interface InterventionFormData {
 }
 
 export class InterventionPostData {
-  Id: string;
-  /** Date in Date().toISOString() format */
-  CreationDate: string;
-  Description: string;
-  FullName: string;
-  PhoneNumber: string;
-  Email: string;
-  /** Address string formatted as: "{street}, {number}, {city}" */
-  Address: string;
-  Status: InterventionStatus;
-
-  // TBD
-  // GeoLat: number;
-  // GeoLng: number;
+  id: string;
+  description: string;
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  address: string; /** Address string formatted as: "{street}, {number}, {city}" */
+  status: InterventionStatus;
 
   constructor(formData: InterventionFormData) {
-    this.Id = formData.id;
-    this.CreationDate = formData.date || new Date().toISOString();
-    this.Description = formData.description;
-    this.FullName = formData.name;
-    this.PhoneNumber = formData.phone;
-    this.Email = formData.email;
-    this.Address = InterventionPostData.getAddress(formData.address);
-    this.Status = formData.status || InterventionStatus.ToVerify;
+    this.id = formData.id;
+    this.description = formData.description;
+    this.fullName = formData.name;
+    this.phoneNumber = formData.phone;
+    this.email = formData.email;
+    this.address = InterventionPostData.convertFormAddress(formData.address);
+    this.status = formData.status;
   }
 
-  private static getAddress(address: { street: string; number: string; city: string }) {
+  private static convertFormAddress(address: { street: string; number: string; city: string }) {
     return `${address.street}, ${address.number}, ${address.city}`;
   }
 }
