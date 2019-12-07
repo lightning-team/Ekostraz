@@ -8,6 +8,7 @@ export const environment: Environment = {
   production: false,
   useSentry: false,
   useGoogleTagManager: false,
+  APIUrl: 'https://ekostrazstagging.azurewebsites.net/api/',
   ...commonEnvironment,
 };
 

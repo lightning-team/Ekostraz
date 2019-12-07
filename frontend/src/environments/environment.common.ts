@@ -4,6 +4,7 @@ export interface Environment {
   sentryDSN: string;
   useGoogleTagManager: boolean;
   tagManagerId: string;
+  APIUrl: string;
 }
 
 export const commonEnvironment: Pick<Environment, 'sentryDSN' | 'tagManagerId'> = {
