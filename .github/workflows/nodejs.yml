@@ -21,6 +21,6 @@ jobs:
           cd frontend
           npm ci
           npm run build --if-present
-          # npm test # don't run the test for now, they're failing
+          npm test
         env:
           CI: true
