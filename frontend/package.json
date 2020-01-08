@@ -8,6 +8,7 @@
     "test": "ng test --browsers=ChromeHeadlessCustom",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadlessCustom",
     "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
     "prettier": "prettier \"**/*.ts\" --write",
     "e2e": "ng e2e",
     "build-optimized": "ng build --prod --aot --build-optimizer",
@@ -16,7 +17,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "pretty-quick --staged && npm run lint:fix"
     }
   },
   "private": true,
