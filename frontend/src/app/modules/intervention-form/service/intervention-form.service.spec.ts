@@ -19,7 +19,7 @@ const testFormData: InterventionFormData = {
 };
 
 const expectedRequestData = new InterventionPostData(testFormData);
-const expectedPostUrl = environment.APIUrl + 'interventions';
+const expectedPostUrl = `${environment.APIUrl}interventions`;
 
 describe('PublicFormService', () => {
   let service: InterventionFormService;

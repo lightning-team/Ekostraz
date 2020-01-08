@@ -4,7 +4,7 @@ interface SelectOption<T> {
 }
 
 export class Option {
-  static of<T = string>(value: string, displayValue?: any): SelectOption<T> {
+  static of<T = string>(value: string, displayValue?: string): SelectOption<T> {
     return {
       value,
       displayValue: displayValue || value,
