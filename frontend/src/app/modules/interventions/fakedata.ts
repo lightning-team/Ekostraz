@@ -1,5 +1,7 @@
 import { RawServerIntervention } from './types';
 
+// Fake data that will be moved/removed out of production code. No need for linting.
+/* tslint:disable */
 export const FAKE_DATA = [
   {
     date: '2019-06-28T23:24:42.888Z',
