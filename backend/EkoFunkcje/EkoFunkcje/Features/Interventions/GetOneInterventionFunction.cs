@@ -29,8 +29,8 @@ namespace EkoFunkcje.Features.Interventions
             _mapper = config.CreateMapper();
         }
 
-        [FunctionName("GetOneIntervention")]
-        public async Task<IActionResult> Run(
+        [FunctionName("GetOneInterventionGeoHash")]
+        public async Task<IActionResult> RunWithGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}/{interventionId}")] HttpRequestMessage req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, ILogger log)
@@ -44,5 +44,18 @@ namespace EkoFunkcje.Features.Interventions
 
             return new JsonResult(interventionItemResponses);
         }
-    }
+
+        [FunctionName("GetOneIntervention")]
+        public async Task<IActionResult> Run(
+          [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{interventionId}")] HttpRequestMessage req,
+          [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
+          string interventionId, ILogger log)
+        {
+          var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
+            TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId)).Take(1), null);
+          var interventionItemResponses = queryResult.Results.Select(x => _mapper.Map<InterventionItemResponse>(x)).FirstOrDefault();
+
+          return new JsonResult(interventionItemResponses);
+        }
+  }
 }

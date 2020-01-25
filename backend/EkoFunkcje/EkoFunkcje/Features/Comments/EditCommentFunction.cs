@@ -18,8 +18,8 @@ namespace EkoFunkcje.Features.Comments
 {
     public static class EditCommentFunction
     {
-        [FunctionName("EditComment")]
-        public static async Task<IActionResult> Run(
+        [FunctionName("EditCommentGeoHash")]
+        public static async Task<IActionResult> RunGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
             [RequestBodyType(typeof(EditCommentRequest), "EditCommentRequest")]EditCommentRequest request,
         [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
@@ -46,6 +46,34 @@ namespace EkoFunkcje.Features.Comments
             }
             
             return new StatusCodeResult(StatusCodes.Status200OK);
+
+        }
+
+        [FunctionName("EditComment")]
+        public static async Task<IActionResult> Run(
+          [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "interventions/{interventionId}/comments/{commentId}")]
+          [RequestBodyType(typeof(EditCommentRequest), "EditCommentRequest")]EditCommentRequest request,
+          [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
+          string interventionId, string commentId, ILogger log)
+        {
+          var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
+            TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId)).Take(1), null);
+
+          var requestedIntervention = queryResult.Results.FirstOrDefault();
+          if (requestedIntervention == null)
+            return new StatusCodeResult(StatusCodes.Status404NotFound);
+
+          try
+          {
+            requestedIntervention.EditComment(commentId, request.NewValue);
+            await interventionsTable.ExecuteAsync(TableOperation.Merge(requestedIntervention));
+          }
+          catch (InvalidOperationException e)
+          {
+            return new StatusCodeResult(StatusCodes.Status404NotFound);
+          }
+
+          return new StatusCodeResult(StatusCodes.Status200OK);
 
         }
     }

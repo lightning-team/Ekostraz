@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace EkoFunkcje.Models.Requests
+{
+    public class ListInterventionsFilterRequest
+    {
+        public int Page { get; set; }
+        public string SortBy { get; set; }
+        public SortDirection? SortDirection { get; set; }
+        public int Status { get; set; }
+        public string City { get; set; }
+        public string Street { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+
+        public ListInterventionsFilterRequest()
+        {
+            Page = 1;
+            SortBy = "CreationDate";
+            Status = -1;
+        }
+    }
+}

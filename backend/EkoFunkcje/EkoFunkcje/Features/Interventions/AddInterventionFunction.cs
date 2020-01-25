@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -55,8 +55,11 @@ namespace EkoFunkcje.Features.Interventions
             InterventionEntity interventionEntity = new InterventionEntity()
             {
                 Email = intervention.Email,
-                Address = intervention.Address,
+                City = intervention.City,
+                Street = intervention.Street,
+                StreetNumber = intervention.StreetNumber,
                 CreationDate = DateTime.UtcNow,
+                ModificationDate = DateTime.UtcNow,
                 Description = intervention.Description,
                 FullName = intervention.FullName,
                 PhoneNumber = intervention.PhoneNumber,

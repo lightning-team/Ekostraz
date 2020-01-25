@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,8 +18,8 @@ namespace EkoFunkcje.Features.Comments
 {
     public static class DeleteCommentFunction
     {
-        [FunctionName("DeleteComment")]
-        public static async Task<IActionResult> Run(
+        [FunctionName("DeleteCommentGeoHash")]
+        public static async Task<IActionResult> RunGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
             [RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]DeletionRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
@@ -47,6 +47,34 @@ namespace EkoFunkcje.Features.Comments
             }
 
             return new StatusCodeResult(StatusCodes.Status200OK);
+        }
+
+        [FunctionName("DeleteComment")]
+        public static async Task<IActionResult> Run(
+          [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "interventions/{interventionId}/comments/{commentId}")]
+          [RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]DeletionRequest request,
+          [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
+          string interventionId, string commentId, ILogger log)
+        {
+          var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
+            TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId)).Take(1), null);
+
+          var requestedIntervention = queryResult.Results.FirstOrDefault();
+          if (requestedIntervention == null)
+            return new StatusCodeResult(StatusCodes.Status404NotFound);
+
+          try
+          {
+            requestedIntervention.DeleteComment(commentId);
+            await interventionsTable.ExecuteAsync(TableOperation.Merge(requestedIntervention));
+
+          }
+          catch (InvalidOperationException e)
+          {
+            return new StatusCodeResult(StatusCodes.Status404NotFound);
+          }
+
+          return new StatusCodeResult(StatusCodes.Status200OK);
         }
     }
 }

@@ -5,7 +5,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
+using EkoFunkcje.Models.Dto;
+using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -32,11 +35,13 @@ namespace EkoFunkcje.Features.Interventions
 
         [FunctionName("GetInterventionsInArea")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}")]
+            [RequestBodyType(typeof(AreaInterventionsFilterRequest), "AreaInterventionsFilterRequest")]AreaInterventionsFilterRequest filter,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, ILogger log)
         {
-            var geoHash = GeoHasher.GetGeoHash(latitude, longitude);
+            var lol = filter;
+            var geoHash = GeoHasher.GetGeoHash(latitude + filter.GeoLatDiff, longitude + filter.GeoLngDiff);
             TableContinuationToken token = null;
 
             var entities = new List<InterventionListItemResponse>();
@@ -48,7 +53,9 @@ namespace EkoFunkcje.Features.Interventions
                 token = queryResult.ContinuationToken;
             } while (token != null);
 
-            return new JsonResult(entities);
+            var filteredEntities = entities;
+
+            return new JsonResult(filteredEntities);
         }
     }
 }
