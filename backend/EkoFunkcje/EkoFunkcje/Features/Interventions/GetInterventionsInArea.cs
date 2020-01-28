@@ -40,7 +40,6 @@ namespace EkoFunkcje.Features.Interventions
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, ILogger log)
         {
-            var lol = filter;
             var geoHash = GeoHasher.GetGeoHash(latitude + filter.GeoLatDiff, longitude + filter.GeoLngDiff);
             TableContinuationToken token = null;
 
@@ -53,7 +52,7 @@ namespace EkoFunkcje.Features.Interventions
                 token = queryResult.ContinuationToken;
             } while (token != null);
 
-            var filteredEntities = entities;
+            var filteredEntities = entities.Where(x => filter.Statuses.Contains(x.Status));
 
             return new JsonResult(filteredEntities);
         }

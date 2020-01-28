@@ -22,7 +22,7 @@ namespace EkoFunkcje.Models.Dto
         [Required(ErrorMessage = "No street")]
         public string Street { get; set; }
 
-        [Required(ErrorMessage = "No address")]
+        [Required(ErrorMessage = "No streetnumber")]
         public string StreetNumber { get; set; }
 
         public string Address => $"{City},{Street},{StreetNumber}";

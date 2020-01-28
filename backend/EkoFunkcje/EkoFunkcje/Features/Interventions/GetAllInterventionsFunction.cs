@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
+using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,14 +27,14 @@ namespace EkoFunkcje.Features.Interventions
             _mapper = config.CreateMapper();
         }
 
-        //TODO okreslic po jakich filtrach bedą pobierane interwencje dla widoku listy
         [FunctionName("GetAllInterventions")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions")]
+            [RequestBodyType(typeof(ListInterventionsFilterRequest), "ListInterventionsFilterRequest")] ListInterventionsFilterRequest filter,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
             ILogger log)
         {
-            TableQuery<InterventionEntity> rangeQuery = new TableQuery<InterventionEntity>().Select(new List<string>() { "RowKey", "GeoLat", "GeoLng" }).Take(100);
+            TableQuery<InterventionEntity> rangeQuery = new TableQuery<InterventionEntity>().Take(100);
 
             TableContinuationToken token = null;
             var entities = new List<InterventionListItemResponse>();
