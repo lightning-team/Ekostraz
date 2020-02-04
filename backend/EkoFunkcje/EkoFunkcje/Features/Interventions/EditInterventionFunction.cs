@@ -56,8 +56,7 @@ namespace EkoFunkcje.Features.Interventions
             {
                 return new StatusCodeResult(StatusCodes.Status404NotFound);
             }
-
-
+            
             if (AddressChanged(interventionToEdit, editedIntervention))
             {
                 Address convertedGeoAddress = new Address();
@@ -70,11 +69,32 @@ namespace EkoFunkcje.Features.Interventions
                     log.LogError(e, "error");
                     return new StatusCodeResult(StatusCodes.Status500InternalServerError);
                 }
-                interventionToEdit.City = editedIntervention.City;
-                interventionToEdit.Street = editedIntervention.Street;
-                interventionToEdit.StreetNumber = editedIntervention.StreetNumber;
-                interventionToEdit.GeoLat = convertedGeoAddress.Latitude;
-                interventionToEdit.GeoLng = convertedGeoAddress.Lognitude;
+
+                InterventionEntity adddedInterventionEntity = new InterventionEntity()
+                {
+                    Email = editedIntervention.Email,
+                    CreationDate = interventionToEdit.CreationDate,
+                    ModificationDate = DateTime.UtcNow,
+                    Description = editedIntervention.Description,
+                    FullName = editedIntervention.FullName,
+                    PhoneNumber = editedIntervention.PhoneNumber,
+                    Status = editedIntervention.Status,
+                    City = editedIntervention.City,
+                    Street = editedIntervention.Street,
+                    StreetNumber = editedIntervention.StreetNumber,
+                    GeoLat = convertedGeoAddress.Latitude,
+                    GeoLng = convertedGeoAddress.Lognitude,
+                    PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision)
+                };
+
+                TableOperation deleteOldIntervention = TableOperation.Delete(interventionToEdit);
+                TableOperation insertNewIntervention = TableOperation.InsertOrReplace(adddedInterventionEntity);
+
+                TableBatchOperation batch = new TableBatchOperation { deleteOldIntervention, insertNewIntervention };
+                await interventionsTable.ExecuteBatchAsync(batch);
+
+                var addedItemResponse = _mapper.Map<InterventionItemResponse>(adddedInterventionEntity);
+                return new JsonResult(addedItemResponse);
             }
 
             interventionToEdit.Email = editedIntervention.Email;
