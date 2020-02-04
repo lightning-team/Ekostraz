@@ -37,7 +37,7 @@ namespace EkoFunkcje.Features.Interventions
             ILogger log)
         {
             string finalFilter = "";
-            if (string.IsNullOrWhiteSpace(filter.City))
+            if (!string.IsNullOrWhiteSpace(filter.City))
             {
                 string cityFilter = TableQuery.GenerateFilterCondition(
                     "City", QueryComparisons.Equal,
@@ -47,7 +47,7 @@ namespace EkoFunkcje.Features.Interventions
                     TableOperators.And,
                     finalFilter);
             }
-            if (string.IsNullOrWhiteSpace(filter.Street))
+            if (!string.IsNullOrWhiteSpace(filter.Street))
             {
                 string streetFilter = TableQuery.GenerateFilterCondition(
                     "Street", QueryComparisons.Equal,
@@ -92,16 +92,15 @@ namespace EkoFunkcje.Features.Interventions
             var entities = new List<InterventionListItemResponse>();
             do
             {
-                var queryResult = await cloudTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
-                    finalFilter), token);
+                var queryResult = await cloudTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>(), token);
                 entities.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);
 
 
-            var sortedEntities = filter.SortDirection == SortDirection.Descending ?
-                entities.OrderByDescending(filter.SortBy ?? "CreationDate")
-                : entities.OrderBy(filter.SortBy ?? "CreationDate");
+            var sortedEntities = filter.SortDirection == (int)SortDirection.Descending ?
+                entities.AsQueryable().OrderByDescending(filter.SortBy ?? "CreationDate")
+                : entities.AsQueryable().OrderBy(filter.SortBy ?? "CreationDate");
 
             var pagedEntities = sortedEntities.Skip((filter.Page - 1) * filter.PageSize).Take(filter.PageSize);
 

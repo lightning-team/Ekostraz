@@ -17,7 +17,7 @@ namespace EkoFunkcje.Utils
             typeof(Queryable).GetMethods()
                 .Where(method => method.Name == "OrderByDescending").Single(method => method.GetParameters().Length == 2);
 
-        private static IList<TSource> DoOrderBy<TSource>(IList<TSource> source, string propertyName, MethodInfo orderMethod)
+        private static IQueryable<TSource> DoOrderBy<TSource>(IQueryable<TSource> source, string propertyName, MethodInfo orderMethod)
         {
             ParameterExpression parameter = Expression.Parameter(typeof(TSource), "p");
             Expression orderByProperty = Expression.Property(parameter, propertyName);
@@ -27,17 +27,17 @@ namespace EkoFunkcje.Utils
             MethodInfo genericMethod = orderMethod.MakeGenericMethod
                 (new[] { typeof(TSource), orderByProperty.Type });
             object ret = genericMethod.Invoke(null, new object[] { source, lambda });
-            return (IList<TSource>)ret;
+            return (IQueryable<TSource>)ret;
         }
 
-        public static IList<TSource> OrderBy<TSource>
-            (this IList<TSource> source, string propertyName)
+        public static IQueryable<TSource> OrderBy<TSource>
+            (this IQueryable<TSource> source, string propertyName)
         {
             return DoOrderBy(source, propertyName, OrderByMethod);
         }
 
-        public static IList<TSource> OrderByDescending<TSource>
-            (this IList<TSource> source, string propertyName)
+        public static IQueryable<TSource> OrderByDescending<TSource>
+            (this IQueryable<TSource> source, string propertyName)
         {
             return DoOrderBy(source, propertyName, OrderByDescendingMethod);
         }

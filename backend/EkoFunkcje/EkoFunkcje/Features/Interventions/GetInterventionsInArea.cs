@@ -47,7 +47,7 @@ namespace EkoFunkcje.Features.Interventions
             do
             {
                 var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, geoHash)), null);
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, geoHash)), token);
                 entities.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);

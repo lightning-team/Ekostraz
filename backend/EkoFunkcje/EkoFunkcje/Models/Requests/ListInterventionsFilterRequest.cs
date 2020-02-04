@@ -9,7 +9,7 @@ namespace EkoFunkcje.Models.Requests
         public int Page { get; set; }
         public int PageSize { get; set; }
         public string SortBy { get; set; }
-        public SortDirection? SortDirection { get; set; }
+        public int? SortDirection { get; set; }
         public int Status { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
@@ -21,10 +21,10 @@ namespace EkoFunkcje.Models.Requests
             Page = 1;
             PageSize = 20;
             SortBy = "CreationDate";
+            SortDirection = (int)Models.SortDirection.Descending;
             Status = -1;
             DateTo = null;
             DateFrom = null;
-            SortDirection = Models.SortDirection.Descending;
         }
     }
 }
