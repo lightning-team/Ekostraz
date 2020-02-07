@@ -36,63 +36,14 @@ namespace EkoFunkcje.Features.Interventions
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
             ILogger log)
         {
-            string finalFilter = "";
-            if (!string.IsNullOrWhiteSpace(filter.City))
-            {
-                string cityFilter = TableQuery.GenerateFilterCondition(
-                    "City", QueryComparisons.Equal,
-                    filter.City);
-                finalFilter = TableQuery.CombineFilters(
-                    cityFilter,
-                    TableOperators.And,
-                    finalFilter);
-            }
-            if (!string.IsNullOrWhiteSpace(filter.Street))
-            {
-                string streetFilter = TableQuery.GenerateFilterCondition(
-                    "Street", QueryComparisons.Equal,
-                    filter.Street);
-                finalFilter = TableQuery.CombineFilters(
-                    streetFilter,
-                    TableOperators.And,
-                    finalFilter);
-            }
-            if (filter.DateFrom != null)
-            {
-                string dateFromFilter = TableQuery.GenerateFilterConditionForDate(
-                    "DateFrom", QueryComparisons.GreaterThanOrEqual,
-                    new DateTimeOffset(filter.DateFrom.Value));
-                finalFilter = TableQuery.CombineFilters(
-                    dateFromFilter,
-                    TableOperators.And,
-                    finalFilter);
-            }
-            if (filter.DateTo != null)
-            {
-                string dateToFilter = TableQuery.GenerateFilterConditionForDate(
-                    "DateTo", QueryComparisons.LessThanOrEqual,
-                    new DateTimeOffset(filter.DateTo.Value));
-                finalFilter = TableQuery.CombineFilters(
-                    dateToFilter,
-                    TableOperators.And,
-                    finalFilter);
-            }
-            if (filter.Status != -1)
-            {
-                string statusFilter = TableQuery.GenerateFilterConditionForInt(
-                    "Status", QueryComparisons.Equal,
-                    filter.Status);
-                finalFilter = TableQuery.CombineFilters(
-                    statusFilter,
-                    TableOperators.And,
-                    finalFilter);
-            }
+            string finalFilter = InterventionFilterBuilder.GetInterventionListViewFilter(filter);
 
             TableContinuationToken token = null;
             var entities = new List<InterventionListItemResponse>();
             do
             {
-                var queryResult = await cloudTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>(), token);
+                var queryResult = await cloudTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
+                    finalFilter), token);
                 entities.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);

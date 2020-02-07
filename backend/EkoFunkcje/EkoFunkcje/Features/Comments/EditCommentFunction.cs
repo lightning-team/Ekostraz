@@ -26,7 +26,7 @@ namespace EkoFunkcje.Features.Comments
             string latitude, string longitude, string interventionId, string commentId, ILogger log)
         {
             var geoHash = GeoHasher.GetGeoHash(latitude, longitude);
-            var finalFilter = InterventionFilterBuilder.GetInterventionFilter(geoHash, interventionId);
+            var finalFilter = InterventionFilterBuilder.GetInterventionGeoHashFilter(geoHash, interventionId);
 
             var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
                 finalFilter).Take(1), null); 

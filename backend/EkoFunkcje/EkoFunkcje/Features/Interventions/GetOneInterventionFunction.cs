@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,6 +8,7 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -36,13 +38,18 @@ namespace EkoFunkcje.Features.Interventions
             string latitude, string longitude, string interventionId, ILogger log)
         {
             var geoHash = GeoHasher.GetGeoHash(latitude, longitude);
-            var finalFilter = InterventionFilterBuilder.GetInterventionFilter(geoHash, interventionId);
+            var finalFilter = InterventionFilterBuilder.GetInterventionGeoHashFilter(geoHash, interventionId);
 
             var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
                 finalFilter).Take(1), null);
-            var interventionItemResponses = queryResult.Results.Select(x => _mapper.Map<InterventionItemResponse>(x)).FirstOrDefault();
+            var interventionItemResponses = queryResult.Results.FirstOrDefault();
 
-            return new JsonResult(interventionItemResponses);
+            if (interventionItemResponses != null)
+            {
+                return new JsonResult(_mapper.Map<InterventionItemResponse>(interventionItemResponses));
+            }
+
+            return new StatusCodeResult(StatusCodes.Status404NotFound);
         }
 
         [FunctionName("GetOneIntervention")]
@@ -53,9 +60,14 @@ namespace EkoFunkcje.Features.Interventions
         {
           var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
             TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId)).Take(1), null);
-          var interventionItemResponses = queryResult.Results.Select(x => _mapper.Map<InterventionItemResponse>(x)).FirstOrDefault();
+          var interventionItemResponses = queryResult.Results.FirstOrDefault();
 
-          return new JsonResult(interventionItemResponses);
+          if (interventionItemResponses != null)
+          {
+              return new JsonResult(_mapper.Map<InterventionItemResponse>(interventionItemResponses));
+          }
+
+          return new StatusCodeResult(StatusCodes.Status404NotFound);
         }
   }
 }
