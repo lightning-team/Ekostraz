@@ -23,7 +23,7 @@ namespace EkoFunkcje.Features.Interventions
 {
     public class EditInterventionFunction
     {
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
         private readonly IAddressConverter _addressConverter;
         
         public EditInterventionFunction(IAddressConverter addressConverter)
@@ -159,10 +159,8 @@ namespace EkoFunkcje.Features.Interventions
 
               TableOperation deleteOldIntervention = TableOperation.Delete(interventionToEdit);
               TableOperation insertNewIntervention = TableOperation.InsertOrReplace(adddedInterventionEntity);
-
-              TableBatchOperation batch = new TableBatchOperation {deleteOldIntervention, insertNewIntervention};
-              await interventionsTable.ExecuteBatchAsync(batch);
-              
+              await interventionsTable.ExecuteAsync(deleteOldIntervention);
+              await interventionsTable.ExecuteAsync(insertNewIntervention);
               var addedItemResponse = _mapper.Map<InterventionItemResponse>(adddedInterventionEntity);
               return new JsonResult(addedItemResponse);
             }
