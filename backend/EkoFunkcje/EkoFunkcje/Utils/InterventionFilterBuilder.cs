@@ -33,53 +33,55 @@ namespace EkoFunkcje.Utils
                 string cityFilter = TableQuery.GenerateFilterCondition(
                     "City", QueryComparisons.Equal,
                     filter.City);
-                finalFilter = TableQuery.CombineFilters(
-                    cityFilter,
-                    TableOperators.And,
-                    finalFilter);
+                finalFilter = CombineFilters(cityFilter, finalFilter);
+
             }
             if (!string.IsNullOrWhiteSpace(filter.Street))
             {
                 string streetFilter = TableQuery.GenerateFilterCondition(
                     "Street", QueryComparisons.Equal,
                     filter.Street);
-                finalFilter = TableQuery.CombineFilters(
-                    streetFilter,
-                    TableOperators.And,
-                    finalFilter);
+                finalFilter = CombineFilters(streetFilter, finalFilter);
             }
             if (filter.DateFrom != null)
             {
                 string dateFromFilter = TableQuery.GenerateFilterConditionForDate(
-                    "DateFrom", QueryComparisons.GreaterThanOrEqual,
+                    "CreationDate", QueryComparisons.GreaterThanOrEqual,
                     new DateTimeOffset(filter.DateFrom.Value));
-                finalFilter = TableQuery.CombineFilters(
-                    dateFromFilter,
-                    TableOperators.And,
-                    finalFilter);
+                finalFilter = CombineFilters(dateFromFilter, finalFilter);
+
             }
             if (filter.DateTo != null)
             {
                 string dateToFilter = TableQuery.GenerateFilterConditionForDate(
-                    "DateTo", QueryComparisons.LessThanOrEqual,
+                    "CreationDate", QueryComparisons.LessThanOrEqual,
                     new DateTimeOffset(filter.DateTo.Value));
-                finalFilter = TableQuery.CombineFilters(
-                    dateToFilter,
-                    TableOperators.And,
-                    finalFilter);
+                finalFilter = CombineFilters(dateToFilter, finalFilter);
+
             }
             if (filter.Status != -1)
             {
                 string statusFilter = TableQuery.GenerateFilterConditionForInt(
                     "Status", QueryComparisons.Equal,
                     filter.Status);
-                finalFilter = TableQuery.CombineFilters(
-                    statusFilter,
-                    TableOperators.And,
-                    finalFilter);
+                finalFilter = CombineFilters(statusFilter, finalFilter);
+
             }
 
             return finalFilter;
+        }
+
+        private static string CombineFilters(string filter, string combinedFilter)
+        {
+            if (!string.IsNullOrWhiteSpace(combinedFilter))
+            {
+                return TableQuery.CombineFilters(
+                    filter,
+                    TableOperators.And,
+                    combinedFilter);
+            }
+
+            return filter;
         }
     }
 }
