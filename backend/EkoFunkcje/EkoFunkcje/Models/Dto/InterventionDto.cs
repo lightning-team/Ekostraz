@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace EkoFunkcje.Models.Dto
 {
@@ -16,9 +16,17 @@ namespace EkoFunkcje.Models.Dto
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "No address")]
-        public string Address { get; set; }
+        [Required(ErrorMessage = "No city")]
+        public string City { get; set; }
 
-        public string Status { get; set; }
+        [Required(ErrorMessage = "No street")]
+        public string Street { get; set; }
+
+        [Required(ErrorMessage = "No streetnumber")]
+        public string StreetNumber { get; set; }
+
+        public string Address => $"{City},{Street},{StreetNumber}";
+
+        public int Status { get; set; }
     }
 }

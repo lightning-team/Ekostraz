@@ -8,6 +8,8 @@ namespace EkoFunkcje.Models.Respones
 
         public DateTime CreationDate { get; set; }
 
+        public DateTime ModificationDate { get; set; }
+
         public string FullName { get; set; }
 
         public string Description { get; set; }
@@ -16,9 +18,13 @@ namespace EkoFunkcje.Models.Respones
 
         public string Email { get; set; }
 
-        public string Address { get; set; }
+        public string City { get; set; }
 
-        public string Status { get; set; }
+        public string Street { get; set; }
+
+        public string StreetNumber { get; set; }
+
+        public int Status { get; set; }
 
         public double GeoLat { get; set; }
 

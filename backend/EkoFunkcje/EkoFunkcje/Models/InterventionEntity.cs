@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EkoFunkcje.Models.Dto;
@@ -17,6 +17,8 @@ namespace EkoFunkcje.Models
 
         public DateTime CreationDate { get; set; }
 
+        public DateTime ModificationDate { get; set; }
+
         public string FullName { get; set; }
 
         public string Description { get; set; }
@@ -27,7 +29,13 @@ namespace EkoFunkcje.Models
          
         public int Status { get; set; }
 
-        public string Address { get; set; }
+        public string City { get; set; }
+
+        public string Street { get; set; }
+
+        public string StreetNumber { get; set; }
+
+        public string Address => $"{City},{Street},{StreetNumber}";
 
         public double GeoLat { get; set; }
 
