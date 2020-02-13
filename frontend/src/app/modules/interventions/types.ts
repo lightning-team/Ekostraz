@@ -3,8 +3,11 @@ import { InterventionStatus } from '@shared/domain/intervention.status';
 export class Intervention {
   id: string;
   /** Address string formatted as: "{street}, {number}, {city}" */
-  address: string;
+  // address: string;
   fullName: string;
+  city: string;
+  street: string;
+  streetNumber: string;
   status: InterventionStatus;
   phone: string;
   email: string;
@@ -18,11 +21,14 @@ export class Intervention {
 
   constructor(rawIntervention: RawServerIntervention) {
     this.id = rawIntervention.id;
-    this.address = rawIntervention.address;
+    // this.address = rawIntervention.address;
     this.fullName = rawIntervention.fullName;
     // TODO: Fix statuses either on backend or here
     this.status = (rawIntervention.status as InterventionStatus) || InterventionStatus.ToVerify;
     this.phone = rawIntervention.phoneNumber;
+    this.street = rawIntervention.street;
+    this.streetNumber = rawIntervention.streetNumber;
+    this.city = rawIntervention.city;
     this.email = rawIntervention.email;
     this.creationDate = rawIntervention.creationDate;
     this.description = rawIntervention.description;
@@ -40,7 +46,10 @@ export interface RawServerIntervention {
   id: string;
   /** Date in Date().toISOString() format */
   creationDate: string;
-  address: string;
+  // address: string;
+  city: string;
+  street: string;
+  streetNumber: string;
   email: string;
   fullName: string;
   description: string;

@@ -49,9 +49,14 @@ const toFormData = (intervention: Intervention | null): InterventionFormData =>
         name: intervention.fullName,
         description: intervention.description,
         phone: intervention.phone,
+        address: {
+          street: intervention.street,
+          number: intervention.streetNumber,
+          city: intervention.city,
+        },
         email: intervention.email,
         status: intervention.status,
-        address: createAddress(intervention.address),
+        // address: createAddress(intervention.address),
       } as InterventionFormData)
     : null;
 
