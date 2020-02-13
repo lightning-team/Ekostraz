@@ -4,7 +4,7 @@ import faker from 'faker';
 /* tslint:disable */
 export const FAKE_DATA = [...new Array(100).keys()].map(() => ({
   date: '2019-06-28T23:24:42.888Z',
-  contactPerson: faker.name.fullName(),
+  contactPerson: `${faker.name.firstName()} ${faker.name.lastName()}`,
   description:
     'Odit ut magni eum molestiae explicabo omnis sunt reiciendis dolorem. Suscipit amet harum aut vitae eum eum quam alias consequatur. Quos dolorem eum adipisci sit molestiae adipisci qui necessitatibus consequuntur.',
   phone: '(042) 648-7651 x44008',
