@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
-import { InterventionFormData } from '../types';
 import { InterventionStatus } from '@shared/domain/intervention.status';
 import { Option } from '../helpers/option';
+import { Intervention, InterventionFormData } from '@shared/domain/intervention.model';
 
 export const InterventionStatusOptions = [
   Option.of(InterventionStatus.ToVerify, 'Do weryfikacji'),
@@ -12,6 +12,8 @@ export const InterventionStatusOptions = [
   Option.of(InterventionStatus.InProgress, 'W toku'),
   Option.of(InterventionStatus.Closed, 'Zamknięta'),
 ];
+
+type InterventionFormGroupConfig = { [key in keyof InterventionFormData]: any };
 
 /**
  * Main reusable form component to report and edit interventions.
@@ -26,7 +28,7 @@ export const InterventionStatusOptions = [
 export class InterventionFormComponent implements OnInit {
   @Input() formTitle = 'Zgłoś interwencję';
   @Input() buttonText = 'Wyślij zgłoszenie';
-  @Input() intervention: InterventionFormData | null = null;
+  @Input() intervention: Intervention = null;
   @Input() inPrivateMode = false;
 
   @Output() formSubmit = new EventEmitter<InterventionFormData>();
@@ -66,19 +68,17 @@ export class InterventionFormComponent implements OnInit {
   }
 
   private buildForm(): FormGroup {
-    const formGroupConfig = {
+    const formGroupConfig: InterventionFormGroupConfig = {
       id: [],
-      date: [{ value: '', disabled: true }],
-      name: [''],
+      creationDate: [{ value: '', disabled: true }],
+      fullName: [''],
       description: ['', Validators.required],
-      phone: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
       email: ['', Validators.email],
       status: ['', this.inPrivateMode ? [Validators.required] : []],
-      address: this.formBuilder.group({
-        street: ['', Validators.required],
-        number: ['', Validators.required],
-        city: ['', Validators.required],
-      }),
+      street: ['', Validators.required],
+      streetNumber: ['', Validators.required],
+      city: ['', Validators.required],
     };
 
     return this.formBuilder.group(formGroupConfig);

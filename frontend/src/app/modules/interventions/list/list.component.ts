@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { Intervention, InterventionListRouterState, ListIntervention } from '../types';
+import { Intervention, InterventionListRouterState, ListIntervention } from '@shared/domain/intervention.model';
 import { InterventionsService } from '../interventions.service';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 

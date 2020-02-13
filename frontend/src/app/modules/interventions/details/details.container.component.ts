@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { first, tap } from 'rxjs/operators';
 
 import { InterventionsService } from '../interventions.service';
-import { Intervention } from '../types';
+import { Intervention } from '@shared/domain/intervention.model';
 
 @Component({
   selector: 'app-intervention-details-container',

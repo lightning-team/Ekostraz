@@ -3,7 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 
-import { Intervention } from '../types';
+import { Intervention } from '@shared/domain/intervention.model';
 import { InterventionsService } from '../interventions.service';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
