@@ -21,7 +21,7 @@ const testFormData: InterventionFormData = {
 const expectedRequestData = new InterventionPostData(testFormData);
 const expectedPostUrl = `${environment.APIUrl}interventions`;
 
-describe('PublicFormService', () => {
+describe('InterventionFormService', () => {
   let service: InterventionFormService;
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
@@ -42,17 +42,12 @@ describe('PublicFormService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('postPublicForm', () => {
-    beforeEach(async () => {
-      await service.post(testFormData).subscribe();
-      requestMock = httpTestingController.expectOne(expectedPostUrl);
-    });
+  it('should send correct data to the backend', () => {
+    service.post(testFormData).subscribe();
 
-    it('should send correct data to the backend', () => {
-      expect(requestMock.request.method).toEqual('POST');
-      expect(requestMock.request.headers.get('x-functions-key')).toEqual(jasmine.any(String));
-      expect(requestMock.request.withCredentials).toEqual(false);
-      expect(requestMock.request.body).toEqual(expectedRequestData);
-    });
+    requestMock = httpTestingController.expectOne({ method: 'POST', url: expectedPostUrl });
+
+    expect(requestMock.request.withCredentials).toEqual(false);
+    expect(requestMock.request.body).toEqual(expectedRequestData);
   });
 });
