@@ -38,11 +38,13 @@ export class DetailsComponent extends ComponentWithSubscriptions {
   }
 
   private deleteIntervention() {
-    this.subscriptions.add(
-      this.interventionService
-        .delete(this.intervention.id, this.intervention.phone)
-        .subscribe(() => this.router.navigate(['interwencje'])),
-    );
+    // TODO: Delete disabled until confirmed
+    this.subscriptions
+      .add
+      // this.interventionService
+      //   .delete(this.intervention.id, this.intervention.phone)
+      //   .subscribe(() => this.router.navigate(['interwencje'])),
+      ();
   }
 
   navigateToEditView() {

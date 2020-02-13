@@ -16,7 +16,7 @@ import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 export class ListComponent {
   interventionsListGtmContext: string;
   interventions: ListIntervention[];
-  loading$: Observable<ListIntervention[]> = this.interventionsService.fetchInterventions().pipe(
+  loading$: Observable<ListIntervention[]> = this.interventionsService.getInterventions().pipe(
     map(toTableData),
     tap(data => {
       this.interventions = data;

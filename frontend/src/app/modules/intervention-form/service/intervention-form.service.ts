@@ -15,4 +15,8 @@ export class InterventionFormService {
   post(formData: InterventionFormData): Observable<any> {
     return this.http.post(this.interventionsUrl, formData);
   }
+
+  update(formData: InterventionFormData): Observable<any> {
+    return this.http.put(`${this.interventionsUrl}/${formData.id}`, formData);
+  }
 }

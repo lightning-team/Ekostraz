@@ -26,6 +26,7 @@ export class EditFormComponent extends InterventionFormContainer {
     }),
     first(),
   );
+  submitFormFn = formData => this.formService.update(formData);
 
   constructor(
     private activatedRoute: ActivatedRoute,
