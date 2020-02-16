@@ -27,6 +27,6 @@ namespace EkoFunkcje.Models.Dto
 
         public string Address => $"{City},{Street},{StreetNumber}";
 
-        public int Status { get; set; }
+        public InterventionStatus Status { get; set; }
     }
 }

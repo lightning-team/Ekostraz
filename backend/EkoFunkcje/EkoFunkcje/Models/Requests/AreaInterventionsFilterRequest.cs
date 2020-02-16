@@ -6,7 +6,7 @@ namespace EkoFunkcje.Models.Requests
 {
     public class AreaInterventionsFilterRequest
     {
-        public List<int> Statuses { get; set; }
+        public List<InterventionStatus> Statuses { get; set; }
 
         public double GeoLatDiff { get; set; }
 
@@ -14,9 +14,9 @@ namespace EkoFunkcje.Models.Requests
 
         public AreaInterventionsFilterRequest()
         {
-            Statuses = new List<int>
+            Statuses = new List<InterventionStatus>
             {
-                0, 1, 2
+                InterventionStatus.ToVerify, InterventionStatus.ActionRequired, InterventionStatus.InProgress,
             };
         }
     }
