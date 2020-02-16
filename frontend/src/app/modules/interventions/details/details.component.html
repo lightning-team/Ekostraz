@@ -12,14 +12,14 @@
     <button mat-raised-button color="primary" title="Edytuj" (click)="navigateToEditView()">
       {{ embedded ? '' : 'Edytuj' }}<mat-icon>edit</mat-icon>
     </button>
-    <!-- TODO:  Delete disabled until confirmed it is still needed -->
+    <!-- TODO: "Delete" button is disabled until confirmed that we still need it -->
     <button *ngIf="false" mat-raised-button color="warn" title="Usuń" (click)="showDeleteDialog()">
       {{ embedded ? '' : 'Usuń' }}<mat-icon>delete</mat-icon>
     </button>
   </mat-card-actions>
 
   <mat-list>
-    <mat-list-item> <mat-icon>done</mat-icon> {{ intervention.status }} </mat-list-item>
+    <mat-list-item> <mat-icon>done</mat-icon> {{ intervention.status | ekoInterventionStatus }} </mat-list-item>
     <mat-list-item> <mat-icon>account_circle</mat-icon> {{ intervention.fullName }} </mat-list-item>
     <mat-list-item> <mat-icon>phone</mat-icon> {{ intervention.phoneNumber }} </mat-list-item>
     <mat-list-item> <mat-icon>email</mat-icon> {{ intervention.email }} </mat-list-item>

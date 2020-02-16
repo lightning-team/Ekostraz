@@ -15,7 +15,7 @@
     <!-- Status Column -->
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell *matCellDef="let element" data-label="Status">{{ element.status }}</mat-cell>
+      <mat-cell *matCellDef="let element" data-label="Status">{{ element.status | ekoInterventionStatus }}</mat-cell>
     </ng-container>
 
     <!-- Phone Column -->
