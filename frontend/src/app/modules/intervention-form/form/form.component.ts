@@ -2,16 +2,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
-import { InterventionStatus } from '@shared/domain/intervention.status';
-import { Option } from '../helpers/option';
 import { Intervention, InterventionFormData } from '@shared/domain/intervention.model';
-
-export const InterventionStatusOptions = [
-  Option.of(InterventionStatus.ToVerify, 'Do weryfikacji'),
-  Option.of(InterventionStatus.ActionRequired, 'Do podjęcia'),
-  Option.of(InterventionStatus.InProgress, 'W toku'),
-  Option.of(InterventionStatus.Closed, 'Zamknięta'),
-];
+import { InterventionStatusOptions } from '@shared/domain/intervention.status';
 
 type InterventionFormGroupConfig = { [key in keyof InterventionFormData]: any };
 
