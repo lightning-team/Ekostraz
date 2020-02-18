@@ -1,48 +1,53 @@
 .InterventionFormCard {
-    max-width: 500px;
-    padding: 30px;
-    margin: auto;
+  max-width: 500px;
+  padding: 30px;
+  margin: auto;
 
-    & .mat-card-title {
-        margin-bottom: 20px;
+  & .mat-card-title {
+    margin-bottom: 20px;
+  }
+
+  & form {
+    display: grid;
+    // prevent columns overflowing grid
+    grid-auto-columns: minmax(0, 1fr);
+
+    .mat-form-field {
+      margin-bottom: 10px;
+      width: 100%;
     }
 
-    & form {
+    & textarea {
+      min-height: 85px;
+    }
+
+    & [type='submit'] {
+      margin: auto;
+      margin-top: 20px;
+      display: block;
+    }
+    @media (min-width: 400px) {
+      & .address {
         display: grid;
-        // prevent columns overflowing grid
-        grid-auto-columns: minmax(0, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 33.3%));
+        grid-gap: 15px;
 
-        .mat-form-field {
-            margin-bottom: 10px;
-            width: 100%;
-        }
-
-        & textarea {
-            min-height: 85px;
+        &--header {
+          grid-column: 1 / span 3;
+          margin: 1em 0 0 0;
         }
 
-        & [type="submit"] {
-            margin: auto;
-            margin-top: 20px;
-            display: block;
+        &--street {
+          grid-column: 1 / span 2;
         }
-        @media (min-width: 400px) {
-            & .address {
-                display: grid;
-                grid-template-columns: repeat(3, minmax(0,33.3%));
-                grid-gap: 15px;
-    
-                &--street {
-                    grid-column: 1 / span 2;
-                }
-    
-                &--number {
-                    grid-column: 3 / span 1;
-                }
-                &--city {
-                    grid-column: 1 / span 2;
-                }
-            }
+
+        &--number {
+          grid-column: 3 / span 1;
         }
-    }   
+        &--city {
+          grid-column: 1 / span 2;
+        }
+      }
+    }
+  }
 }
