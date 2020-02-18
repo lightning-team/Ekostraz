@@ -62,9 +62,17 @@ export class InterventionFormComponent implements OnInit {
     }
   }
 
-  isControlInvalid(controlName: string) {
+  hasRequiredError(controlName: string) {
+    return this.controlHasError(controlName, 'required');
+  }
+
+  hasPatternError(controlName: string) {
+    this.controlHasError(controlName, 'pattern');
+  }
+
+  private controlHasError(controlName: string, errorKey: string) {
     const control = this.form.get(controlName);
-    return !control.valid && control.touched;
+    return control.touched && control.errors && control.errors[errorKey];
   }
 
   private buildForm(): FormGroup {
