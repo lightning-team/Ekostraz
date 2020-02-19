@@ -112,3 +112,62 @@
   content: '|';
   margin: 0 10px;
 }
+
+.comment-form .form {
+  margin-top: 50px;
+}
+
+.comment-form .form .form-row {
+  margin-bottom: 10px;
+}
+.comment-form .form .form-row:last-child {
+  margin-bottom: 0;
+}
+
+.comment-form .form .input {
+  background-color: #fcfcfc;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  color: #555f77;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 5px 10px;
+  outline: none;
+  width: 100%;
+  transition: 350ms box-shadow;
+}
+
+.comment-form .form textarea.input {
+  height: 100px;
+  padding: 15px;
+}
+
+.comment-form .form input[type='submit'] {
+  background-color: #555f77;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  outline: none;
+  padding: 6px 15px;
+  transition: 350ms box-shadow;
+}
+
+.comment-form .form .input:focus,
+.comment-form .form input[type='submit']:focus,
+.comment-form .form input[type='submit']:hover {
+  box-shadow: 0 2px 6px rgba(121, 137, 148, 0.55);
+}
+
+.comment-form .form.ng-submitted .input.ng-invalid,
+.comment-form .form .input.ng-dirty.ng-invalid {
+  box-shadow: 0 2px 6px rgba(212, 47, 47, 0.55) !important;
+}
+
+.comment-form .form .input.disabled {
+  background-color: #e8e8e8;
+}
