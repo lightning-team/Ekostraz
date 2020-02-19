@@ -14,10 +14,17 @@ export interface InterventionFormData {
   status: InterventionStatus;
 }
 
+interface Comment {
+  id: string;
+  comment: string;
+  createdDate: string;
+}
+
 export interface RawServerIntervention extends InterventionFormData {
   modificationDate: string;
   geoLat: number;
   geoLng: number;
+  comments?: Comment[];
 }
 
 export interface Intervention extends RawServerIntervention {

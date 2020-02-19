@@ -1,41 +1,114 @@
 .mat-list-item {
-    .mat-icon {
-        margin-right: 10px;
-    }
+  .mat-icon {
+    margin-right: 10px;
+  }
 }
 .mat-raised-button {
-    .mat-icon {
-        font-size: 18px;
-        padding-left: 4px;
-        padding-top: 4px;
-    }
+  .mat-icon {
+    font-size: 18px;
+    padding-left: 4px;
+    padding-top: 4px;
+  }
 }
 
 .mat-card-content {
-    margin-top: 16px;
-    font-size: 16px;
+  margin-top: 16px;
+  font-size: 16px;
 
-    agm-map {
-        height: 200px;
-    }
+  agm-map {
+    height: 200px;
+  }
 
-    .map-container {
-        width: 60%;
-        margin: 20px auto;
-    }
+  .map-container {
+    width: 60%;
+    margin: 20px auto;
+  }
 }
 
 .mat-card-actions {
-    float: right;
+  float: right;
 }
 
 .embedded {
-    & .mat-card-actions {
-        padding: 0;
-    }
+  & .mat-card-actions {
+    padding: 0;
+  }
 }
 
 .title-wrapper {
-    display: inline-block;
+  display: inline-block;
 }
 
+.comment {
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 0;
+}
+
+.comment .comment-box {
+  background-color: #fcfcfc;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  min-height: 60px;
+  position: relative;
+  padding: 15px;
+}
+
+.comment .comment-box:before,
+.comment .comment-box:after {
+  border-width: 10px 10px 10px 0;
+  border-style: solid;
+  border-color: transparent #fcfcfc;
+  content: '';
+  left: -10px;
+  position: absolute;
+  top: 20px;
+}
+
+.comment .comment-box:before {
+  border-color: transparent rgba(0, 0, 0, 0.05);
+  top: 22px;
+}
+
+.comment .comment-text {
+  color: #555f77;
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+
+.comment .comment-footer {
+  color: #acb4c2;
+  font-size: 13px;
+}
+
+.comment .comment-footer:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.comment .comment-footer a {
+  color: #acb4c2;
+  text-decoration: none;
+
+  -webkit-transition: 350ms color;
+  -moz-transition: 350ms color;
+  -ms-transition: 350ms color;
+  -o-transition: 350ms color;
+  transition: 350ms color;
+}
+
+.comment .comment-footer a:hover {
+  color: #555f77;
+  text-decoration: underline;
+}
+
+.comment .comment-info {
+  float: left;
+  width: 85%;
+}
+
+.comment .comment-date:before {
+  content: '|';
+  margin: 0 10px;
+}
