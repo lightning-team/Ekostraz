@@ -48,6 +48,12 @@ export class InterventionsService {
       .pipe(map(toIntervention), this.snackBar.failurePipe());
   }
 
+  submitComment(comment: string, id: string): Observable<any> {
+    return this.http.post(`${this.interventionsUrl}/${id}/comments`, {
+      comment,
+    });
+  }
+
   private getFromLocationState<StateObject>(stateKey: string): Observable<StateObject | undefined> {
     return of(this.location.getState()).pipe(pluck<any, StateObject>(stateKey));
   }

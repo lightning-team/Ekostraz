@@ -14,6 +14,7 @@ import {
 } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { InterventionsRoutingModule } from './interventions-routing.module';
 import { ListComponent } from './list/list.component';
@@ -57,6 +58,7 @@ const MaterialImports = [
     SharedModule,
     InterventionsRoutingModule,
     InterventionFormModule,
+    ReactiveFormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBmQtE0I9s8Z8M8m73B0Er9LU9tJDt0n1s',
     }),
