@@ -23,7 +23,7 @@ namespace EkoFunkcje.Features.Interventions
 {
     public class EditInterventionFunction
     {
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
         private readonly IAddressConverter _addressConverter;
         
         public EditInterventionFunction(IAddressConverter addressConverter)
