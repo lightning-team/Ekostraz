@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -63,7 +63,7 @@ namespace EkoFunkcje.Features.Interventions
                 Description = intervention.Description,
                 FullName = intervention.FullName,
                 PhoneNumber = intervention.PhoneNumber,
-                Status = (int) InterventionStatus.ActionRequired,
+                Status = InterventionStatus.ActionRequired,
                 GeoLat = convertedGeoAddress.Latitude,
                 GeoLng = convertedGeoAddress.Lognitude,
                 PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision)
