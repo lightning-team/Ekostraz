@@ -1,13 +1,15 @@
 interface SelectOption<T> {
-  value: string;
-  displayValue: T | string;
+  value: T;
+  displayValue: string;
 }
 
+type PrimitiveOption = string | number | boolean;
+
 export class Option {
-  static of<T = string>(value: string, displayValue?: string): SelectOption<T> {
+  static of<OptionValue extends PrimitiveOption>(value: OptionValue, displayValue?: string): SelectOption<OptionValue> {
     return {
       value,
-      displayValue: displayValue || value,
+      displayValue: displayValue || (value as string),
     };
   }
 }

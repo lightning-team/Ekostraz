@@ -6,18 +6,11 @@ import { MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, Mat
 import { InterventionFormComponent } from './form/form.component';
 import { SharedModule } from '@shared/shared.module';
 
+const MATERIAL_IMPORTS = [MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule];
+
 @NgModule({
   declarations: [InterventionFormComponent],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    SharedModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, ...MATERIAL_IMPORTS, SharedModule],
   exports: [InterventionFormComponent],
 })
 export class InterventionFormModule {}

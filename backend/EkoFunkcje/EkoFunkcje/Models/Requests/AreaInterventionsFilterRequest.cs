@@ -16,7 +16,7 @@ namespace EkoFunkcje.Models.Requests
         {
             Statuses = new List<int>
             {
-                (int)InterventionStatus.ToVerify, (int)InterventionStatus.ActionRequired, (int)InterventionStatus.InProgress
+                0, 1, 2
             };
         }
     }

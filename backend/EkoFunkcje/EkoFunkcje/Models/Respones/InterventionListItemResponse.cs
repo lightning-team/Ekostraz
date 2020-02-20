@@ -24,7 +24,7 @@ namespace EkoFunkcje.Models.Respones
 
         public string StreetNumber { get; set; }
 
-        public int Status { get; set; }
+        public InterventionStatus Status { get; set; }
 
         public double GeoLat { get; set; }
 

@@ -1,6 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Intervention, InterventionRouterState } from '../types';
+import { Intervention, InterventionRouterState } from '@shared/domain/intervention.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete.dialog';
 import { InterventionsService } from '../interventions.service';
@@ -38,11 +38,13 @@ export class DetailsComponent extends ComponentWithSubscriptions {
   }
 
   private deleteIntervention() {
-    this.subscriptions.add(
-      this.interventionService
-        .delete(this.intervention.id, this.intervention.phone)
-        .subscribe(() => this.router.navigate(['interwencje'])),
-    );
+    // TODO: Delete disabled until confirmed
+    this.subscriptions
+      .add
+      // this.interventionService
+      //   .delete(this.intervention.id, this.intervention.phone)
+      //   .subscribe(() => this.router.navigate(['interwencje'])),
+      ();
   }
 
   navigateToEditView() {

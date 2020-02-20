@@ -18,6 +18,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { errorHandlerFactory, localeProviderFactory } from './misc/providerFactories';
 import { EKOSTRAZ_GTM_CONTEXTS } from './misc/ekostraz-gtm-contexts';
+import { httpInterceptors } from '@shared/interceptors';
 
 @NgModule({
   declarations: [AppComponent, HomePageComponent],
@@ -40,6 +41,7 @@ import { EKOSTRAZ_GTM_CONTEXTS } from './misc/ekostraz-gtm-contexts';
       provide: ErrorHandler,
       useFactory: errorHandlerFactory(environment.useSentry, environment.sentryDSN),
     },
+    httpInterceptors,
   ],
   bootstrap: [AppComponent],
 })

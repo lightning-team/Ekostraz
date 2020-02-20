@@ -6,36 +6,40 @@
       <input type="text" hidden formControlName="id" />
 
       <mat-form-field *ngIf="inPrivateMode && intervention">
-        <input type="text" formControlName="date" matInput placeholder="Data utworzenia" />
+        <input type="text" formControlName="creationDate" matInput placeholder="Data utworzenia" />
       </mat-form-field>
 
       <mat-form-field>
-        <input type="text" formControlName="name" matInput placeholder="Imię i nazwisko" />
+        <input type="text" formControlName="fullName" matInput placeholder="Imię i nazwisko" />
       </mat-form-field>
 
       <mat-form-field>
         <textarea formControlName="description" matInput placeholder="Opis sprawy" required></textarea>
         <mat-error>
-          <span *ngIf="isControlInvalid('description')">Opis sprawy jest wymagany</span>
+          <span *ngIf="hasRequiredError('description')">Opis sprawy jest wymagany</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <input
           type="text"
-          formControlName="phone"
+          formControlName="phoneNumber"
           matInput
           placeholder="Numer telefonu"
           pattern="\+?(\d|\s)*"
           required
         />
         <mat-error>
-          <span *ngIf="isControlInvalid('phone')">Numer telefonu jest wymagany</span>
+          <span *ngIf="hasRequiredError('phoneNumber')">Numer telefonu jest wymagany</span>
+          <span *ngIf="hasPatternError('phoneNumber')">Proszę wprowadzić poprawny numer telefonu</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <input type="email" formControlName="email" matInput placeholder="Adres e-mail" />
+        <mat-error>
+          <span>Proszę wprowadzić poprawny adres e-mail</span>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field *ngIf="inPrivateMode">
@@ -47,30 +51,32 @@
         </mat-select>
       </mat-form-field>
 
-      <div formGroupName="address" class="address">
+      <section class="address">
+        <h2 class="address--header mat-h2">Adres interwencji</h2>
+
         <mat-form-field class="address--street">
           <input type="text" formControlName="street" matInput placeholder="Ulica" required />
           <mat-error>
-            <span *ngIf="isControlInvalid('address.street')">Ulica jest wymagana</span>
+            <span *ngIf="hasRequiredError('street')">Ulica jest wymagana</span>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field class="address--number">
-          <input type="text" formControlName="number" matInput placeholder="Numer lokalu" required />
+          <input type="text" formControlName="streetNumber" matInput placeholder="Numer lokalu" required />
           <mat-error>
-            <span *ngIf="isControlInvalid('address.street')">Numer lokalu jest wymagany</span>
+            <span *ngIf="hasRequiredError('streetNumber')">Numer lokalu jest wymagany</span>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field class="address--city">
           <input type="text" formControlName="city" matInput placeholder="Miejscowość" required />
           <mat-error>
-            <span *ngIf="isControlInvalid('address.street')">Miejscowość jest wymagana</span>
+            <span *ngIf="hasRequiredError('city')">Miejscowość jest wymagana</span>
           </mat-error>
         </mat-form-field>
-      </div>
+      </section>
 
-      <button type="submit" color="primary" mat-raised-button>{{ buttonText }}</button>
+      <button type="submit" color="primary" mat-raised-button [disabled]="!form.valid">{{ buttonText }}</button>
     </form>
   </mat-card-content>
 </mat-card>

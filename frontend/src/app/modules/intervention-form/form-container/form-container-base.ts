@@ -2,9 +2,9 @@ import { OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
 import { SnackBarManager, SnackBarPipeConfig } from '@shared/services/snack-bar-manager';
-import { InterventionFormData } from '@interventionForm/types';
 import { FormMessages } from '@interventionForm/form-messages';
 
+import { InterventionFormData } from '@shared/domain/intervention.model';
 import { InterventionFormService } from '@interventionForm/service/intervention-form.service';
 
 export interface SubmittableForm<SubmitDataType> {
