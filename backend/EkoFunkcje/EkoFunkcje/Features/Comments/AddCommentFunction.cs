@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -13,7 +11,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
-using Newtonsoft.Json;
 
 namespace EkoFunkcje.Features.Comments
 {
@@ -22,55 +19,62 @@ namespace EkoFunkcje.Features.Comments
         [FunctionName("AddCommentGeoHash")]
         public static async Task<IActionResult> RunGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments")]
-            [RequestBodyType(typeof(AddCommentDto), "AddCommentDto")]AddCommentDto commentDto,
+            [RequestBodyType(typeof(AddCommentDto), "AddCommentDto")] AddCommentDto commentDto,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, ILogger log)
         {
             var geoHash = GeoHasher.GetGeoHash(latitude, longitude);
-            var finalFilter = InterventionFilterBuilder.GetInterventionGeoHashFilter(geoHash, interventionId);
-
-            var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
-                finalFilter).Take(1), null); 
-            
-            var requestedIntervention = queryResult.Results.FirstOrDefault();
-            if (requestedIntervention == null)
-                return new StatusCodeResult(StatusCodes.Status404NotFound);
-
-            requestedIntervention.AddComment(new CommentDto()
-            {
-                CreatedDate = DateTime.UtcNow,
-                Comment = commentDto.Comment,
-                Id = Guid.NewGuid().ToString()
-            });
-
-            await interventionsTable.ExecuteAsync(TableOperation.Merge(requestedIntervention));
-            return new StatusCodeResult(StatusCodes.Status200OK);
+            return await AddComment(
+              InterventionFilterBuilder.GetInterventionGeoHashFilter(geoHash, interventionId),
+              commentDto,
+              interventionsTable
+            );
         }
 
         [FunctionName("AddComment")]
         public static async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{interventionId}/comments")]
-          [RequestBodyType(typeof(AddCommentDto), "AddCommentDto")]AddCommentDto commentDto,
+          [RequestBodyType(typeof(AddCommentDto), "AddCommentDto")] AddCommentDto commentDto,
           [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
           string interventionId, ILogger log)
         {
-          
-          var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
-            TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId)).Take(1), null);
+          return await AddComment(
+            InterventionFilterBuilder.GetByIdFilter(interventionId),
+            commentDto,
+            interventionsTable
+          );
+        }
 
-          var requestedIntervention = queryResult.Results.FirstOrDefault();
-          if (requestedIntervention == null)
-            return new StatusCodeResult(StatusCodes.Status404NotFound);
+        private static async Task<IActionResult> AddComment(
+          string filter, AddCommentDto addCommentDto, CloudTable interventionsTable
+          ) {
+            InterventionEntity intervention = await GetIntervention(filter, interventionsTable);
+            if (intervention == null)
+                return new StatusCodeResult(StatusCodes.Status404NotFound);
+                
+            await AddCommentToIntervention(addCommentDto, interventionsTable, intervention);
+            return new new StatusCodeResult(StatusCodes.Status200OK);;
+        }
 
-          requestedIntervention.AddComment(new CommentDto()
-          {
-            CreatedDate = DateTime.UtcNow,
-            Comment = commentDto.Comment,
-            Id = Guid.NewGuid().ToString()
-          });
+        private static async Task<InterventionEntity> GetIntervention(string filter, CloudTable interventionsTable)
+        {
+            var query = new TableQuery<InterventionEntity>().Where(filter).Take(1);
+            var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(query, null);
+            var requestedIntervention = queryResult.Results.FirstOrDefault();
+            return requestedIntervention;
+        }
 
-          await interventionsTable.ExecuteAsync(TableOperation.Merge(requestedIntervention));
-          return new StatusCodeResult(StatusCodes.Status200OK);
+        private static async Task<CommentDto> AddCommentToIntervention(
+          AddCommentDto addCommentDto, CloudTable interventionsTable, InterventionEntity intervention
+        ){
+            CommentDto comment = new CommentDto()
+            {
+                CreatedDate = DateTime.UtcNow,
+                Comment = addCommentDto.Comment,
+                Id = Guid.NewGuid().ToString()
+            };
+            intervention.AddComment(comment);
+            await interventionsTable.ExecuteAsync(TableOperation.Merge(intervention));
         }
     }
 }
