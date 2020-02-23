@@ -15,7 +15,7 @@ namespace EkoFunkcje.Utils
         [SwaggerIgnore]
         [FunctionName("Swagger")]
         public static Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "Swagger/json")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Swagger/json")] HttpRequestMessage req,
             [SwashBuckleClient]ISwashBuckleClient swashBuckleClient)
         {
             return Task.FromResult(swashBuckleClient.CreateSwaggerDocumentResponse(req));
@@ -24,7 +24,7 @@ namespace EkoFunkcje.Utils
         [SwaggerIgnore]
         [FunctionName("SwaggerUi")]
         public static Task<HttpResponseMessage> Run2(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "Swagger/ui")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Swagger/ui")] HttpRequestMessage req,
             [SwashBuckleClient]ISwashBuckleClient swashBuckleClient)
         {
             return Task.FromResult(swashBuckleClient.CreateSwaggerUIResponse(req, "swagger/json"));
