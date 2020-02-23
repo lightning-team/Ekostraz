@@ -81,5 +81,9 @@ namespace EkoFunkcje.Utils
 
             return finalFilter;
         }
+
+        public static string GetByIdFilter(string interventionId) {
+            return TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId);
+        }
     }
 }
