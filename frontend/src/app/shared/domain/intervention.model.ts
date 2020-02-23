@@ -14,7 +14,7 @@ export interface InterventionFormData {
   status: InterventionStatus;
 }
 
-interface Comment {
+export interface Comment {
   id: string;
   comment: string;
   createdDate: string;
