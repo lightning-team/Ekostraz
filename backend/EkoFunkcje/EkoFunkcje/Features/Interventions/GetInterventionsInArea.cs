@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
-using EkoFunkcje.Models.Dto;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;
@@ -16,7 +15,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
-using NGeoHash;
 
 namespace EkoFunkcje.Features.Interventions
 {
@@ -40,57 +38,38 @@ namespace EkoFunkcje.Features.Interventions
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, ILogger log)
         {
-            string filter = "";
-            if (Math.Abs(areaFilter.GeoLatDiff) < 0.001 && Math.Abs(areaFilter.GeoLngDiff) < 0.001)
-            {
-                var geoHash = GeoHasher.GetGeoHash(latitude.Replace(',','.'), longitude.Replace(',', '.'));
-                filter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, geoHash);
-            }
-            else
-            {
-                string latFilterFrom = TableQuery.GenerateFilterConditionForDouble(
-                    "GeoLat", QueryComparisons.GreaterThanOrEqual,
-                    Convert.ToDouble(latitude) - areaFilter.GeoLatDiff);
-                string latFilterTo = TableQuery.GenerateFilterConditionForDouble(
-                    "GeoLat", QueryComparisons.LessThanOrEqual,
-                    Convert.ToDouble(latitude) + areaFilter.GeoLatDiff);
+            string filter = GetFilter(areaFilter, latitude, longitude);
+            var interventions = await GetFilteredInterventions(areaFilter.Statuses, interventionsTable, filter);
+            return new JsonResult(interventions);
+        }
 
-                string latFilter = TableQuery.CombineFilters(
-                    latFilterFrom,
-                    TableOperators.And,
-                    latFilterTo);
-
-                string lngFilterFrom = TableQuery.GenerateFilterConditionForDouble(
-                    "GeoLng", QueryComparisons.GreaterThanOrEqual,
-                    Convert.ToDouble(longitude) - areaFilter.GeoLngDiff);
-                string lngFilterTo = TableQuery.GenerateFilterConditionForDouble(
-                    "GeoLng", QueryComparisons.LessThanOrEqual,
-                    Convert.ToDouble(longitude) + areaFilter.GeoLngDiff);
-
-                string lngFilter = TableQuery.CombineFilters(
-                    lngFilterFrom,
-                    TableOperators.And,
-                    lngFilterTo);
-
-                filter = TableQuery.CombineFilters(
-                    latFilter,
-                    TableOperators.And,
-                    lngFilter);
-            }
-
+        private async Task<IEnumerable<InterventionListItemResponse>> GetFilteredInterventions(
+            List<InterventionStatus> requestStatuses, CloudTable interventionsTable, string filter
+        ) {
             TableContinuationToken token = null;
 
-            var entities = new List<InterventionListItemResponse>();
+            var interventions = new List<InterventionListItemResponse>();
             do
             {
                 var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(filter), token);
-                entities.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
+                interventions.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);
 
-            var filteredEntities = entities.Where(x => areaFilter.Statuses.Contains(x.Status));
+            return  interventions.Where(intervention => requestStatuses.Contains(intervention.Status));
+        }
 
-            return new JsonResult(filteredEntities);
+        private static string GetFilter(AreaInterventionsFilterRequest areaFilter, string latitude, string longitude)
+        {
+            bool shouldUseGeoHashFilter =   Math.Abs(areaFilter.GeoLatDiff) < 0.001 && 
+                                            Math.Abs(areaFilter.GeoLngDiff) < 0.001;
+            if (shouldUseGeoHashFilter)
+            {
+                string geoHash = GeoHasher.GetGeoHash(latitude, longitude);
+                return InterventionFilterBuilder.GetGeoHashFilter(geoHash);
+            } else {
+                return InterventionFilterBuilder.GetAreaFilter(latitude, longitude, areaFilter.GeoLatDiff, areaFilter.GeoLngDiff);
+            }
         }
     }
 }
