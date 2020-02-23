@@ -28,6 +28,7 @@ import { NewFormComponent } from './new-form/new-form.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { InterventionFormModule } from '@interventionForm/intervention-form.module';
 import { SharedModule } from '@shared/shared.module';
+import { CommentsComponent } from './details/comments/comments.component';
 
 const MaterialImports = [
   MatButtonModule,
@@ -51,6 +52,7 @@ const MaterialImports = [
     DeleteDialog,
     NewFormComponent,
     EditFormComponent,
+    CommentsComponent,
   ],
   entryComponents: [DeleteDialog],
   imports: [

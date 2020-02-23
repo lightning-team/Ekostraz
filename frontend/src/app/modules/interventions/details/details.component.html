@@ -34,32 +34,6 @@
         <agm-marker [latitude]="intervention.geoLat" [longitude]="intervention.geoLng"> </agm-marker>
       </agm-map>
     </section>
+    <app-comments [comments]="intervention.comments" [interventionId]="intervention.id"></app-comments>
   </mat-card-content>
-  <div>
-    <div *ngFor="let comment of intervention.comments">
-      <div class="comment">
-        <div class="comment-box">
-          <div class="comment-text">{{ comment.comment }}</div>
-          <div class="comment-footer">
-            <div class="comment-info">
-              <span class="comment-author">
-                <em>Anonymous</em>
-              </span>
-              <span class="comment-date">{{ comment.createdDate | date: 'medium' }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="comment-form">
-      <form [formGroup]="form" (ngSubmit)="addComment()" class="form" novalidate>
-        <div class="form-row">
-          <textarea class="input" formControlName="comment" placeholder="Add comment..." required></textarea>
-        </div>
-        <div class="form-row">
-          <input type="submit" value="Add Comment" [disabled]="!form.valid" />
-        </div>
-      </form>
-    </div>
-  </div>
 </mat-card>
