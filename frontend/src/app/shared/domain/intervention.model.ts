@@ -24,7 +24,7 @@ export interface RawServerIntervention extends InterventionFormData {
   modificationDate: string;
   geoLat: number;
   geoLng: number;
-  comments?: Comment[];
+  comments?: Comment[]; // Only for InterventionDetails
 }
 
 export interface Intervention extends RawServerIntervention {
