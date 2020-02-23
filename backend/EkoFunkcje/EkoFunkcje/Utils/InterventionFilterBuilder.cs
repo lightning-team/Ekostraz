@@ -9,54 +9,61 @@ namespace EkoFunkcje.Utils
 {
     public static class InterventionFilterBuilder
     {
+        public static string GetGeoHashFilter(string geoHash) {
+            return TableQuery.GenerateFilterCondition(
+                "PartitionKey", 
+                QueryComparisons.Equal,
+                geoHash
+            );
+        }
+
+        public static string GetByIdFilter(string interventionId)
+        {
+            return TableQuery.GenerateFilterCondition(
+                "RowKey",
+                QueryComparisons.Equal,
+                interventionId
+            );
+        }
+
         public static string GetInterventionGeoHashFilter(string geoHash, string interventionId)
         {
-            string geoHashFilter = TableQuery.GenerateFilterCondition(
-                "PartitionKey", QueryComparisons.Equal,
-                geoHash);
-            string idFilter = TableQuery.GenerateFilterCondition(
-                "RowKey", QueryComparisons.Equal,
-                interventionId);
-
-            string finalFilter = TableQuery.CombineFilters(
-                geoHashFilter,
-                TableOperators.And,
-                idFilter);
-            return finalFilter;
+            return CombineFilters(
+                GetGeoHashFilter(geoHash), 
+                GetByIdFilter(interventionId)
+            );
         }
 
         public static string GetInterventionListViewFilter(ListInterventionsFilterRequest filter)
         {
-            string finalFilter = "";
+            List<string> filters = new List<string>();
             if (!string.IsNullOrWhiteSpace(filter.City))
             {
                 string cityFilter = TableQuery.GenerateFilterCondition(
                     "City", QueryComparisons.Equal,
                     filter.City);
-                finalFilter = CombineFilters(cityFilter, finalFilter);
-
+                filters.Add(cityFilter);
             }
             if (!string.IsNullOrWhiteSpace(filter.Street))
             {
                 string streetFilter = TableQuery.GenerateFilterCondition(
                     "Street", QueryComparisons.Equal,
                     filter.Street);
-                finalFilter = CombineFilters(streetFilter, finalFilter);
+                filters.Add(streetFilter);
             }
             if (filter.DateFrom != null)
             {
                 string dateFromFilter = TableQuery.GenerateFilterConditionForDate(
                     "CreationDate", QueryComparisons.GreaterThanOrEqual,
                     new DateTimeOffset(filter.DateFrom.Value));
-                finalFilter = CombineFilters(dateFromFilter, finalFilter);
-
+                filters.Add(dateFromFilter);
             }
             if (filter.DateTo != null)
             {
                 string dateToFilter = TableQuery.GenerateFilterConditionForDate(
                     "CreationDate", QueryComparisons.LessThanOrEqual,
                     new DateTimeOffset(filter.DateTo.Value));
-                finalFilter = CombineFilters(dateToFilter, finalFilter);
+                filters.Add(dateToFilter);
 
             }
             if (filter.Status != -1)
@@ -64,28 +71,53 @@ namespace EkoFunkcje.Utils
                 string statusFilter = TableQuery.GenerateFilterConditionForInt(
                     "Status", QueryComparisons.Equal,
                     filter.Status);
-                finalFilter = CombineFilters(statusFilter, finalFilter);
-
+                filters.Add(statusFilter);
             }
 
-            return finalFilter;
+            return CombineFilters(filters);
+        }
+
+        public static string GetAreaFilter(string latitude, string longitude, double GeoLatDiff, double GeoLngDiff)
+        {
+            string latFilterFrom = TableQuery.GenerateFilterConditionForDouble(
+                "GeoLat", QueryComparisons.GreaterThanOrEqual,
+                Convert.ToDouble(latitude) - GeoLatDiff);
+            string latFilterTo = TableQuery.GenerateFilterConditionForDouble(
+                "GeoLat", QueryComparisons.LessThanOrEqual,
+                Convert.ToDouble(latitude) + GeoLatDiff);
+            string lngFilterFrom = TableQuery.GenerateFilterConditionForDouble(
+                "GeoLng", QueryComparisons.GreaterThanOrEqual,
+                Convert.ToDouble(longitude) - GeoLngDiff);
+            string lngFilterTo = TableQuery.GenerateFilterConditionForDouble(
+                "GeoLng", QueryComparisons.LessThanOrEqual,
+                Convert.ToDouble(longitude) + GeoLngDiff);
+
+            return CombineFilters(
+                new List<string> {latFilterFrom, latFilterTo, lngFilterFrom, lngFilterTo}
+            );
         }
 
         private static string CombineFilters(string filter, string combinedFilter)
         {
-            if (!string.IsNullOrWhiteSpace(combinedFilter))
-            {
-                return TableQuery.CombineFilters(
-                    filter,
-                    TableOperators.And,
-                    combinedFilter);
+            if (string.IsNullOrWhiteSpace(combinedFilter)) {
+                return filter;
             }
-
-            return filter;
+            if (string.IsNullOrWhiteSpace(filter)) {
+                return combinedFilter;
+            }
+            return TableQuery.CombineFilters(
+                filter,
+                TableOperators.And,
+                combinedFilter
+            );
         }
 
-        public static string GetByIdFilter(string interventionId) {
-            return TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId);
+        private static string CombineFilters(List<string> filters) {
+            var finalFilter = "";
+            foreach(string filter in filters) {
+                finalFilter = CombineFilters(finalFilter, filter);
+            }
+            return finalFilter;
         }
     }
 }
