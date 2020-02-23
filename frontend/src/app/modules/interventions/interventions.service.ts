@@ -49,9 +49,16 @@ export class InterventionsService {
   }
 
   submitComment(comment: string, id: string): Observable<any> {
-    return this.http.post(`${this.interventionsUrl}/${id}/comments`, {
-      comment,
-    });
+    return this.http
+      .post(`${this.interventionsUrl}/${id}/comments`, {
+        comment,
+      })
+      .pipe(
+        this.snackBar.successFailurePipe({
+          successMsg: 'Komentarz dodany',
+          errorMsg: 'Błąd przy dodawaniu komentarza',
+        }),
+      );
   }
 
   private getFromLocationState<StateObject>(stateKey: string): Observable<StateObject | undefined> {
