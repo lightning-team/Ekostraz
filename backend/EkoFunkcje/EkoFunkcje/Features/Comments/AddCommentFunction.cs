@@ -52,8 +52,8 @@ namespace EkoFunkcje.Features.Comments
             if (intervention == null)
                 return new StatusCodeResult(StatusCodes.Status404NotFound);
                 
-            await AddCommentToIntervention(addCommentDto, interventionsTable, intervention);
-            return new new StatusCodeResult(StatusCodes.Status200OK);;
+            CommentDto comment = await AddCommentToIntervention(addCommentDto, interventionsTable, intervention);
+            return new JsonResult(comment);
         }
 
         private static async Task<InterventionEntity> GetIntervention(string filter, CloudTable interventionsTable)
@@ -75,6 +75,7 @@ namespace EkoFunkcje.Features.Comments
             };
             intervention.AddComment(comment);
             await interventionsTable.ExecuteAsync(TableOperation.Merge(intervention));
+            return comment;
         }
     }
 }
