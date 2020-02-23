@@ -32,7 +32,7 @@ export class SnackBarManager {
   successFailurePipe(config: SnackBarPipeConfig) {
     const { successMsg, errorMsg, buttonText, ...snackBarConfig } = config;
     return pipe(
-      tap(() => this.snackBar.open(successMsg, buttonText, snackBarConfig)),
+      tap(() => this.openSnackBar(successMsg, buttonText, snackBarConfig)),
       this.failurePipe(errorMsg, buttonText, config),
     );
   }
@@ -45,7 +45,7 @@ export class SnackBarManager {
   ) {
     return pipe(
       catchError(err => {
-        this.snackBar.open(errorMsg, buttonText, { ...DEFAULT_CONFIG, ...config });
+        this.openSnackBar(errorMsg, buttonText, config);
         return rethrow ? throwError(err) : of(null);
       }),
     );
