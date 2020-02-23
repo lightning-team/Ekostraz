@@ -3,10 +3,8 @@ import { Router } from '@angular/router';
 import { Intervention, InterventionRouterState } from '@shared/domain/intervention.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete.dialog';
-import { InterventionsService } from '../interventions.service';
 import { ComponentWithSubscriptions } from '@shared/components/base';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-intervention-details',
@@ -17,16 +15,8 @@ export class DetailsComponent extends ComponentWithSubscriptions {
   @Input() intervention: Intervention;
   @Input() embedded?: boolean;
   interventionDetailsGtmContext: string;
-  form = new FormGroup({
-    comment: new FormControl('', Validators.required),
-  });
 
-  constructor(
-    private router: Router,
-    private dialog: MatDialog,
-    private interventionService: InterventionsService,
-    @Inject(GTM_CONTEXTS) gtmContexts,
-  ) {
+  constructor(private router: Router, private dialog: MatDialog, @Inject(GTM_CONTEXTS) gtmContexts) {
     super();
     this.interventionDetailsGtmContext = gtmContexts.interventionDetails;
   }
@@ -39,14 +29,6 @@ export class DetailsComponent extends ComponentWithSubscriptions {
 
   private onDialogClose(shouldDelete: boolean) {
     if (shouldDelete) this.deleteIntervention();
-  }
-
-  addComment() {
-    const { comment } = this.form.value;
-
-    this.subscriptions.add(
-      this.interventionService.submitComment(comment, this.intervention.id).subscribe(() => this.form.reset()),
-    );
   }
 
   private deleteIntervention() {
