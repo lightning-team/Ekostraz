@@ -25,7 +25,10 @@ export class CommentsComponent extends ComponentWithSubscriptions {
     const { comment } = this.form.value;
 
     this.subscriptions.add(
-      this.interventionService.submitComment(comment, this.interventionId).subscribe(() => this.form.reset()),
+      this.interventionService.submitComment(comment, this.interventionId).subscribe(newComment => {
+        this.comments.push(newComment);
+        this.form.reset();
+      }),
     );
   }
 }
