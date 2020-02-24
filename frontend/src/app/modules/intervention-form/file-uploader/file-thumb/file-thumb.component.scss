@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  position: relative;
+  padding-bottom: 1em;
+}
+
+.file-name {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  display: block;
+  border-radius: 8px;
+  padding: 2px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1em;
+  font-size: 0.9em;
+}
+
+.file-thumb {
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+  object-fit: contain;
+}
+
+.delete-button {
+  opacity: 0.6;
+  position: absolute;
+  bottom: 1em;
+  right: -5px;
+  transition: opacity 0.3s ease;
+}
+
+.delete-button:hover {
+  opacity: 1;
+}
