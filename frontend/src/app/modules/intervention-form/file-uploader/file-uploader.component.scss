@@ -1,0 +1,51 @@
+@import 'breakpoints';
+$font-color: rgba(200, 200, 200, 0.8);
+
+.attachments {
+  position: relative;
+
+  & > h2 {
+    margin-bottom: 1em;
+  }
+}
+
+.add-files-text {
+  margin: 0;
+  text-align: center;
+  font: 400 25px/32px Roboto, 'Helvetica Neue', sans-serif;
+  color: darken($font-color, 10%);
+}
+
+.uploader-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.2em;
+  border: 2px dashed $font-color;
+  border-radius: 3px;
+}
+
+.thumbs-container {
+  display: grid;
+  grid-gap: 1em;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: minmax(120px, 120px);
+
+  @media (min-width: 500px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.file-counter {
+  position: absolute;
+  top: 2em;
+  right: 0;
+  font-style: oblique;
+}
+
+.fab-container {
+  margin: auto;
+
+  &:first-child {
+    grid-column: 1 / span 3;
+  }
+}
