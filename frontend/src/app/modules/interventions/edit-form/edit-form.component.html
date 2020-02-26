@@ -6,6 +6,8 @@
     [formTitle]="'Edytuj interwencję'"
     [buttonText]="'Zapisz'"
     (formSubmit)="onSubmit($event)"
-  ></app-intervention-form>
+  >
+    <eko-file-uploader [editTemporaryDisabled]="true"></eko-file-uploader>
+  </app-intervention-form>
   <h3 *ngIf="!intervention">Nie udało się pobrać danych z serwera!</h3>
 </app-loader>

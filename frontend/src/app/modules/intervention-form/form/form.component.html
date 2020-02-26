@@ -76,6 +76,8 @@
         </mat-form-field>
       </section>
 
+      <ng-content></ng-content>
+
       <button type="submit" color="primary" mat-raised-button [disabled]="!form.valid">{{ buttonText }}</button>
     </form>
   </mat-card-content>
