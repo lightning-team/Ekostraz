@@ -20,9 +20,6 @@
       "pre-commit": "pretty-quick --staged && lint-staged --relative"
     }
   },
-  "lint-staged": {
-    "*.ts": "npm run lint:fix -- --files"
-  },
   "private": true,
   "dependencies": {
     "@agm/core": "^1.1.0",
