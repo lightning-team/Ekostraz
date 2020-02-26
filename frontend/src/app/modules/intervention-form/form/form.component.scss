@@ -22,9 +22,9 @@
     }
 
     & [type='submit'] {
-      margin: auto;
-      margin-top: 20px;
       display: block;
+      margin: 20px auto auto;
+      min-width: 120px;
     }
     @media (min-width: 400px) {
       & .address {
