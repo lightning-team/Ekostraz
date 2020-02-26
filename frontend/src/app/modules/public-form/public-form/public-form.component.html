@@ -1,4 +1,3 @@
-<app-intervention-form
-        [inPrivateMode]="false"
-        (formSubmit)="onSubmit($event)"
-></app-intervention-form>
+<app-intervention-form [inPrivateMode]="false" (formSubmit)="onSubmit($event)">
+  <eko-file-uploader [imagesOnly]="true"></eko-file-uploader>
+</app-intervention-form>
