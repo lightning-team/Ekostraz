@@ -6,14 +6,16 @@
     [longitude]="interventions[0].geoLng"
     (tilesLoaded)="onTilesLoaded()"
   >
-    <agm-marker
-      *ngFor="let intervention of interventions.slice(0, 200)"
-      [latitude]="intervention.geoLat"
-      [longitude]="intervention.geoLng"
-    >
-      <agm-info-window [disableAutoPan]="false">
-        <app-intervention-details [intervention]="intervention" embedded="true"> </app-intervention-details>
-      </agm-info-window>
-    </agm-marker>
+    <agm-marker-cluster imagePath="/assets/m">
+      <agm-marker
+        *ngFor="let intervention of interventions.slice(0, 200)"
+        [latitude]="intervention.geoLat"
+        [longitude]="intervention.geoLng"
+      >
+        <agm-info-window [disableAutoPan]="false">
+          <app-intervention-details [intervention]="intervention" embedded="true"> </app-intervention-details>
+        </agm-info-window>
+      </agm-marker>
+    </agm-marker-cluster>
   </agm-map>
 </app-loader>
