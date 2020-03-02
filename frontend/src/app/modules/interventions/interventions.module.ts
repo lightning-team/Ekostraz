@@ -15,6 +15,7 @@ import {
 
 import { AgmCoreModule } from '@agm/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 
 import { InterventionsRoutingModule } from './interventions-routing.module';
 import { ListComponent } from './list/list.component';
@@ -64,6 +65,7 @@ const MaterialImports = [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBmQtE0I9s8Z8M8m73B0Er9LU9tJDt0n1s',
     }),
+    AgmJsMarkerClustererModule,
     ...MaterialImports,
   ],
   providers: [InterventionsService],
