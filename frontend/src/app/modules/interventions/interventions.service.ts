@@ -30,9 +30,7 @@ export class InterventionsService {
   }
 
   getIntervention(routeParams: Observable<Params>): Observable<Intervention | null> {
-    return this.getFromLocationState<Intervention>('intervention').pipe(
-      switchMap(intervention => (intervention ? of(intervention) : this.getActiveRouteIntervention(routeParams))),
-    );
+    return this.getActiveRouteIntervention(routeParams);
   }
 
   private getActiveRouteIntervention(routeParams: Observable<Params>): Observable<Intervention | null> {
