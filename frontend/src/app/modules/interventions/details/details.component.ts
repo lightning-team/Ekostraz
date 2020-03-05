@@ -1,6 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Intervention, InterventionRouterState } from '@shared/domain/intervention.model';
+import { Intervention } from '@shared/domain/intervention.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete.dialog';
 import { ComponentWithSubscriptions } from '@shared/components/base';
@@ -42,8 +42,6 @@ export class DetailsComponent extends ComponentWithSubscriptions {
   }
 
   navigateToEditView() {
-    this.router.navigate(['interwencje', this.intervention.id, 'edytuj'], {
-      state: { intervention: this.intervention },
-    } as InterventionRouterState);
+    this.router.navigate(['interwencje', this.intervention.id, 'edytuj']);
   }
 }
