@@ -2,7 +2,7 @@ import { Component, Input, ViewChild, OnChanges, AfterViewInit } from '@angular/
 import { Router } from '@angular/router';
 import { MatTable, MatTableDataSource, MatPaginator } from '@angular/material';
 
-import { Intervention, InterventionRouterState } from '@shared/domain/intervention.model';
+import { Intervention } from '@shared/domain/intervention.model';
 
 @Component({
   selector: 'app-interventions-table',
@@ -32,9 +32,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
   }
 
   showDetails(intervention: Intervention) {
-    this.router.navigate(['interwencje', intervention.id], {
-      state: { intervention },
-    } as InterventionRouterState);
+    this.router.navigate(['interwencje', intervention.id]);
   }
 
   ngAfterViewInit() {
