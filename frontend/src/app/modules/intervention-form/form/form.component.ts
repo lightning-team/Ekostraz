@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { Intervention, InterventionFormData } from '@shared/domain/intervention.model';
-import { InterventionStatusOptions } from '@shared/domain/intervention.status';
+import { InterventionStatus, InterventionStatusOptions } from '@shared/domain/intervention.status';
 
 type InterventionFormGroupConfig = { [key in keyof InterventionFormData]: any };
 
@@ -75,7 +75,7 @@ export class InterventionFormComponent implements OnInit {
       description: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       email: ['', Validators.email],
-      status: ['', this.inPrivateMode ? [Validators.required] : []],
+      status: [InterventionStatus.ToVerify, this.inPrivateMode ? [Validators.required] : []],
       street: ['', Validators.required],
       streetNumber: ['', Validators.required],
       city: ['', Validators.required],
