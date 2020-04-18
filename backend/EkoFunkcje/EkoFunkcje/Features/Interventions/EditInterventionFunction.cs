@@ -78,7 +78,7 @@ namespace EkoFunkcje.Features.Interventions
                     Description = editedIntervention.Description,
                     FullName = editedIntervention.FullName,
                     PhoneNumber = editedIntervention.PhoneNumber,
-                    Status = editedIntervention.Status,
+                    Status = (int)editedIntervention.Status,
                     City = editedIntervention.City,
                     Street = editedIntervention.Street,
                     StreetNumber = editedIntervention.StreetNumber,
@@ -102,7 +102,7 @@ namespace EkoFunkcje.Features.Interventions
             interventionToEdit.Description = editedIntervention.Description;
             interventionToEdit.FullName = editedIntervention.FullName;
             interventionToEdit.PhoneNumber = editedIntervention.PhoneNumber;
-            interventionToEdit.Status = editedIntervention.Status;
+            interventionToEdit.Status = (int)editedIntervention.Status;
 
             await interventionsTable.ExecuteAsync(TableOperation.Merge(interventionToEdit));
             var interventionItemResponses = _mapper.Map<InterventionItemResponse>(interventionToEdit);
@@ -148,7 +148,7 @@ namespace EkoFunkcje.Features.Interventions
                   Description = editedIntervention.Description,
                   FullName = editedIntervention.FullName,
                   PhoneNumber = editedIntervention.PhoneNumber,
-                  Status = editedIntervention.Status,
+                  Status = (int)editedIntervention.Status,
                   City = editedIntervention.City,
                   Street = editedIntervention.Street,
                   StreetNumber = editedIntervention.StreetNumber,
@@ -170,7 +170,7 @@ namespace EkoFunkcje.Features.Interventions
             interventionToEdit.Description = editedIntervention.Description;
             interventionToEdit.FullName = editedIntervention.FullName;
             interventionToEdit.PhoneNumber = editedIntervention.PhoneNumber;
-            interventionToEdit.Status = editedIntervention.Status;
+            interventionToEdit.Status = (int)editedIntervention.Status;
 
             await interventionsTable.ExecuteAsync(TableOperation.Merge(interventionToEdit));
             var interventionItemResponses = _mapper.Map<InterventionItemResponse>(interventionToEdit);

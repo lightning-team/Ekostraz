@@ -10,11 +10,13 @@ using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 
 namespace EkoFunkcje.Features.Interventions
 {
@@ -34,10 +36,12 @@ namespace EkoFunkcje.Features.Interventions
         [FunctionName("GetInterventionsInArea")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}")]
-            [RequestBodyType(typeof(AreaInterventionsFilterRequest), "AreaInterventionsFilterRequest")]AreaInterventionsFilterRequest areaFilter,
+            [RequestBodyType(typeof(AreaInterventionsFilterRequest), "AreaInterventionsFilterRequest")]HttpRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, ILogger log)
         {
+            var body = await request.ReadAsStringAsync();
+            var areaFilter = JsonConvert.DeserializeObject<AreaInterventionsFilterRequest>(body);
             string filter = GetFilter(areaFilter, latitude, longitude);
             var interventions = await GetFilteredInterventions(areaFilter.Statuses, interventionsTable, filter);
             return new JsonResult(interventions);
@@ -61,8 +65,7 @@ namespace EkoFunkcje.Features.Interventions
 
         private static string GetFilter(AreaInterventionsFilterRequest areaFilter, string latitude, string longitude)
         {
-            bool shouldUseGeoHashFilter =   Math.Abs(areaFilter.GeoLatDiff) < 0.001 && 
-                                            Math.Abs(areaFilter.GeoLngDiff) < 0.001;
+            bool shouldUseGeoHashFilter = Math.Abs(areaFilter.GeoLatDiff) < 0.001 && Math.Abs(areaFilter.GeoLngDiff) < 0.001;
             if (shouldUseGeoHashFilter)
             {
                 string geoHash = GeoHasher.GetGeoHash(latitude, longitude);
