@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using EkoFunkcje.Models.Requests;
 using Microsoft.WindowsAzure.Storage.Table;
 
@@ -97,27 +98,36 @@ namespace EkoFunkcje.Utils
             string latFilterFrom = TableQuery.GenerateFilterConditionForDouble(
                 InterventionFieldNames.GeoLat, 
                 QueryComparisons.GreaterThanOrEqual,
-                Convert.ToDouble(latitude) - GeoLatDiff
+                ConvertToDouble(latitude) - GeoLatDiff
             );
             string latFilterTo = TableQuery.GenerateFilterConditionForDouble(
                 InterventionFieldNames.GeoLat, 
                 QueryComparisons.LessThanOrEqual,
-                Convert.ToDouble(latitude) + GeoLatDiff
+                ConvertToDouble(latitude) + GeoLatDiff
             );
             string lngFilterFrom = TableQuery.GenerateFilterConditionForDouble(
                 InterventionFieldNames.GeoLng, 
                 QueryComparisons.GreaterThanOrEqual,
-                Convert.ToDouble(longitude) - GeoLngDiff
+                ConvertToDouble(longitude) - GeoLngDiff
             );
             string lngFilterTo = TableQuery.GenerateFilterConditionForDouble(
                 InterventionFieldNames.GeoLng, 
                 QueryComparisons.LessThanOrEqual,
-                Convert.ToDouble(longitude) + GeoLngDiff
+                ConvertToDouble(longitude) + GeoLngDiff
             );
 
             return CombineFilters(
                 new List<string> {latFilterFrom, latFilterTo, lngFilterFrom, lngFilterTo}
             );
+        }
+
+        private static double ConvertToDouble(string value)
+        {
+            if (value.Contains(","))
+            {
+                return Convert.ToDouble(value, CultureInfo.CurrentCulture);
+            }
+            return Convert.ToDouble(value, CultureInfo.InvariantCulture);
         }
 
         private static string CombineFilters(string filter, string combinedFilter)

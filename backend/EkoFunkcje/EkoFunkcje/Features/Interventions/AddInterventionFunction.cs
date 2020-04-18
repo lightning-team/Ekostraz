@@ -63,7 +63,7 @@ namespace EkoFunkcje.Features.Interventions
                 Description = intervention.Description,
                 FullName = intervention.FullName,
                 PhoneNumber = intervention.PhoneNumber,
-                Status = InterventionStatus.ActionRequired,
+                Status = (int)InterventionStatus.ActionRequired,
                 GeoLat = convertedGeoAddress.Latitude,
                 GeoLng = convertedGeoAddress.Lognitude,
                 PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision)

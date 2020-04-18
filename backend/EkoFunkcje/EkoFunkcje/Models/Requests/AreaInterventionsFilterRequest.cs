@@ -11,13 +11,5 @@ namespace EkoFunkcje.Models.Requests
         public double GeoLatDiff { get; set; }
 
         public double GeoLngDiff { get; set; }
-
-        public AreaInterventionsFilterRequest()
-        {
-            Statuses = new List<InterventionStatus>
-            {
-                InterventionStatus.ToVerify, InterventionStatus.ActionRequired, InterventionStatus.InProgress,
-            };
-        }
     }
 }

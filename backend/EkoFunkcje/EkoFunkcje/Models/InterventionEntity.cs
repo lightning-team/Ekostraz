@@ -27,7 +27,7 @@ namespace EkoFunkcje.Models
 
         public string Email { get; set; }
          
-        public InterventionStatus Status { get; set; }
+        public int Status { get; set; }
 
         public string City { get; set; }
 
