@@ -44,7 +44,7 @@
 
       <mat-form-field *ngIf="inPrivateMode">
         <mat-label>Status interwencji</mat-label>
-        <mat-select formControlName="status">
+        <mat-select formControlName="status" required>
           <mat-option *ngFor="let status of statusOptions" [value]="status.value">
             {{ status.displayValue }}
           </mat-option>
