@@ -11,6 +11,7 @@ import {
   MatListModule,
   MatDialogModule,
   MatProgressSpinnerModule,
+  MatRadioModule,
 } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
@@ -30,6 +31,7 @@ import { EditFormComponent } from './edit-form/edit-form.component';
 import { InterventionFormModule } from '@interventionForm/intervention-form.module';
 import { SharedModule } from '@shared/shared.module';
 import { CommentsComponent } from './details/comments/comments.component';
+import { MapFilterComponent } from './map/map-filter/map-filter.component';
 
 const MaterialImports = [
   MatButtonModule,
@@ -41,6 +43,7 @@ const MaterialImports = [
   MatProgressSpinnerModule,
   MatSnackBarModule,
   MatTableModule,
+  MatRadioModule,
 ];
 
 @NgModule({
@@ -54,6 +57,7 @@ const MaterialImports = [
     NewFormComponent,
     EditFormComponent,
     CommentsComponent,
+    MapFilterComponent,
   ],
   entryComponents: [DeleteDialog],
   imports: [
