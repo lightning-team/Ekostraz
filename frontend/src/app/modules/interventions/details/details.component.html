@@ -20,9 +20,9 @@
 
   <mat-list>
     <mat-list-item> <mat-icon>done</mat-icon> {{ intervention.status | ekoInterventionStatus }} </mat-list-item>
-    <mat-list-item> <mat-icon>account_circle</mat-icon> {{ intervention.fullName }} </mat-list-item>
+    <mat-list-item> <mat-icon>account_circle</mat-icon> {{ intervention.fullName || 'Brak' }} </mat-list-item>
     <mat-list-item> <mat-icon>phone</mat-icon> {{ intervention.phoneNumber }} </mat-list-item>
-    <mat-list-item> <mat-icon>email</mat-icon> {{ intervention.email }} </mat-list-item>
+    <mat-list-item> <mat-icon>email</mat-icon> {{ intervention.email || 'Brak' }} </mat-list-item>
     <mat-list-item> <mat-icon>location_on</mat-icon> {{ intervention.address }} </mat-list-item>
   </mat-list>
 

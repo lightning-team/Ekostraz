@@ -2,14 +2,14 @@
   <mat-table [dataSource]="dataSource">
     <!-- Position Column -->
     <ng-container matColumnDef="position">
-      <mat-header-cell *matHeaderCellDef>Numer</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>L.p.</mat-header-cell>
       <mat-cell *matCellDef="let element" data-label="Numer">{{ element.position }}</mat-cell>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef>Imię i nazwisko</mat-header-cell>
-      <mat-cell *matCellDef="let element" data-label="Imię i nazwisko">{{ element.fullName }}</mat-cell>
+      <mat-cell *matCellDef="let element" data-label="Imię i nazwisko">{{ element.fullName || 'Brak' }}</mat-cell>
     </ng-container>
 
     <!-- Status Column -->
