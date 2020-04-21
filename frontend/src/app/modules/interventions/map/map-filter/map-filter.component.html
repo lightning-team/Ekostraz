@@ -1,0 +1,18 @@
+<mat-card *ngIf="filtersVisible">
+  <form [formGroup]="form">
+    <h2 class="mat-h2">Pokaż interwencje</h2>
+    <mat-radio-group aria-labelledby="status-radio" formControlName="status">
+      <mat-radio-button *ngFor="let option of statusOptions" [value]="option.value">{{
+        option.displayValue
+      }}</mat-radio-button>
+    </mat-radio-group>
+
+    <button (click)="toggleFiltersVisibility(); $event.preventDefault()" mat-button class="closeButton">
+      Zamknij
+    </button>
+  </form>
+</mat-card>
+
+<button mat-mini-fab (click)="toggleFiltersVisibility()" *ngIf="!filtersVisible">
+  <mat-icon>filter_list</mat-icon>
+</button>

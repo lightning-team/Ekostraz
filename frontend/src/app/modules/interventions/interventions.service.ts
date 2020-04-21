@@ -1,31 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
-import { map, switchMap, pluck } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { environment } from '@environment';
 import { SnackBarManager } from '@shared/services/snack-bar-manager';
-import { Intervention, RawServerIntervention } from '@shared/domain/intervention.model';
+import { Intervention, InterventionsFilter, RawServerIntervention } from '@shared/domain/intervention.model';
 
 @Injectable()
 export class InterventionsService {
   private interventionsUrl = environment.APIUrl + 'interventions';
 
-  constructor(private http: HttpClient, private snackBar: SnackBarManager, private location: Location) {}
+  constructor(private http: HttpClient, private snackBar: SnackBarManager) {}
 
-  getInterventions(): Observable<Intervention[]> {
-    return this.getFromLocationState<Intervention[]>('interventions').pipe(
-      switchMap(interventions => (interventions ? of(interventions) : this.fetchInterventions())),
-    );
+  getInterventions(params: InterventionsFilter = {}): Observable<Intervention[]> {
+    return this.fetchInterventions(params);
   }
 
-  private fetchInterventions(): Observable<Intervention[]> {
-    return this.http.get<any>(this.interventionsUrl).pipe(
-      map(data => data.map(toIntervention)),
-      this.snackBar.failurePipe(),
-    );
+  private fetchInterventions(params: InterventionsFilter): Observable<Intervention[]> {
+    return this.http
+      .get<any>(this.interventionsUrl, {
+        params: params as HttpParams,
+      })
+      .pipe(
+        map(data => data.map(toIntervention)),
+        this.snackBar.failurePipe(),
+      );
   }
 
   getIntervention(id: string): Observable<Intervention> {
@@ -45,10 +46,6 @@ export class InterventionsService {
           errorMsg: 'Błąd przy dodawaniu komentarza',
         }),
       );
-  }
-
-  private getFromLocationState<StateObject>(stateKey: string): Observable<StateObject | undefined> {
-    return of(this.location.getState()).pipe(pluck<any, StateObject>(stateKey));
   }
 }
 

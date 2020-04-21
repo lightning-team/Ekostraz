@@ -35,8 +35,6 @@ export interface ListIntervention extends Intervention {
   position: number; // list position
 }
 
-export interface InterventionListRouterState {
-  state: {
-    interventions: Intervention[];
-  };
+export interface InterventionsFilter {
+  status?: InterventionStatus;
 }

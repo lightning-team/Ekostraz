@@ -1,4 +1,5 @@
 <app-loader [loading$]="loading$" [loaderText]="'Ładowanie mapy...'" [hiddenBeforeLoaded]="true">
+  <eko-map-filters (filtersChange)="handleFiltersChange($event)"></eko-map-filters>
   <agm-map
     *ngIf="interventions"
     [withGtmContext]="interventionMapGtmContext"
