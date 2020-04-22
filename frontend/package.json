@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
+    "start:host": "ng serve --aot --host",
     "build": "ng build --aot",
     "test": "ng test --browsers=ChromeHeadlessCustom",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadlessCustom",
