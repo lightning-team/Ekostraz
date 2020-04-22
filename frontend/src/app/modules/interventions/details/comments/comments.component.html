@@ -10,9 +10,9 @@
 
 <form [formGroup]="form" (ngSubmit)="addComment()" class="form" novalidate>
   <div class="form-row">
-    <textarea class="input" formControlName="comment" placeholder="Add comment..." required></textarea>
+    <textarea class="input" formControlName="comment" placeholder="Dodaj komentarz..." required></textarea>
   </div>
   <div class="form-row">
-    <input type="submit" value="Add Comment" [disabled]="!form.valid" />
+    <input type="submit" value="Dodaj komentarz" [disabled]="!form.valid" />
   </div>
 </form>
