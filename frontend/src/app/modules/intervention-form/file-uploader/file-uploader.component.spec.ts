@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
 
 import { FileUploaderComponent } from './file-uploader.component';
+import { FileThumbMockComponent } from '@interventionForm/file-uploader/file-thumb/file-thumb.component.mock';
 
 describe('FileUploaderComponent', () => {
   let component: FileUploaderComponent;
@@ -8,7 +10,8 @@ describe('FileUploaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FileUploaderComponent],
+      imports: [MatIconModule],
+      declarations: [FileUploaderComponent, FileThumbMockComponent],
     }).compileComponents();
   }));
 
