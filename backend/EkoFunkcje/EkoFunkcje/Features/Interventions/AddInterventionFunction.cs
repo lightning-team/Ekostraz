@@ -70,7 +70,7 @@ namespace EkoFunkcje.Features.Interventions
             };
             await interventions.AddAsync(interventionEntity);
             await interventions.FlushAsync();
-            return new JsonResult(new { Message = "Intervention Added"});
+            return new JsonResult(new { id = interventionEntity.RowKey});
         }
     }
 }
