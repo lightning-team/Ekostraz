@@ -22,6 +22,7 @@ export class InterventionFormComponent implements OnInit {
   @Input() buttonText = 'Wyślij zgłoszenie';
   @Input() intervention: Intervention = null;
   @Input() inPrivateMode = false;
+  @Input() submitInProgress = false;
 
   @Output() formSubmit = new EventEmitter<InterventionFormData>();
 

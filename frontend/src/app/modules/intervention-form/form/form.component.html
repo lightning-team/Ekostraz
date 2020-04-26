@@ -78,7 +78,12 @@
 
       <ng-content></ng-content>
 
-      <button type="submit" color="primary" mat-raised-button [disabled]="!form.valid">{{ buttonText }}</button>
+      <button type="submit" color="primary" mat-raised-button [disabled]="!form.valid || submitInProgress">
+        <mat-spinner *ngIf="submitInProgress" [diameter]="25"></mat-spinner>
+        <ng-container *ngIf="!submitInProgress">
+          {{ buttonText }}
+        </ng-container>
+      </button>
     </form>
   </mat-card-content>
 </mat-card>

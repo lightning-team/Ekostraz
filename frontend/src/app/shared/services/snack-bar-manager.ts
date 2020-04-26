@@ -19,7 +19,7 @@ const DEFAULT_ERROR_MESSAGE = 'Ups! Przepraszamy, coś poszło nie tak!';
 const DEFAULT_BUTTON_TEXT = 'Zamknij';
 const DEFAULT_CONFIG: SnackBarConfig = {
   duration: 5000,
-  verticalPosition: 'top',
+  verticalPosition: 'bottom',
   horizontalPosition: 'center',
 };
 

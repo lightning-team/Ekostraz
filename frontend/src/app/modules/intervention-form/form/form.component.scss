@@ -50,4 +50,8 @@
       }
     }
   }
+
+  [type='submit'] mat-spinner {
+    display: inline-block;
+  }
 }
