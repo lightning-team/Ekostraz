@@ -9,4 +9,6 @@ import { InterventionFormContainer } from '@interventionForm/form-container/form
   styleUrls: ['./new-form.component.scss'],
   providers: [InterventionFormService],
 })
-export class NewFormComponent extends InterventionFormContainer {}
+export class NewFormComponent extends InterventionFormContainer {
+  submitSuccessRedirectUrl = '/interwencje';
+}
