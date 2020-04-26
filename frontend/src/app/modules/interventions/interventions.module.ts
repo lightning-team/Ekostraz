@@ -62,8 +62,13 @@ const MaterialImports = [
     InterventionsRoutingModule,
     InterventionFormModule,
     ReactiveFormsModule,
+    // TODO: When we'll be planning and implementing auth/login, we should also provide mechanics to:
+    // 1. For local development: Fetch the google maps key from local.secrets.json and dynamically inject it to the app
+    // (e.g. route resolvers/guards for components with map).
+    // 2. For higher envs: Fetch the key for Azure functions and for Google Maps from external services.
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBmQtE0I9s8Z8M8m73B0Er9LU9tJDt0n1s',
+      // TODO: Temporary solution - paste the key manually during local development.
+      apiKey: '',
     }),
     AgmJsMarkerClustererModule,
     ...MaterialImports,
