@@ -1,27 +1,24 @@
-<section class="attachments">
-  <h2 class="mat-h2">Załączniki</h2>
-  <span *ngIf="files.length" class="file-counter">Wybrano {{ files.length }}</span>
+<span *ngIf="files.length" class="file-counter">Wybrano {{ files.length }}</span>
 
-  <div class="uploader-container">
-    <p *ngIf="!files.length && !editTemporaryDisabled" class="add-files-text">{{ addFilesMessage }}</p>
-    <p *ngIf="editTemporaryDisabled" class="add-files-text">Edytowanie załączników chwilowo niedostępne</p>
-    <div class="thumbs-container" *ngIf="!editTemporaryDisabled">
-      <eko-file-thumb *ngFor="let file of files" [file]="file" (fileRemove)="onFileRemove($event)"> </eko-file-thumb>
+<div class="uploader-container">
+  <p *ngIf="!files.length" class="add-files-text">{{ addFilesMessage }}</p>
+  <div class="thumbs-container">
+    <eko-file-thumb *ngFor="let file of files" [file]="file" (fileRemove)="onFileRemove($event, fileInput)">
+    </eko-file-thumb>
 
-      <div class="fab-container">
-        <button type="button" color="primary" mat-mini-fab (click)="openFileBrowser(fileInput)">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
+    <div class="fab-container">
+      <button type="button" color="primary" mat-mini-fab (click)="openFileBrowser(fileInput)">
+        <mat-icon>add</mat-icon>
+      </button>
     </div>
-
-    <input
-      #fileInput
-      multiple
-      type="file"
-      hidden
-      accept="{{ acceptedFileTypes }}"
-      (change)="onFilesSelected(fileInput)"
-    />
   </div>
-</section>
+
+  <input
+    #fileInput
+    multiple
+    type="file"
+    hidden
+    accept="{{ acceptedFileTypes }}"
+    (change)="onFilesSelected(fileInput)"
+  />
+</div>

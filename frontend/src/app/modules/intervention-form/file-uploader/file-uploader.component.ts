@@ -16,7 +16,6 @@ export enum SupportedFileTypes {
 })
 export class FileUploaderComponent implements OnInit {
   @Input() imagesOnly = false;
-  @Input() editTemporaryDisabled = false;
 
   files: Array<File> = [];
   addFilesMessage: string;
@@ -48,8 +47,9 @@ export class FileUploaderComponent implements OnInit {
     );
   }
 
-  onFileRemove(removedFile: File) {
+  onFileRemove(removedFile: File, input: HTMLInputElement) {
     this.files = this.files.filter(file => file !== removedFile);
+    input.value = '';
   }
 
   private getAllSupportedTypes(): string {
