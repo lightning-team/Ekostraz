@@ -76,7 +76,10 @@
         </mat-form-field>
       </section>
 
-      <ng-content></ng-content>
+      <section class="attachments">
+        <h2 class="mat-h2">Załączniki</h2>
+        <eko-file-uploader [imagesOnly]="!this.inPrivateMode"></eko-file-uploader>
+      </section>
 
       <button type="submit" color="primary" mat-raised-button [disabled]="!form.valid || submitInProgress">
         <mat-spinner *ngIf="submitInProgress" [diameter]="25"></mat-spinner>
