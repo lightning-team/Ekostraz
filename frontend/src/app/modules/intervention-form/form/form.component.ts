@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { formatDate } from '@angular/common';
 
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { Intervention, InterventionFormData } from '@shared/domain/intervention.model';
@@ -39,7 +40,10 @@ export class InterventionFormComponent implements OnInit {
 
   private maybePatchFormValue() {
     if (this.intervention) {
-      this.form.patchValue(this.intervention);
+      this.form.patchValue({
+        ...this.intervention,
+        creationDate: formatDate(this.intervention.creationDate, 'medium', 'pl'),
+      });
     }
   }
 
