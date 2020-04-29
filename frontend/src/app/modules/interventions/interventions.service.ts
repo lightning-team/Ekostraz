@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { Params } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
@@ -29,18 +28,7 @@ export class InterventionsService {
     );
   }
 
-  getIntervention(routeParams: Observable<Params>): Observable<Intervention | null> {
-    return this.getActiveRouteIntervention(routeParams);
-  }
-
-  private getActiveRouteIntervention(routeParams: Observable<Params>): Observable<Intervention | null> {
-    return routeParams.pipe(
-      pluck<any, string>('interventionId'),
-      switchMap(interventionId => (interventionId ? this.fetchIntervention(interventionId) : of(null))),
-    );
-  }
-
-  fetchIntervention(id: string): Observable<Intervention> {
+  getIntervention(id: string): Observable<Intervention> {
     return this.http
       .get<RawServerIntervention>(`${this.interventionsUrl}/${id}`)
       .pipe(map(toIntervention), this.snackBar.failurePipe());

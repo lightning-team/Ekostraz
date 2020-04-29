@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { formatDate } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
@@ -18,16 +17,19 @@ import { InterventionsService } from '../interventions.service';
   providers: [InterventionFormService],
 })
 export class EditFormComponent extends InterventionFormContainer {
-  intervention: Intervention;
-  submitSuccessRedirectUrl = '/interwencje/' + this.activatedRoute.snapshot.params.interventionId;
+  private interventionId = this.activatedRoute.snapshot.params.interventionId;
 
-  loading$: Observable<Intervention> = this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
-    map(toFormData),
+  intervention: Intervention;
+  submitSuccessRedirectUrl = '/interwencje/' + this.interventionId;
+
+  loading$: Observable<Intervention> = this.interventionsService.getIntervention(this.interventionId).pipe(
+    map(intervention => intervention || null),
     tap(formData => {
       this.intervention = formData;
     }),
     first(),
   );
+
   submitFormFn = formData => this.formService.update(formData);
 
   constructor(
@@ -40,11 +42,3 @@ export class EditFormComponent extends InterventionFormContainer {
     super(formService, snackbar, router);
   }
 }
-
-const toFormData = (intervention?: Intervention): Intervention =>
-  intervention
-    ? {
-        ...intervention,
-        creationDate: formatDate(intervention.creationDate, 'medium', 'pl'),
-      }
-    : null;
