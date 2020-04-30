@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Comment } from '@shared/domain/intervention.model';
 import { InterventionsService } from '../../interventions.service';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ComponentWithSubscriptions } from '@shared/components/base';
 
 @Component({
