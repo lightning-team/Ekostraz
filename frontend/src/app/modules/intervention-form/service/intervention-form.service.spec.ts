@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environment';
 import { InterventionStatus } from '@shared/domain/intervention.status';
@@ -10,7 +9,6 @@ import { InterventionFormService } from './intervention-form.service';
 
 describe('InterventionFormService', () => {
   let service: InterventionFormService;
-  let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
   let requestMock: TestRequest;
 
@@ -21,7 +19,6 @@ describe('InterventionFormService', () => {
     });
 
     service = TestBed.get(InterventionFormService);
-    httpClient = TestBed.get(HttpClient);
     httpTestingController = TestBed.get(HttpTestingController);
   });
 
