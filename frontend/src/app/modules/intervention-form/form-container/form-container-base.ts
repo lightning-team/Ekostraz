@@ -1,7 +1,7 @@
 import { OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of, Subscription } from 'rxjs';
-import { finalize, switchMapTo, tap } from 'rxjs/operators';
+import { concatMap, finalize, last, pluck, switchMapTo, tap } from 'rxjs/operators';
 
 import { SnackBarManager, SnackBarPipeConfig } from '@shared/services/snack-bar-manager';
 import { FormMessages } from '@interventionForm/form-messages';
@@ -13,7 +13,12 @@ export interface SubmittableForm<SubmitDataType> {
   onSubmit(eventData: SubmitDataType);
 }
 
-export abstract class InterventionFormContainer implements OnDestroy, SubmittableForm<InterventionFormData> {
+export interface InterventionFormSubmitData {
+  formData: InterventionFormData;
+  attachments: File[];
+}
+
+export abstract class InterventionFormContainer implements OnDestroy, SubmittableForm<InterventionFormSubmitData> {
   public submitInProgress = false;
 
   protected submitSuccessRedirectUrl = '';
@@ -23,8 +28,7 @@ export abstract class InterventionFormContainer implements OnDestroy, Submittabl
     errorMsg: FormMessages.PostFailed,
   };
 
-  protected submitFormFn = (data: InterventionFormData): Observable<InterventionFormData> =>
-    this.formService.post(data);
+  protected submitFormFn = (data: InterventionFormData): Observable<{ id: string }> => this.formService.post(data);
 
   constructor(
     protected formService: InterventionFormService,
@@ -32,12 +36,18 @@ export abstract class InterventionFormContainer implements OnDestroy, Submittabl
     private router: Router,
   ) {}
 
-  onSubmit(eventData: InterventionFormData) {
+  onSubmit({ formData, attachments }) {
     this.subscriptions.add(
       of({})
         .pipe(
           tap(() => (this.submitInProgress = true)),
-          switchMapTo(this.submitFormFn(eventData)),
+          switchMapTo(this.submitFormFn(formData).pipe(pluck('id'))),
+          concatMap((id: string) =>
+            this.formService.uploadAttachments(id, attachments).pipe(
+              // TODO: Add error handling and partial progress info for each file upload request
+              last(),
+            ),
+          ),
           tap(() => this.router.navigateByUrl(this.submitSuccessRedirectUrl)),
           this.snackbar.successFailurePipe(this.snackbarConfig),
           finalize(() => (this.submitInProgress = false)),
