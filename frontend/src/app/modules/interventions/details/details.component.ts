@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete.dialog';
 import { ComponentWithSubscriptions } from '@shared/components/base';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
+import { InterventionsApiUrlsFactory } from '@shared/interventions-api-urls.factory';
 
 @Component({
   selector: 'app-intervention-details',
@@ -19,6 +20,10 @@ export class DetailsComponent extends ComponentWithSubscriptions {
   constructor(private router: Router, private dialog: MatDialog, @Inject(GTM_CONTEXTS) gtmContexts) {
     super();
     this.interventionDetailsGtmContext = gtmContexts.interventionDetails;
+  }
+
+  createFileUrl(blobId: string): string {
+    return InterventionsApiUrlsFactory.attachment(this.intervention.id, blobId);
   }
 
   showDeleteDialog() {
