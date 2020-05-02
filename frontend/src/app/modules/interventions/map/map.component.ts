@@ -8,6 +8,11 @@ import { InterventionsService } from '../interventions.service';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { InterventionStatus } from '@shared/domain/intervention.status';
 
+const WROCLAW_COORDINATES = {
+  lat: 51.107885,
+  lng: 17.038538,
+};
+
 @Component({
   selector: 'app-interventions-map',
   templateUrl: './map.component.html',
@@ -17,6 +22,8 @@ export class MapComponent {
   tilesLoadedSubject = new Subject();
   interventions: Intervention[];
   interventionMapGtmContext: string;
+  center = WROCLAW_COORDINATES;
+
   loading$ = forkJoin(
     this.tilesLoadedSubject.asObservable().pipe(first()),
     this.interventionsService
