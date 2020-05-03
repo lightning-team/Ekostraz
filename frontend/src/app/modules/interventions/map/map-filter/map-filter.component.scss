@@ -14,10 +14,6 @@
 
 mat-card {
   padding: 16px 20px;
-}
-
-form {
-  margin-bottom: 0;
   display: flex;
   flex-direction: column;
 }
@@ -31,6 +27,10 @@ mat-radio-button {
   & + & {
     padding-top: 10px;
   }
+}
+
+.openButton {
+  color: white;
 }
 
 .closeButton {
