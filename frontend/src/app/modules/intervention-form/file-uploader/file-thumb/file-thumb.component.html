@@ -1,4 +1,10 @@
-<button class="delete-button" mat-icon-button color="warn" title="Usuń plik" (click)="fileRemove.emit(file)">
+<button
+  class="delete-button"
+  mat-icon-button
+  color="warn"
+  title="Usuń plik"
+  (click)="fileRemove.emit(file); $event.preventDefault()"
+>
   <mat-icon>delete</mat-icon>
 </button>
 <span class="file-name" title="{{ fileName }}">{{ fileName }}</span>

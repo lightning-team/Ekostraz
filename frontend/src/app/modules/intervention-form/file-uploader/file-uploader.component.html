@@ -3,7 +3,7 @@
 <div class="uploader-container">
   <p *ngIf="!files.length" class="add-files-text">{{ addFilesMessage }}</p>
   <div class="thumbs-container">
-    <eko-file-thumb *ngFor="let file of files" [file]="file" (fileRemove)="onFileRemove($event, fileInput)">
+    <eko-file-thumb *ngFor="let file of files" [file]="file" (fileRemove)="onFileRemove($event, fileInput)" @fadeInOut>
     </eko-file-thumb>
 
     <div class="fab-container">

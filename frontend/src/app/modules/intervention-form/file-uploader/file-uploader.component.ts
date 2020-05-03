@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { createFadeInOut } from '@shared/animations';
 
 export enum SupportedFileTypes {
   Images = 'image/*',
@@ -13,6 +14,7 @@ export enum SupportedFileTypes {
   selector: 'eko-file-uploader',
   templateUrl: './file-uploader.component.html',
   styleUrls: ['./file-uploader.component.scss'],
+  animations: [createFadeInOut(300, 200)],
 })
 export class FileUploaderComponent implements OnInit {
   @Input() imagesOnly = false;
