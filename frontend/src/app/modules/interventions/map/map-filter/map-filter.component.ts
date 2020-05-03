@@ -5,10 +5,13 @@ import { ComponentWithSubscriptions } from '@shared/components/base';
 import { InterventionStatus, InterventionStatusOptions } from '@shared/domain/intervention.status';
 import { InterventionsFilter } from '@shared/domain/intervention.model';
 
+import { fabButtonAnimation, filtersCardAnimation, fadeInOut } from './map-filter.animations';
+
 @Component({
   selector: 'eko-map-filters',
   templateUrl: './map-filter.component.html',
   styleUrls: ['./map-filter.component.scss'],
+  animations: [fabButtonAnimation, filtersCardAnimation, fadeInOut],
 })
 export class MapFilterComponent extends ComponentWithSubscriptions implements OnInit {
   @Output() filtersChange = new EventEmitter<InterventionsFilter>();

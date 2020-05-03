@@ -6,6 +6,7 @@ import { MatCard } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('MapFilterComponent', () => {
   let component: MapFilterComponent;
@@ -13,7 +14,7 @@ describe('MapFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatRippleModule],
+      imports: [ReactiveFormsModule, MatRippleModule, NoopAnimationsModule],
       declarations: [MapFilterComponent, MatRadioGroup, MatRadioButton, MatCard, MatIcon],
     }).compileComponents();
   }));
