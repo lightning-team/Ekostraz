@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
+using System.Net.Mime;
 using System.Threading.Tasks;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
-using EkoFunkcje.Models.Requests;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
@@ -21,7 +17,7 @@ namespace EkoFunkcje.Features.Attachments
         [FunctionName("GetAttachment")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{interventionId}/attachments/{fileId}")]  HttpRequestMessage req,
-            [Blob("attachments/{interventionId}/{fileId}", FileAccess.Write, Connection = Config.StorageConnectionName)] CloudBlockBlob blob,
+            [Blob("attachments/{interventionId}/{fileId}", FileAccess.Read, Connection = Config.StorageConnectionName)] CloudBlockBlob blob,
             ILogger log)
         {
             Stream attachmentStream;
@@ -35,13 +31,25 @@ namespace EkoFunkcje.Features.Attachments
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
 
+            await blob.FetchAttributesAsync();
+
+            return createAttachmentResult(
+                attachmentStream, 
+                new ContentDisposition(blob.Properties.ContentDisposition)
+            );
+        }
+        public static HttpResponseMessage createAttachmentResult(Stream attachmentStream, ContentDisposition blobContentDisposition) {
             var result = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StreamContent(attachmentStream)
             };
 
-            //If needed on frontend, here add ContentType in the header
+            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(blobContentDisposition.DispositionType)
+            {
+                FileName = blobContentDisposition.FileName
+            };
             return result;
         }
     }
+
 }
