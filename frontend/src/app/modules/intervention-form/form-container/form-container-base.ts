@@ -36,17 +36,19 @@ export abstract class InterventionFormContainer implements OnDestroy, Submittabl
     private router: Router,
   ) {}
 
-  onSubmit({ formData, attachments }) {
+  onSubmit({ formData, attachments = [] }) {
     this.subscriptions.add(
       of({})
         .pipe(
           tap(() => (this.submitInProgress = true)),
           switchMapTo(this.submitFormFn(formData).pipe(pluck('id'))),
           concatMap((id: string) =>
-            this.formService.uploadAttachments(id, attachments).pipe(
-              // TODO: Add error handling and partial progress info for each file upload request
-              last(),
-            ),
+            attachments.length
+              ? this.formService.uploadAttachments(id, attachments).pipe(
+                  // TODO: Add error handling and partial progress info for each file upload request
+                  last(),
+                )
+              : of([]),
           ),
           tap(() => this.router.navigateByUrl(this.submitSuccessRedirectUrl)),
           this.snackbar.successFailurePipe(this.snackbarConfig),
