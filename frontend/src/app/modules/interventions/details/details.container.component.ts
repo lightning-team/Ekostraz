@@ -16,7 +16,7 @@ import { Intervention } from '@shared/domain/intervention.model';
 })
 export class DetailsContainerComponent {
   intervention: Intervention;
-  intervention$ = this.interventionsService.getIntervention(this.activatedRoute.params).pipe(
+  intervention$ = this.interventionsService.getIntervention(this.activatedRoute.snapshot.params.interventionId).pipe(
     tap(data => {
       this.intervention = data;
     }),

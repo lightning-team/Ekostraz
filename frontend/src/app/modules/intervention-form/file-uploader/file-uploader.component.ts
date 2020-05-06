@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { createFadeInOut } from '@shared/animations';
 
 export enum SupportedFileTypes {
   Images = 'image/*',
@@ -13,10 +14,10 @@ export enum SupportedFileTypes {
   selector: 'eko-file-uploader',
   templateUrl: './file-uploader.component.html',
   styleUrls: ['./file-uploader.component.scss'],
+  animations: [createFadeInOut(300, 200)],
 })
 export class FileUploaderComponent implements OnInit {
   @Input() imagesOnly = false;
-  @Input() editTemporaryDisabled = false;
 
   files: Array<File> = [];
   addFilesMessage: string;
@@ -48,8 +49,9 @@ export class FileUploaderComponent implements OnInit {
     );
   }
 
-  onFileRemove(removedFile: File) {
+  onFileRemove(removedFile: File, input: HTMLInputElement) {
     this.files = this.files.filter(file => file !== removedFile);
+    input.value = '';
   }
 
   private getAllSupportedTypes(): string {

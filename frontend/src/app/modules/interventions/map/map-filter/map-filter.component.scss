@@ -1,0 +1,38 @@
+@import 'breakpoints';
+
+:host {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  z-index: 1;
+
+  @media (max-width: $break-mobile) {
+    top: 25px;
+    left: 15px;
+  }
+}
+
+mat-card {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-radio-group {
+  display: block;
+}
+
+mat-radio-button {
+  display: block;
+  & + & {
+    padding-top: 10px;
+  }
+}
+
+.openButton {
+  color: white;
+}
+
+.closeButton {
+  margin: 20px 0 0 auto;
+}

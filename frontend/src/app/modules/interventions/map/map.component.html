@@ -1,12 +1,14 @@
 <app-loader [loading$]="loading$" [loaderText]="'Ładowanie mapy...'" [hiddenBeforeLoaded]="true">
+  <eko-map-filters (filtersChange)="handleFiltersChange($event)"></eko-map-filters>
+  <!-- TODO: Consider playing with 'fitBounds' directive to center the map if current approach is not enough -->
   <agm-map
     *ngIf="interventions"
     [withGtmContext]="interventionMapGtmContext"
-    [latitude]="interventions[0].geoLat"
-    [longitude]="interventions[0].geoLng"
+    [latitude]="center.lat"
+    [longitude]="center.lng"
     (tilesLoaded)="onTilesLoaded()"
   >
-    <agm-marker-cluster imagePath="/assets/m">
+    <agm-marker-cluster imagePath="/assets/m" [maxZoom]="17">
       <agm-marker
         *ngFor="let intervention of interventions"
         [latitude]="intervention.geoLat"

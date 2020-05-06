@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { Intervention, InterventionListRouterState, ListIntervention } from '@shared/domain/intervention.model';
+import { Intervention, ListIntervention } from '@shared/domain/intervention.model';
 import { InterventionsService } from '../interventions.service';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
@@ -32,9 +32,7 @@ export class ListComponent {
   }
 
   showMap() {
-    this.router.navigate(['interwencje', 'mapa'], {
-      state: { interventions: this.interventions },
-    } as InterventionListRouterState);
+    this.router.navigate(['interwencje', 'mapa']);
   }
 }
 

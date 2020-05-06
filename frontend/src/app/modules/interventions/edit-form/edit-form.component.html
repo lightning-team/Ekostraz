@@ -5,9 +5,9 @@
     [inPrivateMode]="true"
     [formTitle]="'Edytuj interwencję'"
     [buttonText]="'Zapisz'"
+    [submitInProgress]="submitInProgress"
     (formSubmit)="onSubmit($event)"
   >
-    <eko-file-uploader [editTemporaryDisabled]="true"></eko-file-uploader>
   </app-intervention-form>
   <h3 *ngIf="!intervention">Nie udało się pobrać danych z serwera!</h3>
 </app-loader>
