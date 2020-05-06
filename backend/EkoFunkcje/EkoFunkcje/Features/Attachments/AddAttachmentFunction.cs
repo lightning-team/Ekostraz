@@ -16,13 +16,23 @@ namespace EkoFunkcje.Features.Attachments
         [FunctionName("AddAttachment")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
-            [Blob("attachments/{interventionId}/{rand-guid}", FileAccess.Write , Connection = Config.StorageConnectionName)] CloudBlockBlob newBlob,
+            IBinder binder, string interventionId,
             ILogger log)
         {
             HttpContentHeaders contentHeaders = req.Content.Headers;
             if (contentHeaders.ContentLength == 0) {
                 return req.CreateErrorResponse(HttpStatusCode.BadRequest, "No attachment sent");
             }
+
+            var fileName = req.Content.Headers.ContentDisposition?.FileName;
+            if (fileName == null)
+            {
+                return req.CreateErrorResponse(HttpStatusCode.BadRequest, "No FileName ContentDisposition");
+            }
+            var attribute = new BlobAttribute($"attachments/{interventionId}/{fileName}", FileAccess.Read);
+            attribute.Connection = Config.StorageConnectionName;
+
+            var newBlob = await binder.BindAsync<CloudBlockBlob>(attribute);
 
             if (await newBlob.ExistsAsync())
             {
