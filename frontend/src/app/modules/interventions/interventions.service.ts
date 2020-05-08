@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { forkJoin, Observable} from 'rxjs';
-import { map } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 import { SnackBarManager } from '@shared/services/snack-bar-manager';
-import { Attachment, Intervention, InterventionsFilter, RawServerIntervention } from '@shared/domain/intervention.model';
+import {
+  Attachment,
+  Intervention,
+  InterventionsFilter,
+  RawServerIntervention,
+} from '@shared/domain/intervention.model';
 import { InterventionsApiUrlsFactory } from '@shared/interventions-api-urls.factory';
 
 @Injectable()
@@ -17,12 +22,14 @@ export class InterventionsService {
   }
 
   private fetchInterventions(params: InterventionsFilter): Observable<Intervention[]> {
-    return this.http.get<any>(InterventionsApiUrlsFactory.interventions, {
-      params: params as HttpParams,
-    }).pipe(
-      map(data => data.map(toIntervention)),
-      this.snackBar.failurePipe(),
-    );
+    return this.http
+      .get<any>(InterventionsApiUrlsFactory.interventions, {
+        params: params as HttpParams,
+      })
+      .pipe(
+        map(data => data.map(toIntervention)),
+        this.snackBar.failurePipe(),
+      );
   }
 
   getIntervention(id: string): Observable<Intervention> {
@@ -44,6 +51,18 @@ export class InterventionsService {
         }),
       );
   }
+
+  /**
+   * Programmatically downloads and opens save dialog for the attachment.
+   *
+   * This is needed because simply clicking on anchor tag by the user is not enough and will reject with 401 unauthorized.
+   * We need to send x-functions-key in request's header - it is added automatically by HttpInterceptor.
+   */
+  downloadAttachment(interventionId: string, file: Attachment): Observable<Blob> {
+    return this.http
+      .get(InterventionsApiUrlsFactory.attachment(interventionId, file.id), { responseType: 'blob' })
+      .pipe(tap(blob => saveBlobToDisk(blob, file.name)));
+  }
 }
 
 const toIntervention = (rawIntervention: RawServerIntervention): Intervention => ({
@@ -54,4 +73,13 @@ const toIntervention = (rawIntervention: RawServerIntervention): Intervention =>
 const toInterventionWithAttachments = ([intervention, attachments]: [Intervention, Attachment[]]): Intervention => {
   intervention.attachments = attachments || [];
   return intervention;
+};
+
+const saveBlobToDisk = (blob: Blob, name: string) => {
+  const dataUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(dataUrl);
 };

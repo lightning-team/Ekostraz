@@ -4,13 +4,16 @@ import { ActivatedRoute } from '@angular/router';
 import { first, tap } from 'rxjs/operators';
 
 import { InterventionsService } from '../interventions.service';
-import { Intervention } from '@shared/domain/intervention.model';
+import { Attachment, Intervention } from '@shared/domain/intervention.model';
 
 @Component({
-  selector: 'app-intervention-details-container',
+  selector: 'eko-intervention-details-container',
   template: `
     <app-loader [loading$]="intervention$">
-      <app-intervention-details [intervention]="intervention"></app-intervention-details>
+      <eko-intervention-details
+        [intervention]="intervention"
+        (fileDownload)="onFileDownload($event)"
+      ></eko-intervention-details>
     </app-loader>
   `,
 })
@@ -24,4 +27,8 @@ export class DetailsContainerComponent {
   );
 
   constructor(private interventionsService: InterventionsService, private activatedRoute: ActivatedRoute) {}
+
+  onFileDownload(file: Attachment) {
+    this.interventionsService.downloadAttachment(this.intervention.id, file).subscribe();
+  }
 }
