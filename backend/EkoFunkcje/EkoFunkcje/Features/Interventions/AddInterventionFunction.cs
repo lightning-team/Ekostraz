@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
+using EkoFunkcje.Utils.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -41,17 +42,24 @@ namespace EkoFunkcje.Features.Interventions
                 string json = JsonConvert.SerializeObject(errorList);
                 return new BadRequestObjectResult(json);
             }
-            Address convertedGeoAddress = new Address();
+
+            Address convertedGeoAddress;
             try
             {
                 // retry should be added
                 convertedGeoAddress = await _addressConverter.ConvertToGeoAddress(intervention.Address);
             }
+            catch (BaseException e)
+            {
+                log.Log(e.LogLevel, e, e.Message);
+                return new BadRequestObjectResult(e.Message);
+            }
             catch (Exception e)
             {
-                log.LogError(e, "error");
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                log.LogError(e, "Podany adres jest niepoprawny");
+                return new BadRequestObjectResult("Podany adres jest niepoprawny");
             }
+
             InterventionEntity interventionEntity = new InterventionEntity()
             {
                 Email = intervention.Email,
