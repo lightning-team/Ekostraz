@@ -142,6 +142,7 @@ namespace EkoFunkcje.Features.Interventions
 
               InterventionEntity adddedInterventionEntity = new InterventionEntity()
               {
+                  RowKey = interventionToEdit.RowKey,
                   Email = editedIntervention.Email,
                   CreationDate = interventionToEdit.CreationDate,
                   ModificationDate = DateTime.UtcNow,
