@@ -1,10 +1,21 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { Intervention, InterventionFormData } from '@shared/domain/intervention.model';
 import { InterventionStatus, InterventionStatusOptions } from '@shared/domain/intervention.status';
+import { InterventionFormSubmitData } from '@interventionForm/form-container/form-container-base';
+import { FileUploaderComponent } from '@interventionForm/file-uploader/file-uploader.component';
 
 type InterventionFormGroupConfig = { [key in keyof InterventionFormData]: any };
 
@@ -25,7 +36,9 @@ export class InterventionFormComponent implements OnInit {
   @Input() inPrivateMode = false;
   @Input() submitInProgress = false;
 
-  @Output() formSubmit = new EventEmitter<InterventionFormData>();
+  @Output() formSubmit = new EventEmitter<InterventionFormSubmitData>();
+
+  @ViewChild(FileUploaderComponent, { static: true }) fileUploader;
 
   statusOptions = InterventionStatusOptions;
   form = this.buildForm();
@@ -53,9 +66,9 @@ export class InterventionFormComponent implements OnInit {
       : this.gtmContexts.publicInterventionForm;
   }
 
-  onSubmit(formValue: InterventionFormData) {
+  onSubmit(formData: InterventionFormData) {
     if (this.isFormValid()) {
-      this.formSubmit.emit(formValue);
+      this.formSubmit.emit({ formData, attachments: this.fileUploader.files });
     }
   }
 

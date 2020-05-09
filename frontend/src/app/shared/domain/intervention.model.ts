@@ -20,6 +20,13 @@ export interface Comment {
   createdDate: string;
 }
 
+export interface Attachment {
+  id: string;
+  name: string; // original file name
+  size: number;
+  type: string; // content type
+}
+
 export interface RawServerIntervention extends InterventionFormData {
   modificationDate: string;
   geoLat: number;
@@ -29,6 +36,7 @@ export interface RawServerIntervention extends InterventionFormData {
 
 export interface Intervention extends RawServerIntervention {
   address: string;
+  attachments?: Attachment[]; // Only for InterventionDetails
 }
 
 export interface ListIntervention extends Intervention {

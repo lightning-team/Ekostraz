@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { forkJoin, Observable} from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { environment } from '@environment';
 import { SnackBarManager } from '@shared/services/snack-bar-manager';
-import { Intervention, InterventionsFilter, RawServerIntervention } from '@shared/domain/intervention.model';
+import { Attachment, Intervention, InterventionsFilter, RawServerIntervention } from '@shared/domain/intervention.model';
+import { InterventionsApiUrlsFactory } from '@shared/interventions-api-urls.factory';
 
 @Injectable()
 export class InterventionsService {
-  private interventionsUrl = environment.APIUrl + 'interventions';
-
   constructor(private http: HttpClient, private snackBar: SnackBarManager) {}
 
   getInterventions(params: InterventionsFilter = {}): Observable<Intervention[]> {
@@ -19,25 +17,24 @@ export class InterventionsService {
   }
 
   private fetchInterventions(params: InterventionsFilter): Observable<Intervention[]> {
-    return this.http
-      .get<any>(this.interventionsUrl, {
-        params: params as HttpParams,
-      })
-      .pipe(
-        map(data => data.map(toIntervention)),
-        this.snackBar.failurePipe(),
-      );
+    return this.http.get<any>(InterventionsApiUrlsFactory.interventions, {
+      params: params as HttpParams,
+    }).pipe(
+      map(data => data.map(toIntervention)),
+      this.snackBar.failurePipe(),
+    );
   }
 
   getIntervention(id: string): Observable<Intervention> {
-    return this.http
-      .get<RawServerIntervention>(`${this.interventionsUrl}/${id}`)
-      .pipe(map(toIntervention), this.snackBar.failurePipe());
+    return forkJoin([
+      this.http.get<RawServerIntervention>(InterventionsApiUrlsFactory.intervention(id)).pipe(map(toIntervention)),
+      this.http.get<Attachment[]>(InterventionsApiUrlsFactory.attachments(id)),
+    ]).pipe(map(toInterventionWithAttachments), this.snackBar.failurePipe());
   }
 
   submitComment(comment: string, id: string): Observable<any> {
     return this.http
-      .post(`${this.interventionsUrl}/${id}/comments`, {
+      .post(InterventionsApiUrlsFactory.comments(id), {
         comment,
       })
       .pipe(
@@ -53,3 +50,8 @@ const toIntervention = (rawIntervention: RawServerIntervention): Intervention =>
   ...rawIntervention,
   address: `${rawIntervention.street}, ${rawIntervention.streetNumber}, ${rawIntervention.city}`,
 });
+
+const toInterventionWithAttachments = ([intervention, attachments]: [Intervention, Attachment[]]): Intervention => {
+  intervention.attachments = attachments || [];
+  return intervention;
+};

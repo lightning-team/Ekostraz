@@ -18,22 +18,44 @@
     </button>
   </mat-card-actions>
 
-  <mat-list>
-    <mat-list-item> <mat-icon>done</mat-icon> {{ intervention.status | ekoInterventionStatus }} </mat-list-item>
-    <mat-list-item> <mat-icon>account_circle</mat-icon> {{ intervention.fullName || 'Brak' }} </mat-list-item>
-    <mat-list-item> <mat-icon>phone</mat-icon> {{ intervention.phoneNumber }} </mat-list-item>
-    <mat-list-item> <mat-icon>email</mat-icon> {{ intervention.email || 'Brak' }} </mat-list-item>
-    <mat-list-item> <mat-icon>location_on</mat-icon> {{ intervention.address }} </mat-list-item>
-  </mat-list>
-
   <mat-card-content>
-    {{ intervention.description }}
+    <section>
+      <h2 class="mat-h2">Podstawowe informacje</h2>
+      <mat-list>
+        <mat-list-item> <mat-icon>done</mat-icon> {{ intervention.status | ekoInterventionStatus }} </mat-list-item>
+        <mat-list-item> <mat-icon>account_circle</mat-icon> {{ intervention.fullName || 'Brak' }} </mat-list-item>
+        <mat-list-item> <mat-icon>phone</mat-icon> {{ intervention.phoneNumber }} </mat-list-item>
+        <mat-list-item> <mat-icon>email</mat-icon> {{ intervention.email || 'Brak' }} </mat-list-item>
+        <mat-list-item> <mat-icon>location_on</mat-icon> {{ intervention.address }} </mat-list-item>
+      </mat-list>
+    </section>
+
+    <section>
+      <h2 class="mat-h2">Opis sprawy</h2>
+      {{ intervention.description }}
+    </section>
+
+    <section>
+      <h2 class="mat-h2">Załączniki</h2>
+      <!-- TODO:  Temporary solution - UX-friendly attachment list with download option needed in the near future -->
+      <p *ngIf="!intervention.attachments || !intervention.attachments.length">Brak załączników</p>
+      <p *ngFor="let file of intervention.attachments">
+        <a href="{{ createFileUrl(file.id) }}" rel="noopener noreferer" download>
+          {{ file.name }}
+        </a>
+      </p>
+    </section>
 
     <section *ngIf="!embedded" class="map-container">
+      <h2 class="mat-h2">Mapa</h2>
       <agm-map [latitude]="intervention.geoLat" [longitude]="intervention.geoLng">
         <agm-marker [latitude]="intervention.geoLat" [longitude]="intervention.geoLng"> </agm-marker>
       </agm-map>
     </section>
-    <app-comments [comments]="intervention.comments" [interventionId]="intervention.id"></app-comments>
+
+    <section>
+      <h2 class="mat-h2">Komentarze</h2>
+      <app-comments [comments]="intervention.comments" [interventionId]="intervention.id"></app-comments>
+    </section>
   </mat-card-content>
 </mat-card>

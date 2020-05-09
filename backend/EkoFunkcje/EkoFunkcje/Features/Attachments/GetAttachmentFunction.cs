@@ -33,21 +33,21 @@ namespace EkoFunkcje.Features.Attachments
 
             await blob.FetchAttributesAsync();
 
-            return createAttachmentResult(
-                attachmentStream, 
-                new ContentDisposition(blob.Properties.ContentDisposition)
-            );
+            return createAttachmentResult(attachmentStream, blob.Properties);
         }
-        public static HttpResponseMessage createAttachmentResult(Stream attachmentStream, ContentDisposition blobContentDisposition) {
+        public static HttpResponseMessage createAttachmentResult(Stream attachmentStream, BlobProperties blobProps) {
             var result = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StreamContent(attachmentStream)
             };
 
+            ContentDisposition blobContentDisposition = new ContentDisposition(blobProps.ContentDisposition);
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(blobContentDisposition.DispositionType)
             {
                 FileName = blobContentDisposition.FileName
             };
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue(blobProps.ContentType);
+            
             return result;
         }
     }
