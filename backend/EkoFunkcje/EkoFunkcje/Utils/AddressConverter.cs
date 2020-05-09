@@ -40,19 +40,21 @@ namespace EkoFunkcje
         private void ValidateGoogleApiResponse(string address, dynamic responseLocation)
         {
             var addressSplit = address.Split(",");
-            string[] responseAddressComponents = responseLocation.address_components;
+            var responseCity = responseLocation.formatted_address.Value.Split(",")[1].Trim();
+            var responseStreet = responseLocation.address_components[1].long_name.Value;
+            var responseStreetNumber = responseLocation.address_components[0].long_name.Value;
 
-            if (addressSplit[0].ToLower() != responseAddressComponents[2].ToLower())
+            if (addressSplit[0].ToLower() != responseCity.ToLower())
             {
-                throw new GoogleResponseWrongCityException(addressSplit[0], responseAddressComponents[2]);
+                throw new GoogleResponseWrongCityException(addressSplit[0], responseCity);
             }
-            if (addressSplit[1].ToLower() != responseAddressComponents[1].ToLower())
+            if (addressSplit[1].ToLower() != responseStreet.ToLower())
             {
-                throw new GoogleResponseWrongStreetException(addressSplit[1], responseAddressComponents[1]);
+                throw new GoogleResponseWrongStreetException(addressSplit[1], responseStreet);
             }
-            if (addressSplit[2].ToLower() != responseAddressComponents[0].ToLower())
+            if (addressSplit[2].ToLower() != responseStreetNumber.ToLower())
             {
-                throw new GoogleResponseWrongStreetNumberException(addressSplit[2], responseAddressComponents[0]);
+                throw new GoogleResponseWrongStreetNumberException(addressSplit[2], responseStreetNumber);
             }
         }
     }
