@@ -32,6 +32,7 @@ import { InterventionFormModule } from '@interventionForm/intervention-form.modu
 import { SharedModule } from '@shared/shared.module';
 import { CommentsComponent } from './details/comments/comments.component';
 import { MapFilterComponent } from './map/map-filter/map-filter.component';
+import { FileListComponent } from './details/file-list/file-list.component';
 
 const MaterialImports = [
   MatButtonModule,
@@ -58,6 +59,7 @@ const MaterialImports = [
     EditFormComponent,
     CommentsComponent,
     MapFilterComponent,
+    FileListComponent,
   ],
   entryComponents: [DeleteDialog],
   imports: [

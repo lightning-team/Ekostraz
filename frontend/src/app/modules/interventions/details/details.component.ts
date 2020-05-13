@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Attachment, Intervention } from '@shared/domain/intervention.model';
+import { Intervention } from '@shared/domain/intervention.model';
 import { ComponentWithSubscriptions } from '@shared/components/base';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { DeleteDialog } from './delete.dialog';
@@ -15,7 +15,6 @@ import { DeleteDialog } from './delete.dialog';
 export class DetailsComponent extends ComponentWithSubscriptions {
   @Input() intervention: Intervention;
   @Input() embedded?: boolean;
-  @Output() fileDownload = new EventEmitter<Attachment>();
 
   interventionDetailsGtmContext: string;
 
