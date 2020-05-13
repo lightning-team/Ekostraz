@@ -2,7 +2,7 @@
   <mat-card-title>{{ formTitle }}</mat-card-title>
 
   <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" [withGtmContext]="formGtmContext">
+    <form [formGroup]="form" [withGtmContext]="formGtmContext">
       <input type="text" hidden formControlName="id" />
 
       <mat-form-field *ngIf="inPrivateMode && intervention">
@@ -81,7 +81,13 @@
         <eko-file-uploader [imagesOnly]="!this.inPrivateMode"></eko-file-uploader>
       </section>
 
-      <button type="submit" color="primary" mat-raised-button [disabled]="!form.valid || submitInProgress">
+      <button
+        type="submit"
+        color="primary"
+        mat-raised-button
+        [disabled]="!form.valid || submitInProgress"
+        (click)="onSubmit(form.value)"
+      >
         <mat-spinner *ngIf="submitInProgress" [diameter]="25"></mat-spinner>
         <ng-container *ngIf="!submitInProgress">
           {{ buttonText }}
