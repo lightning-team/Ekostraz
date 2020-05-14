@@ -81,6 +81,6 @@ namespace EkoFunkcje.Utils
 
     public interface IAddressValidator
     {
-        void ValidateGoogleApiResponse(string city, string street, string streetNumber, results responseLocation)
+        void ValidateGoogleApiResponse(string city, string street, string streetNumber, results responseLocation);
     }
 }
