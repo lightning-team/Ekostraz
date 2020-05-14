@@ -47,7 +47,7 @@ namespace EkoFunkcje.Features.Interventions
             try
             {
                 // retry should be added
-                convertedGeoAddress = await _addressConverter.ConvertToGeoAddress(intervention.Address);
+                convertedGeoAddress = await _addressConverter.ConvertToGeoAddress(intervention.City, intervention.Street, intervention.StreetNumber);
             }
             catch (BaseException e)
             {
