@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using AzureFunctions.Extensions.Swashbuckle;
+using EkoFunkcje.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters.Json.Internal;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
@@ -19,6 +20,8 @@ namespace EkoFunkcje
             builder.Services.AddTransient<IConfigureOptions<MvcOptions>, MvcJsonMvcOptionsSetup>(); //https://github.com/Azure/azure-webjobs-sdk-extensions/issues/486
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<IAddressConverter, AddressConverter>();
+            builder.Services.AddSingleton<IAddressValidator, AddressValidator>();
+            builder.Services.AddSingleton<IStringTranslator, PolishCharactersTranslator>();
             builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
         }
     }

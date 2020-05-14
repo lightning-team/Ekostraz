@@ -1,8 +1,12 @@
 ﻿using EkoFunkcje.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using EkoFunkcje.Models.Respones;
+using EkoFunkcje.Utils;
 using EkoFunkcje.Utils.Exceptions;
 
 namespace EkoFunkcje
@@ -10,26 +14,34 @@ namespace EkoFunkcje
     public class AddressConverter : IAddressConverter 
     {
         private readonly HttpClient _httpClient;
+        private readonly IAddressValidator _addressValidator;
         private readonly string _apiMapsAccessKey;
         private const string ApiAddress = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-        public AddressConverter(HttpClient httpClient)
+
+        public AddressConverter(HttpClient httpClient, IAddressValidator addressValidator)
         {
             _httpClient = httpClient;
+            _addressValidator = addressValidator;
             _apiMapsAccessKey = Environment.GetEnvironmentVariable("MapKey", EnvironmentVariableTarget.Process);
         }
 
-        public async Task<Address> ConvertToGeoAddress(string address)
+        public async Task<Address> ConvertToGeoAddress(string city, string street, string streetNumber)
         {
-            var response = await _httpClient.GetAsync($"{ApiAddress}{address}&key={_apiMapsAccessKey}");
+            var response = await _httpClient.GetAsync($"{ApiAddress}{city},{street},{streetNumber}&key={_apiMapsAccessKey}");
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Request unsuccesful");
             var responsBody = await response.Content.ReadAsStringAsync();
-            dynamic addressDeserializeObject = JsonConvert.DeserializeObject(responsBody);
+            GoogleGeoCodeResponse addressDeserializeObject = JsonConvert.DeserializeObject<GoogleGeoCodeResponse>(responsBody);
 
+            var responseLocation = addressDeserializeObject.results.FirstOrDefault();
+            if (responseLocation == null)
+            {
+                throw new MatchingAddressNotFoundException($"{city},{street},{streetNumber}");
+            }
 
-            ValidateGoogleApiResponse(address, addressDeserializeObject.results.First);
+            _addressValidator.ValidateGoogleApiResponse(city, street, streetNumber, responseLocation);
 
-            dynamic loc = addressDeserializeObject.results.First.geometry.location;
+            dynamic loc = responseLocation.geometry.location;
 
             var addressObj = new Address();
             addressObj.Latitude = loc.lat;
@@ -37,30 +49,11 @@ namespace EkoFunkcje
             return addressObj;
         }
 
-        private void ValidateGoogleApiResponse(string address, dynamic responseLocation)
-        {
-            var addressSplit = address.Split(",");
-            var responseCity = responseLocation.formatted_address.Value.Split(",")[1].Trim();
-            var responseStreet = responseLocation.address_components[1].long_name.Value;
-            var responseStreetNumber = responseLocation.address_components[0].long_name.Value;
-
-            if (addressSplit[0].ToLower() != responseCity.ToLower())
-            {
-                throw new GoogleResponseWrongCityException(addressSplit[0], responseCity);
-            }
-            if (addressSplit[1].ToLower() != responseStreet.ToLower())
-            {
-                throw new GoogleResponseWrongStreetException(addressSplit[1], responseStreet);
-            }
-            if (addressSplit[2].ToLower() != responseStreetNumber.ToLower())
-            {
-                throw new GoogleResponseWrongStreetNumberException(addressSplit[2], responseStreetNumber);
-            }
-        }
+        
     }
 
     public interface IAddressConverter
     {
-        Task<Address> ConvertToGeoAddress(string address);
+        Task<Address> ConvertToGeoAddress(string city, string street, string streetNumber);
     }
 }
