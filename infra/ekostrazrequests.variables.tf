@@ -2,7 +2,7 @@ variable "region" {
 	default = "West Europe"
 }
 variable "resource_group_name" {
-	default = "dariusz.parzygnat"
+	default = ""
 }
 variable "function_app_name" {
 	default = "requestsappec"
@@ -21,5 +21,5 @@ variable "testprefix" {
 }
 
 variable "subscription_id" {
-	default = "2e148d3b-240e-40bc-9692-b73b42bd6514"
+	default = ""
 }
