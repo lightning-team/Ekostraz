@@ -1,11 +1,5 @@
-<button
-  class="delete-button"
-  mat-icon-button
-  color="warn"
-  title="Usuń plik"
-  (click)="fileRemove.emit(file); $event.preventDefault()"
->
+<button class="delete-button" mat-icon-button color="warn" title="Usuń plik" (click)="fileRemove.emit(file)">
   <mat-icon>delete</mat-icon>
 </button>
-<span class="file-name" title="{{ fileName }}">{{ fileName }}</span>
-<img *ngIf="imgSource" class="file-thumb" src="{{ imgSource }}" title="{{ fileName }}" alt="Podgląd pliku" />
+<span class="file-name" title="{{ file.name }}">{{ file.name }}</span>
+<img *ngIf="imgSource" class="file-thumb" src="{{ imgSource }}" title="{{ file.name }}" alt="Podgląd pliku" />

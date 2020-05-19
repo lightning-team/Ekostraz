@@ -7,10 +7,10 @@ import { InterventionsService } from '../interventions.service';
 import { Intervention } from '@shared/domain/intervention.model';
 
 @Component({
-  selector: 'app-intervention-details-container',
+  selector: 'eko-intervention-details-container',
   template: `
     <app-loader [loading$]="intervention$">
-      <app-intervention-details [intervention]="intervention"></app-intervention-details>
+      <eko-intervention-details [intervention]="intervention"></eko-intervention-details>
     </app-loader>
   `,
 })

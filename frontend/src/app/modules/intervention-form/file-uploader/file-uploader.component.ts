@@ -1,14 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { createFadeInOut } from '@shared/animations';
-
-export enum SupportedFileTypes {
-  Images = 'image/*',
-  Pdf = 'application/pdf',
-  WordDocument = 'application/msword',
-  Text = 'text/plain',
-  Video = 'video/*',
-  Audio = 'audio/*',
-}
+import { FileUtils, SupportedFileTypes } from '@shared/utils/file.utils';
 
 @Component({
   selector: 'eko-file-uploader',
@@ -25,7 +17,7 @@ export class FileUploaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.addFilesMessage = `Dodaj ${this.imagesOnly ? 'zdjęcia' : 'pliki'}`;
-    this.acceptedFileTypes = this.imagesOnly ? SupportedFileTypes.Images : this.getAllSupportedTypes();
+    this.acceptedFileTypes = this.imagesOnly ? SupportedFileTypes.Images : FileUtils.allSupportedTypes().join(',');
   }
 
   openFileBrowser(input: HTMLInputElement) {
@@ -52,9 +44,5 @@ export class FileUploaderComponent implements OnInit {
   onFileRemove(removedFile: File, input: HTMLInputElement) {
     this.files = this.files.filter(file => file !== removedFile);
     input.value = '';
-  }
-
-  private getAllSupportedTypes(): string {
-    return Object.values(SupportedFileTypes).join(',');
   }
 }

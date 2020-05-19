@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SupportedFileTypes } from '@interventionForm/file-uploader/file-uploader.component';
+import { FileUtils, SupportedFileTypes } from '@shared/utils/file.utils';
 
 @Component({
   selector: 'eko-file-thumb',
@@ -11,49 +11,27 @@ export class FileThumbComponent implements OnInit {
   @Output() fileRemove = new EventEmitter<File>();
 
   imgSource: string;
-  fileName: string;
 
   constructor(private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.setImgSourceByType(this.file.type);
-    this.fileName = this.file.name;
   }
 
   private setImgSourceByType(type: string) {
-    if (this.isFileType(type, SupportedFileTypes.Images)) {
-      this.readFileAsDataUrl();
+    if (FileUtils.isFileType(type, SupportedFileTypes.Images)) {
+      this.readFileAsDataUrl(this.file);
       return;
     }
-    this.imgSource = this.getThumbImageSourceBy(type);
+    this.imgSource = FileUtils.thumbSourceForMimeType(this.file.type);
   }
 
-  private getThumbImageSourceBy(type: string) {
-    if (this.isFileType(type, SupportedFileTypes.Pdf)) {
-      return 'assets/pdf-file-thumb.png';
-    } else if (this.isFileType(type, SupportedFileTypes.WordDocument)) {
-      return 'assets/doc-file-thumb.png';
-    } else if (this.isFileType(type, SupportedFileTypes.Text)) {
-      return 'assets/txt-file-thumb.png';
-    } else if (this.isFileType(type, SupportedFileTypes.Video)) {
-      return 'assets/video-file-thumb.png';
-    } else if (this.isFileType(type, SupportedFileTypes.Audio)) {
-      return 'assets/audio-file-thumb.png';
-    } else {
-      return 'assets/other-file-thumb.png';
-    }
-  }
-
-  private readFileAsDataUrl(): void {
+  private readFileAsDataUrl(file: File): void {
     const reader = new FileReader();
     reader.onload = e => {
       this.imgSource = reader.result as string;
       this.changeDetector.markForCheck();
     };
-    reader.readAsDataURL(this.file);
-  }
-
-  private isFileType(actualType: string, expectedType: SupportedFileTypes): boolean {
-    return actualType.includes(expectedType.replace('/*', '/'));
+    reader.readAsDataURL(file);
   }
 }

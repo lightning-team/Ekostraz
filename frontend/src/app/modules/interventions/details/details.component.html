@@ -37,13 +37,7 @@
 
     <section>
       <h2 class="mat-h2">Załączniki</h2>
-      <!-- TODO:  Temporary solution - UX-friendly attachment list with download option needed in the near future -->
-      <p *ngIf="!intervention.attachments || !intervention.attachments.length">Brak załączników</p>
-      <p *ngFor="let file of intervention.attachments">
-        <a href="{{ createFileUrl(file.id) }}" rel="noopener noreferer" download>
-          {{ file.name }}
-        </a>
-      </p>
+      <eko-file-list [attachments]="intervention.attachments" [interventionId]="intervention.id"></eko-file-list>
     </section>
 
     <section *ngIf="!embedded" class="map-container">

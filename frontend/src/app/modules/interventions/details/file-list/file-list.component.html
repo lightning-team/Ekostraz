@@ -1,0 +1,41 @@
+<mat-table *ngIf="attachments && attachments.length; else message" [dataSource]="dataSource" class="mat-elevation-z2">
+  <!-- Type Column -->
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef>Typ</mat-header-cell>
+    <mat-cell *matCellDef="let file">
+      <img alt="File type image" src="{{ fileUtils.thumbSourceForMimeType(file.type) }}" />
+    </mat-cell>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>Nazwa</mat-header-cell>
+    <mat-cell *matCellDef="let file" title="{{ file.name }}">{{ file.name }}</mat-cell>
+  </ng-container>
+
+  <!-- Size Column -->
+  <ng-container matColumnDef="size">
+    <mat-header-cell *matHeaderCellDef>Rozmiar</mat-header-cell>
+    <mat-cell *matCellDef="let file">{{ fileUtils.getSizeText(file.size) }}</mat-cell>
+  </ng-container>
+
+  <!-- Action Column -->
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
+    <mat-cell *matCellDef="let file">
+      <button mat-icon-button title="Pobierz" (click)="onDownloadClick(file)">
+        <mat-icon>save_alt</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" title="Akcja tymczasowo niedostępna" disabled>
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let element; columns: displayedColumns"></mat-row>
+</mat-table>
+
+<ng-template #message>
+  <p>Brak załączników</p>
+</ng-template>

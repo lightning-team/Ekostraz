@@ -1,0 +1,27 @@
+.mat-table {
+  max-width: 650px;
+}
+
+.mat-column-name {
+  text-overflow: ellipsis;
+}
+
+.mat-column-type {
+  max-width: 110px;
+  padding-left: 16px;
+
+  img {
+    margin: 5px 0;
+    height: 65px;
+  }
+}
+
+.mat-column-size {
+  max-width: 80px;
+  justify-content: center;
+}
+
+.mat-column-actions {
+  max-width: 120px;
+  justify-content: center;
+}
