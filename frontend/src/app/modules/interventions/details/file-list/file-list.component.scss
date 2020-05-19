@@ -2,8 +2,9 @@
   max-width: 650px;
 }
 
-.mat-column-name {
-  text-overflow: ellipsis;
+.mat-column-name:not(.mat-header-cell) {
+  display: block;
+  align-self: flex-end;
 }
 
 .mat-column-type {
