@@ -8,7 +8,7 @@ export enum SupportedFileTypes {
 }
 
 export class FileUtils {
-  static getSizeText(size: number) {
+  static getSizeText(size: number): string {
     if (size < 1024) {
       // up to 1KB
       return '1KB';
@@ -22,13 +22,13 @@ export class FileUtils {
       return (size / (1024 * 1024)).toPrecision(2) + 'MB';
     }
     if (size < 1024 * 1024 * 1024) {
-      // up to 10MB
+      // up to 1GB
       return ((size / (1024 * 1024)) | 0) + 'MB'; // tslint:disable-line
     }
     return '>1GB';
   }
 
-  static thumbSourceForMimeType(type: string) {
+  static thumbSourceForMimeType(type: string): string {
     if (this.isFileType(type, SupportedFileTypes.Images)) {
       return 'assets/image-file-thumb.png';
     } else if (this.isFileType(type, SupportedFileTypes.Pdf)) {
