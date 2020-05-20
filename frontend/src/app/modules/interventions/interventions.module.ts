@@ -1,23 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatDialogModule,
-  MatIconModule,
-  MatListModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatSnackBarModule,
-  MatTableModule,
-  MatTooltipModule,
-} from '@angular/material';
+import { MatCardModule, MatListModule, MatPaginatorModule, MatRadioModule, MatTableModule } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
+
+import { InterventionFormModule } from '@interventionForm/intervention-form.module';
+import { SharedModule } from '@shared/shared.module';
 
 import { InterventionsRoutingModule } from './interventions-routing.module';
 import { ListComponent } from './list/list.component';
@@ -28,25 +18,11 @@ import { TableComponent } from './list/table/table.component';
 import { MapComponent } from './map/map.component';
 import { NewFormComponent } from './new-form/new-form.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
-import { InterventionFormModule } from '@interventionForm/intervention-form.module';
-import { SharedModule } from '@shared/shared.module';
 import { CommentsComponent } from './details/comments/comments.component';
 import { MapFilterComponent } from './map/map-filter/map-filter.component';
 import { FileListComponent } from './details/file-list/file-list.component';
 
-const MaterialImports = [
-  MatButtonModule,
-  MatCardModule,
-  MatDialogModule,
-  MatIconModule,
-  MatListModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatSnackBarModule,
-  MatTableModule,
-  MatRadioModule,
-  MatTooltipModule,
-];
+const MaterialImports = [MatCardModule, MatListModule, MatPaginatorModule, MatRadioModule, MatTableModule];
 
 @NgModule({
   declarations: [
@@ -62,7 +38,6 @@ const MaterialImports = [
     FileListComponent,
   ],
   imports: [
-    CommonModule,
     SharedModule,
     InterventionsRoutingModule,
     InterventionFormModule,
