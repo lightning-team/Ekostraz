@@ -1,15 +1,15 @@
-.mat-table {
-  max-width: 650px;
-}
-
-.mat-column-name:not(.mat-header-cell) {
-  display: block;
-  align-self: flex-end;
+.mat-column-name {
+  padding-left: 10px;
+  &:not(.mat-header-cell) {
+    display: block;
+    align-self: flex-end;
+  }
 }
 
 .mat-column-type {
   max-width: 110px;
   padding-left: 16px;
+  justify-content: center;
 
   img {
     margin: 5px 0;
