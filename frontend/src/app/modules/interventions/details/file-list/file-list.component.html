@@ -23,10 +23,10 @@
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
     <mat-cell *matCellDef="let file">
-      <button mat-icon-button title="Pobierz" (click)="onDownloadClick(file)">
+      <button mat-icon-button matTooltip="Pobierz plik" (click)="onDownloadClick(file)">
         <mat-icon>save_alt</mat-icon>
       </button>
-      <button mat-icon-button color="warn" title="Akcja tymczasowo niedostępna" disabled>
+      <button mat-icon-button color="warn" matTooltip="Usuń plik" (click)="onDeleteClick(file)">
         <mat-icon>delete</mat-icon>
       </button>
     </mat-cell>

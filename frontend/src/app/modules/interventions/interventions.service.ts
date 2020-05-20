@@ -63,6 +63,15 @@ export class InterventionsService {
       .get(InterventionsApiUrlsFactory.attachment(interventionId, file.id), { responseType: 'blob' })
       .pipe(tap(blob => saveBlobToDisk(blob, file.name)));
   }
+
+  deleteAttachment(interventionId: string, file: Attachment): Observable<any> {
+    return this.http.delete(InterventionsApiUrlsFactory.attachment(interventionId, file.id)).pipe(
+      this.snackBar.successFailurePipe({
+        successMsg: 'Plik usunięto',
+        errorMsg: 'Błąd przy usuwaniu pliku',
+      }),
+    );
+  }
 }
 
 const toIntervention = (rawIntervention: RawServerIntervention): Intervention => ({

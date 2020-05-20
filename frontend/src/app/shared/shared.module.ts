@@ -10,18 +10,22 @@ import { FileUploaderComponent } from '@interventionForm/file-uploader/file-uplo
 import { FileThumbComponent } from '@interventionForm/file-uploader/file-thumb/file-thumb.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { ConfirmationDialog } from '@shared/components/confirmation-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
-const MATERIAL_IMPORTS = [MatIconModule, MatButtonModule];
+const MATERIAL_IMPORTS = [MatIconModule, MatButtonModule, MatDialogModule];
 
 @NgModule({
   declarations: [
+    ConfirmationDialog,
+    FileUploaderComponent,
+    FileThumbComponent,
     GtmScriptComponent,
     GtmContextDirective,
     InterventionStatusPipe,
     LoaderComponent,
-    FileUploaderComponent,
-    FileThumbComponent,
   ],
+  entryComponents: [ConfirmationDialog],
   imports: [MatProgressSpinnerModule, CommonModule, ...MATERIAL_IMPORTS],
   exports: [GtmScriptComponent, GtmContextDirective, InterventionStatusPipe, LoaderComponent, FileUploaderComponent],
 })

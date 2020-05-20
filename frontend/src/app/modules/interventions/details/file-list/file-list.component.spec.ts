@@ -5,6 +5,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { InterventionsService } from '../../interventions.service';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('FileListComponent', () => {
   let component: FileListComponent;
@@ -14,7 +15,10 @@ describe('FileListComponent', () => {
     TestBed.configureTestingModule({
       imports: [MatTableModule, MatIconModule, MatButtonModule],
       declarations: [FileListComponent],
-      providers: [{ provide: InterventionsService, useValue: {} }], // TODO: Replace with real mock for tests
+      providers: [
+        { provide: InterventionsService, useValue: {} },
+        { provide: MatDialog, useValue: {} },
+      ], // TODO: Replace with real mock for tests
     }).compileComponents();
   }));
 
