@@ -1,7 +1,15 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { MatCardModule, MatListModule, MatPaginatorModule, MatRadioModule, MatTableModule } from '@angular/material';
+import {
+  MatCardModule,
+  MatBadgeModule,
+  MatExpansionModule,
+  MatListModule,
+  MatPaginatorModule,
+  MatRadioModule,
+  MatTableModule,
+} from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
@@ -22,7 +30,15 @@ import { CommentsComponent } from './details/comments/comments.component';
 import { MapFilterComponent } from './map/map-filter/map-filter.component';
 import { FileListComponent } from './details/file-list/file-list.component';
 
-const MaterialImports = [MatCardModule, MatListModule, MatPaginatorModule, MatRadioModule, MatTableModule];
+const MaterialImports = [
+  MatCardModule,
+  MatBadgeModule,
+  MatExpansionModule,
+  MatListModule,
+  MatPaginatorModule,
+  MatRadioModule,
+  MatTableModule,
+];
 
 @NgModule({
   declarations: [

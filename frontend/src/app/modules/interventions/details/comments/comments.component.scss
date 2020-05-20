@@ -66,6 +66,10 @@ footer a:hover {
 
 .form {
   margin-top: 50px;
+
+  &:first-child {
+    margin-top: 10px;
+  }
 }
 
 .form-row {
