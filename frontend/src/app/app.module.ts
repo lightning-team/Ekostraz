@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { MatButtonModule, MatProgressBarModule } from '@angular/material';
+import { MatProgressBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { environment } from '@environment';
@@ -28,7 +28,6 @@ import { httpInterceptors } from '@shared/interceptors';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MatButtonModule,
     MatProgressBarModule,
     NavModule,
     PublicFormModule,
