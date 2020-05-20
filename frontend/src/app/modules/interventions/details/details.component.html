@@ -12,10 +12,6 @@
     <button mat-raised-button color="primary" title="Edytuj" (click)="navigateToEditView()">
       {{ embedded ? '' : 'Edytuj' }}<mat-icon>edit</mat-icon>
     </button>
-    <!-- TODO: "Delete" button is disabled until confirmed that we still need it -->
-    <button *ngIf="false" mat-raised-button color="warn" title="Usuń" (click)="showDeleteDialog()">
-      {{ embedded ? '' : 'Usuń' }}<mat-icon>delete</mat-icon>
-    </button>
   </mat-card-actions>
 
   <mat-card-content>

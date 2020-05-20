@@ -1,21 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import {
-  MatCardModule,
   MatButtonModule,
-  MatSnackBarModule,
-  MatTableModule,
-  MatIconModule,
-  MatPaginatorModule,
-  MatListModule,
+  MatCardModule,
   MatDialogModule,
+  MatIconModule,
+  MatListModule,
+  MatPaginatorModule,
   MatProgressSpinnerModule,
   MatRadioModule,
+  MatSnackBarModule,
+  MatTableModule,
+  MatTooltipModule,
 } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 
 import { InterventionsRoutingModule } from './interventions-routing.module';
@@ -25,7 +26,6 @@ import { DetailsContainerComponent } from './details/details.container.component
 import { InterventionsService } from './interventions.service';
 import { TableComponent } from './list/table/table.component';
 import { MapComponent } from './map/map.component';
-import { DeleteDialog } from './details/delete.dialog';
 import { NewFormComponent } from './new-form/new-form.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { InterventionFormModule } from '@interventionForm/intervention-form.module';
@@ -45,6 +45,7 @@ const MaterialImports = [
   MatSnackBarModule,
   MatTableModule,
   MatRadioModule,
+  MatTooltipModule,
 ];
 
 @NgModule({
@@ -54,14 +55,12 @@ const MaterialImports = [
     DetailsContainerComponent,
     TableComponent,
     MapComponent,
-    DeleteDialog,
     NewFormComponent,
     EditFormComponent,
     CommentsComponent,
     MapFilterComponent,
     FileListComponent,
   ],
-  entryComponents: [DeleteDialog],
   imports: [
     CommonModule,
     SharedModule,
