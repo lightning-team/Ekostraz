@@ -3,10 +3,12 @@ import { Component, Inject } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 
-import { Intervention, InterventionsFilter } from '@shared/domain/intervention.model';
-import { InterventionsService } from '../interventions.service';
-import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { InterventionStatus } from '@shared/domain/intervention.status';
+import { Intervention, InterventionsFilter } from '@shared/domain/intervention.model';
+import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
+
+import { EkoRoutePaths } from '../../../eko-route-paths';
+import { InterventionsService } from '../interventions.service';
 
 const WROCLAW_COORDINATES = {
   lat: 51.107885,
@@ -23,6 +25,7 @@ export class MapComponent {
   interventions: Intervention[];
   interventionMapGtmContext: string;
   center = WROCLAW_COORDINATES;
+  interventionsRoute = '/' + EkoRoutePaths.Interventions;
 
   loading$ = forkJoin(
     this.tilesLoadedSubject.asObservable().pipe(first()),

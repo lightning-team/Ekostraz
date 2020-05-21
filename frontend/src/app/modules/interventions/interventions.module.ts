@@ -29,6 +29,7 @@ import { EditFormComponent } from './edit-form/edit-form.component';
 import { CommentsComponent } from './details/comments/comments.component';
 import { MapFilterComponent } from './map/map-filter/map-filter.component';
 import { FileListComponent } from './details/file-list/file-list.component';
+import { DetailsBasicComponent } from './details/details-basic/details-basic.component';
 
 const MaterialImports = [
   MatCardModule,
@@ -43,6 +44,7 @@ const MaterialImports = [
 @NgModule({
   declarations: [
     ListComponent,
+    DetailsBasicComponent,
     DetailsComponent,
     DetailsContainerComponent,
     TableComponent,

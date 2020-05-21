@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { EkoRoutePaths } from './eko-route-paths';
+
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoggedOutGuard } from './modules/auth/guards/logged-out.guard';
 import { LoggedInGuard } from './modules/auth/guards/logged-in.guard';
@@ -13,17 +15,17 @@ const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'zaloguj',
+    path: EkoRoutePaths.Login,
     component: LoginComponent,
     canActivate: [LoggedOutGuard],
   },
   {
-    path: 'zglos-interwencje',
+    path: EkoRoutePaths.PublicForm,
     component: PublicFormComponent,
     canActivate: [LoggedOutGuard],
   },
   {
-    path: 'interwencje',
+    path: EkoRoutePaths.Interventions,
     loadChildren: './modules/interventions/interventions.module#InterventionsModule',
     canLoad: [LoggedInGuard],
     canActivateChild: [LoggedInGuard],
