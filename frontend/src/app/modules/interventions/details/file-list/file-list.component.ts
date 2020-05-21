@@ -60,8 +60,7 @@ export class FileListComponent implements OnInit {
   private removeFromAttachmentsList(file: Attachment) {
     const fileIndex = this.attachments.findIndex(attachment => attachment === file);
     this.attachments.splice(fileIndex, 1);
-    this.dataSource.disconnect();
-    this.dataSource = new MatTableDataSource<Attachment>(this.attachments);
+    this.dataSource.data = this.attachments;
     this.changeDetector.markForCheck();
   }
 }
