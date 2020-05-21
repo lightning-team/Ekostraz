@@ -1,0 +1,29 @@
+<mat-list>
+  <mat-list-item>
+    <mat-icon matTooltip="Status interwencji" [ngClass]="classByStatus[intervention.status]">
+      {{ iconByStatus[intervention.status] }}
+    </mat-icon>
+    {{ intervention.status | ekoInterventionStatus }}
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon matTooltip="Imię i nazwisko zgłaszającego" class="info">account_circle</mat-icon>
+    {{ intervention.fullName || 'Brak' }}
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon matTooltip="Telefon" color="primary">phone</mat-icon>
+    {{ intervention.phoneNumber }}
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon matTooltip="Adres e-mail" class="mail">email</mat-icon>
+    {{ intervention.email || 'Brak' }}
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon matTooltip="Adres interwencji" class="address">location_on</mat-icon>
+    {{ intervention.address }}
+  </mat-list-item>
+</mat-list>
+
+<section class="description mat-body-2">
+  <h3 class="mat-h2">Opis sprawy</h3>
+  {{ intervention.description }}
+</section>

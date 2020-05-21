@@ -1,0 +1,20 @@
+.description {
+  padding: 15px;
+  font-weight: 400;
+}
+
+.mat-icon {
+  margin-right: 10px;
+  &.info {
+    color: cadetblue;
+  }
+  &.address {
+    color: #ea4335;
+  }
+  &.mail {
+    color: #99c199;
+  }
+  &.in-progress {
+    color: #e40808;
+  }
+}

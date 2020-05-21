@@ -14,10 +14,27 @@
         [latitude]="intervention.geoLat"
         [longitude]="intervention.geoLng"
       >
-        <agm-info-window [disableAutoPan]="false">
-          // TODO: Add details here
+        <agm-info-window [disableAutoPan]="false" [maxWidth]="380">
+          <ng-container *ngTemplateOutlet="infoWindow; context: { $implicit: intervention }"></ng-container>
         </agm-info-window>
       </agm-marker>
     </agm-marker-cluster>
   </agm-map>
 </app-loader>
+
+<ng-template #infoWindow let-intervention>
+  <section class="info-window">
+    <header>
+      <h2 class="mat-h2">Zgłoszenie z dnia: <br />{{ intervention.creationDate | date: 'medium' }}</h2>
+      <h3 class="mat-h3">
+        Identyfikator zgłoszenia: <br /><strong>{{ intervention.id }}</strong>
+      </h3>
+    </header>
+
+    <eko-intervention-details-basic [intervention]="intervention"></eko-intervention-details-basic>
+
+    <button mat-stroked-button color="accent" [routerLink]="[interventionsRoute, intervention.id]">
+      Więcej szcegółów…
+    </button>
+  </section>
+</ng-template>

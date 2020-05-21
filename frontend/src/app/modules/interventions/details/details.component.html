@@ -1,5 +1,5 @@
+<!-- NOTE: Unfortunately ngIf on container is needed so that the loader has a change to disappear smoothly -->
 <ng-container *ngIf="intervention">
-  <!-- NOTE: Unfortunately this is needed so that the loader has a change to disappear smoothly -->
   <header>
     <h1 class="mat-h1">Zgłoszenie z dnia {{ intervention.creationDate | date: 'medium' }}</h1>
     <h3 class="mat-h3">
@@ -25,33 +25,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <mat-list>
-        <mat-list-item>
-          <mat-icon matTooltip="Status interwencji">done</mat-icon>
-          {{ intervention.status | ekoInterventionStatus }}
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon matTooltip="Imię i nazwisko zgłaszającego">account_circle</mat-icon>
-          {{ intervention.fullName || 'Brak' }}
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon matTooltip="Telefon">phone</mat-icon>
-          {{ intervention.phoneNumber }}
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon matTooltip="Adres e-mail">email</mat-icon>
-          {{ intervention.email || 'Brak' }}
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon matTooltip="Adres interwencji">location_on</mat-icon>
-          {{ intervention.address }}
-        </mat-list-item>
-      </mat-list>
-
-      <section class="description">
-        <h3 class="mat-h2">Opis sprawy</h3>
-        {{ intervention.description }}
-      </section>
+      <eko-intervention-details-basic [intervention]="intervention"></eko-intervention-details-basic>
     </mat-expansion-panel>
 
     <!-- Załączniki -->
