@@ -1,13 +1,10 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { environment } from '@environment';
-import { LocalAzureTokenInterceptor } from '@shared/interceptors/local-azure-token.interceptor';
+import { AzureTokenInterceptor } from '@shared/interceptors/azure-token.interceptor';
 
-const useLocalAzureTokenProvider = !environment.production;
-
-const localAzureTokenInterceptorProvider = {
-  provide: HTTP_INTERCEPTORS,
-  useClass: LocalAzureTokenInterceptor,
-  multi: true,
-};
-
-export const httpInterceptors = [...(useLocalAzureTokenProvider ? [localAzureTokenInterceptorProvider] : [])];
+export const httpInterceptors = [
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AzureTokenInterceptor,
+    multi: true,
+  },
+];

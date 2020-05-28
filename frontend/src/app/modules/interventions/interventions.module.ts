@@ -11,8 +11,10 @@ import {
   MatTableModule,
 } from '@angular/material';
 
-import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
+
+import { mapsConfigFactory } from './provider-factories';
 
 import { InterventionFormModule } from '@interventionForm/intervention-form.module';
 import { SharedModule } from '@shared/shared.module';
@@ -60,17 +62,10 @@ const MaterialImports = [
     InterventionsRoutingModule,
     InterventionFormModule,
     ReactiveFormsModule,
-    // TODO: When we'll be planning and implementing auth/login, we should also provide mechanics to:
-    // 1. For local development: Fetch the google maps key from local.secrets.json and dynamically inject it to the app
-    // (e.g. route resolvers/guards for components with map).
-    // 2. For higher envs: Fetch the key for Azure functions and for Google Maps from external services.
-    AgmCoreModule.forRoot({
-      // TODO: Temporary solution - paste the key manually during local development.
-      apiKey: '',
-    }),
+    AgmCoreModule.forRoot(),
     AgmJsMarkerClustererModule,
     ...MaterialImports,
   ],
-  providers: [InterventionsService],
+  providers: [InterventionsService, { provide: LAZY_MAPS_API_CONFIG, useFactory: mapsConfigFactory }],
 })
 export class InterventionsModule {}
