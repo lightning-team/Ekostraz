@@ -331,7 +331,7 @@ ASALocalRun/
 
 # Frontend
 frontend/dist
-frontend/src/local.secrets.json
+frontend/.env
 
 # Local appsettings
 **/local.settings.json

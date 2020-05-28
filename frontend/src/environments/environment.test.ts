@@ -6,4 +6,6 @@ export const environment: Environment = {
   useGoogleTagManager: true,
   APIUrl: 'https://test-url/api/',
   ...commonEnvironment,
+  functionsKey: 'test-functions-key',
+  mapsKey: 'test-maps-key',
 };
