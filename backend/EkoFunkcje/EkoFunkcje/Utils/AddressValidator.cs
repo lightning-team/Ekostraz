@@ -51,11 +51,12 @@ namespace EkoFunkcje.Utils
             if (string.IsNullOrWhiteSpace(responseStreet))
             {
                 validationErrors.Add($"Nie znaleziono ulicy: {street}");
+                return;
             }
 
             if (_polishTranslator.TranslatePolishCharsInString(street).ToLower() != _polishTranslator.TranslatePolishCharsInString(responseStreet).ToLower())
             {
-                validationErrors.Add($"Znalezione miasto: {responseStreet} nie odpowiada podanemu: {street}");
+                validationErrors.Add($"Znaleziona ulica: {responseStreet} nie odpowiada podanej: {street}");
             }
         }
 
@@ -64,6 +65,7 @@ namespace EkoFunkcje.Utils
             if (string.IsNullOrWhiteSpace(responseCity))
             {
                 validationErrors.Add($"Nie znaleziono miasta: {city}");
+                return;
             }
 
             if (_polishTranslator.TranslatePolishCharsInString(city).ToLower() != _polishTranslator.TranslatePolishCharsInString(responseCity).ToLower())
