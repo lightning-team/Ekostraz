@@ -6,17 +6,23 @@ import { MapComponent } from './map/map.component';
 import { NewFormComponent } from './new-form/new-form.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
 
+export enum InterventionsRoutePaths {
+  Report = 'zglos',
+  Map = 'mapa',
+  Edit = 'edytuj',
+}
+
 const routes: Routes = [
   {
     path: '',
     component: ListComponent,
   },
   {
-    path: 'zglos',
+    path: InterventionsRoutePaths.Report,
     component: NewFormComponent,
   },
   {
-    path: 'mapa',
+    path: InterventionsRoutePaths.Map,
     component: MapComponent,
   },
   {
@@ -24,7 +30,7 @@ const routes: Routes = [
     component: DetailsContainerComponent,
   },
   {
-    path: ':interventionId/edytuj',
+    path: ':interventionId/' + InterventionsRoutePaths.Edit,
     component: EditFormComponent,
   },
 ];

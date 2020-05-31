@@ -68,6 +68,8 @@ eko-file-list {
       }
     }
 
+    // NOTE: ::ng-deep is considered deprecated since WebComponents spec changes, but needs to be used here,
+    // as there is no other alternative and Angular team will support it anyway
     ::ng-deep .mat-expansion-indicator {
       opacity: 0.8;
       border: 1px solid white;
