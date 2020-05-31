@@ -1,4 +1,4 @@
-<!-- NOTE: Unfortunately ngIf on container is needed so that the loader has a change to disappear smoothly -->
+<!-- NOTE: Unfortunately ngIf on container is needed so that the loader has a chance to disappear smoothly -->
 <ng-container *ngIf="intervention">
   <header>
     <h1 class="mat-h1">Zgłoszenie z dnia {{ intervention.creationDate | date: 'medium' }}</h1>
