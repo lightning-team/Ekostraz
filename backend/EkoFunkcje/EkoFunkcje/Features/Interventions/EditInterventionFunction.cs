@@ -84,7 +84,8 @@ namespace EkoFunkcje.Features.Interventions
                     StreetNumber = editedIntervention.StreetNumber,
                     GeoLat = convertedGeoAddress.Latitude,
                     GeoLng = convertedGeoAddress.Lognitude,
-                    PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision)
+                    PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision),
+                    CommentsJson = interventionToEdit.CommentsJson
                 };
 
                 TableOperation deleteOldIntervention = TableOperation.Delete(interventionToEdit);
@@ -155,7 +156,8 @@ namespace EkoFunkcje.Features.Interventions
                   StreetNumber = editedIntervention.StreetNumber,
                   GeoLat = convertedGeoAddress.Latitude,
                   GeoLng = convertedGeoAddress.Lognitude,
-                  PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision)
+                  PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision),
+                  CommentsJson = interventionToEdit.CommentsJson
               };
 
               TableOperation deleteOldIntervention = TableOperation.Delete(interventionToEdit);
