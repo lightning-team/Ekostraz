@@ -36,7 +36,7 @@ namespace EkoFunkcje
             var responseLocation = addressDeserializeObject.results.FirstOrDefault();
             if (responseLocation == null)
             {
-                throw new MatchingAddressNotFoundException($"{city},{street},{streetNumber}");
+                throw new MatchingAddressNotFoundException($"{city}, {street}, {streetNumber}");
             }
 
             _addressValidator.ValidateGoogleApiResponse(city, street, streetNumber, responseLocation);

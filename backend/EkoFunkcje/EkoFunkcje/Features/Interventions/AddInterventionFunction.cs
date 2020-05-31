@@ -56,8 +56,8 @@ namespace EkoFunkcje.Features.Interventions
             }
             catch (Exception e)
             {
-                log.LogError(e, "Podany adres jest niepoprawny");
-                return new BadRequestObjectResult("Podany adres jest niepoprawny");
+                log.LogError(e, "Error podczas konwertowania adresu");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
 
             InterventionEntity interventionEntity = new InterventionEntity()

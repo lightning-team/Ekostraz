@@ -33,17 +33,6 @@ namespace EkoFunkcje.Utils
             {'Ź', 'Z'}
         };
 
-        private string TranslatePolishString(string polishLettersOnly)
-        {
-            var sb = new StringBuilder(polishLettersOnly.Length);
-            foreach (char c in polishLettersOnly)
-            {
-                sb.Append(_translations[c]);
-            }
-
-            return sb.ToString();
-        }
-
         public string TranslatePolishCharsInString(string dirtyString)
         {
             var sb = new StringBuilder(dirtyString.Length);

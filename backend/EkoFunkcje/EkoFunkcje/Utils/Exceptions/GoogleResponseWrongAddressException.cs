@@ -5,7 +5,7 @@ namespace EkoFunkcje.Utils.Exceptions
 {
     public class GoogleResponseWrongAddressException : BaseException
     {
-        public GoogleResponseWrongAddressException(IEnumerable<string> validationErrors) : base(string.Join(';', validationErrors), LogLevel.Error)
+        public GoogleResponseWrongAddressException(IEnumerable<string> validationErrors) : base(validationErrors, LogLevel.Error)
         {
         }
     }
