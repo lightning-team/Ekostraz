@@ -4,7 +4,7 @@ import { InterventionFormService } from '@interventionForm/service/intervention-
 import { InterventionFormContainer } from '@interventionForm/form-container/form-container-base';
 
 @Component({
-  selector: 'app-private-intervention-form',
+  selector: 'eko-private-intervention-form',
   templateUrl: './new-form.component.html',
   styleUrls: ['./new-form.component.scss'],
   providers: [InterventionFormService],

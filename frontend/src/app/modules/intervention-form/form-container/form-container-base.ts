@@ -1,7 +1,7 @@
 import { OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of, Subscription } from 'rxjs';
-import { concatMap, finalize, last, pluck, switchMapTo, tap } from 'rxjs/operators';
+import { Observable, of, Subscription, throwError } from 'rxjs';
+import { catchError, concatMap, finalize, last, pluck, switchMapTo, tap } from 'rxjs/operators';
 
 import { SnackBarManager, SnackBarPipeConfig } from '@shared/services/snack-bar-manager';
 import { FormMessages } from '@interventionForm/form-messages';
@@ -20,6 +20,7 @@ export interface InterventionFormSubmitData {
 
 export abstract class InterventionFormContainer implements OnDestroy, SubmittableForm<InterventionFormSubmitData> {
   public submitInProgress = false;
+  public errors: string[];
 
   protected submitSuccessRedirectUrl = '';
   protected subscriptions: Subscription = new Subscription();
@@ -36,25 +37,39 @@ export abstract class InterventionFormContainer implements OnDestroy, Submittabl
     private router: Router,
   ) {}
 
-  onSubmit({ formData, attachments = [] }) {
+  onSubmit({ formData, attachments = [] }: InterventionFormSubmitData) {
     this.subscriptions.add(
       of({})
         .pipe(
           tap(() => (this.submitInProgress = true)),
-          switchMapTo(this.submitFormFn(formData).pipe(pluck('id'))),
-          concatMap((id: string) =>
-            attachments.length
-              ? this.formService.uploadAttachments(id, attachments).pipe(
-                  // TODO: Add error handling and partial progress info for each file upload request
-                  last(),
-                )
-              : of([]),
-          ),
+          switchMapTo(this.formSubmitPipe(formData)),
+          concatMap(this.addAttachmentsPipe(attachments)),
           tap(() => this.router.navigateByUrl(this.submitSuccessRedirectUrl)),
           this.snackbar.successFailurePipe(this.snackbarConfig),
           finalize(() => (this.submitInProgress = false)),
         )
         .subscribe(),
+    );
+  }
+
+  private addAttachmentsPipe(attachments: File[]) {
+    return (id: string) =>
+      attachments.length
+        ? this.formService.uploadAttachments(id, attachments).pipe(
+            // TODO: Add error handling and partial progress info for each file upload request
+            last(),
+          )
+        : of([]);
+  }
+
+  private formSubmitPipe(formData: InterventionFormData) {
+    return this.submitFormFn(formData).pipe(
+      pluck('id'),
+      catchError((err: any) => {
+        const isBadRequest = err.status && err.status === 400;
+        this.errors = isBadRequest ? err.error : [err.message || err];
+        return throwError('');
+      }),
     );
   }
 

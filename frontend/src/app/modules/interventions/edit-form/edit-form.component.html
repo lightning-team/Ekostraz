@@ -1,13 +1,14 @@
 <app-loader [loading$]="loading$">
-  <app-intervention-form
+  <eko-intervention-form
     *ngIf="intervention"
     [intervention]="intervention"
     [inPrivateMode]="true"
     [formTitle]="'Edytuj interwencję'"
     [buttonText]="'Zapisz'"
     [submitInProgress]="submitInProgress"
+    [errors]="errors"
     (formSubmit)="onSubmit($event)"
   >
-  </app-intervention-form>
+  </eko-intervention-form>
   <h3 *ngIf="!intervention">Nie udało się pobrać danych z serwera!</h3>
 </app-loader>

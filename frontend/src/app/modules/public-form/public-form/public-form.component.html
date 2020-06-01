@@ -1,2 +1,7 @@
-<app-intervention-form [inPrivateMode]="false" [submitInProgress]="submitInProgress" (formSubmit)="onSubmit($event)">
-</app-intervention-form>
+<eko-intervention-form
+  [inPrivateMode]="false"
+  [submitInProgress]="submitInProgress"
+  [errors]="errors"
+  (formSubmit)="onSubmit($event)"
+>
+</eko-intervention-form>

@@ -24,7 +24,7 @@ type InterventionFormGroupConfig = { [key in keyof InterventionFormData]: any };
  * It does not implement any API-related logic - only exposes form data through formSubmit event.
  */
 @Component({
-  selector: 'app-intervention-form',
+  selector: 'eko-intervention-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,6 +35,7 @@ export class InterventionFormComponent implements OnInit {
   @Input() intervention: Intervention = null;
   @Input() inPrivateMode = false;
   @Input() submitInProgress = false;
+  @Input() errors: string[];
 
   @Output() formSubmit = new EventEmitter<InterventionFormSubmitData>();
 

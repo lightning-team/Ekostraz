@@ -51,6 +51,12 @@
     }
   }
 
+  .errors {
+    border-radius: 5px;
+    color: #ff1d1d;
+    margin-top: 20px;
+  }
+
   [type='submit'] mat-spinner {
     display: inline-block;
   }
