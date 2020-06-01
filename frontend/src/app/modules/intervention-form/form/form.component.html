@@ -94,5 +94,9 @@
         </ng-container>
       </button>
     </form>
+
+    <section class="errors" *ngIf="errors && errors.length">
+      <p *ngFor="let error of errors">{{ error }}</p>
+    </section>
   </mat-card-content>
 </mat-card>
