@@ -19,6 +19,7 @@ import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { errorHandlerFactory, localeProviderFactory } from './misc/providerFactories';
 import { EKOSTRAZ_GTM_CONTEXTS } from './misc/ekostraz-gtm-contexts';
 import { httpInterceptors } from '@shared/interceptors';
+import { AuthService } from './modules/auth/auth.service';
 
 @NgModule({
   declarations: [AppComponent, HomePageComponent],
@@ -44,4 +45,8 @@ import { httpInterceptors } from '@shared/interceptors';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(authService: AuthService) {
+    authService.fetchCurrentUser().subscribe();
+  }
+}

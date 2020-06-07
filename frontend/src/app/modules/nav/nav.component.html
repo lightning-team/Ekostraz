@@ -1,14 +1,13 @@
 <header>
   <mat-toolbar class="app-navbar" color="primary">
     <a mat-button class="logo-text" title="Strona główna" routerLink="/">Ekostraż</a>
-    <app-desktop-nav
+    <eko-desktop-nav
       *ngIf="(isMobileView$ | async) === false"
       [isLoggedIn]="isLoggedIn$ | async"
       [gtmContext]="desktopNavGtmContext"
-      (logIn)="logIn()"
-      (logOut)="logOut()"
+      [user]="user$ | async"
     >
-    </app-desktop-nav>
+    </eko-desktop-nav>
     <ng-container *ngTemplateOutlet="hamburgerButton"></ng-container>
   </mat-toolbar>
 </header>

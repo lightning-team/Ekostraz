@@ -11,9 +11,19 @@
 
 $font-size: 15px;
 .auth-buttons-container {
+  display: flex;
+  align-items: center;
+
   .greeting {
     font-size: $font-size;
     margin-right: 5px;
+  }
+
+  .login,
+  .logout {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
   }
 
   .logout.mat-button {

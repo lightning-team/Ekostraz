@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AuthService } from '../auth/auth.service';
 import { BreakpointService } from '@shared/services/breakpoint.service';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
-  selector: 'app-nav',
+  selector: 'eko-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss'],
 })
@@ -16,6 +16,7 @@ export class NavComponent implements OnInit {
 
   isMobileView$: Observable<boolean>;
   isLoggedIn$ = this.authService.isLoggedIn$;
+  user$ = this.authService.user$;
 
   @Output() sideNavToggle = new EventEmitter();
 
@@ -30,13 +31,5 @@ export class NavComponent implements OnInit {
 
   ngOnInit(): void {
     this.isMobileView$ = this.breakpointService.isMobileView$;
-  }
-
-  logIn() {
-    this.authService.navigateToLoginPage();
-  }
-
-  logOut() {
-    this.authService.logOut();
   }
 }

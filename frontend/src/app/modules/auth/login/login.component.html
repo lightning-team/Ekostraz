@@ -1,13 +1,8 @@
 <ng-template #dialogTemplate>
-    <h2 mat-dialog-title>Zaloguj się</h2>
-    <mat-dialog-content class="mat-typography" [withGtmContext]="loginDialogGtmContext">
-        TODO: Tutaj będzie formularz lub trzeba zrobic social login etc.
-    </mat-dialog-content>
-    <mat-dialog-actions align="center" [withGtmContext]="loginDialogGtmContext">
-        <button mat-button
-                (click)="onLoginClick()"
-                color='primary'
-                mat-raised-button
-        >Zaloguj</button>
-    </mat-dialog-actions>
+  <h2 mat-dialog-title>Zaloguj się</h2>
+  <mat-dialog-actions align="center" [withGtmContext]="loginDialogGtmContext">
+    <a mat-button rel="noreferrer noopener nofollow" href="{{ loginLink }}" color="primary" mat-raised-button
+      >Zaloguj</a
+    >
+  </mat-dialog-actions>
 </ng-template>

@@ -1,35 +1,31 @@
-<div class='nav-buttons-container' [withGtmContext]="gtmContext">
-    <ng-container *ngIf="isLoggedIn">
-        <button mat-button routerLink='/interwencje'
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon>list</mat-icon>
-            Interwencje
-        </button>
-        <button mat-button routerLink='/interwencje/mapa' routerLinkActive="active">
-            <mat-icon>map</mat-icon>
-            Mapa
-        </button>
-        <button mat-button routerLink='/interwencje/zglos' routerLinkActive="active">
-            <mat-icon>notifications_active</mat-icon>
-            Zgłoś
-        </button>
-    </ng-container>
-    <button *ngIf="!isLoggedIn"
-            mat-button routerLink='/zglos-interwencje'
-            routerLinkActive="active">
-        Zgłoś interwencję
+<div class="nav-buttons-container" [withGtmContext]="gtmContext">
+  <ng-container *ngIf="isLoggedIn">
+    <button mat-button routerLink="/interwencje" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <mat-icon>list</mat-icon>
+      Interwencje
     </button>
+    <button mat-button routerLink="/interwencje/mapa" routerLinkActive="active">
+      <mat-icon>map</mat-icon>
+      Mapa
+    </button>
+    <button mat-button routerLink="/interwencje/zglos" routerLinkActive="active">
+      <mat-icon>notifications_active</mat-icon>
+      Zgłoś
+    </button>
+  </ng-container>
+  <button *ngIf="!isLoggedIn" mat-button routerLink="/zglos-interwencje" routerLinkActive="active">
+    Zgłoś interwencję
+  </button>
 </div>
-<div class='auth-buttons-container' [withGtmContext]="gtmContext">
-    <button *ngIf='!isLoggedIn' class="login" mat-button (click)='logIn.emit()'>
-        <mat-icon>account_circle</mat-icon>
-        Zaloguj
-    </button>
-    <ng-container *ngIf='isLoggedIn'>
-        <span class='greeting'>Witaj, Inspektorze!</span>
-        <button class="logout" mat-button title='Wyloguj' (click)='logOut.emit()'>
-            <mat-icon>exit_to_app</mat-icon>
-        </button>
-    </ng-container>
+<div class="auth-buttons-container" [withGtmContext]="gtmContext">
+  <a *ngIf="!isLoggedIn" class="login" mat-button rel="noreferrer noopener nofollow" href="{{ loginUrl }}">
+    <mat-icon>account_circle</mat-icon>
+    Zaloguj
+  </a>
+  <ng-container *ngIf="isLoggedIn">
+    <span class="greeting">Witaj, {{ user?.name }}!</span>
+    <a class="logout" rel="noreferrer noopener nofollow" mat-button title="Wyloguj" href="{{ logoutUrl }}">
+      <mat-icon>exit_to_app</mat-icon>
+    </a>
+  </ng-container>
 </div>

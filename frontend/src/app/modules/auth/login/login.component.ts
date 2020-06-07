@@ -1,14 +1,16 @@
 import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
+
 import { ComponentWithSubscriptions } from '@shared/components/base';
-import { AuthService } from '../auth.service';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
+import { AuthUrlsFactory } from '../auth-urls.factory';
 
 const DIALOG_BACKDROP_CLASS = 'login-dialog-backdrop';
 const DIALOG_PANEL_CLASS = 'login-dialog-panel';
 
 @Component({
-  selector: 'app-login',
+  selector: 'eko-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   // Overrides default encapsulation so that dialog styles get applied properly.
@@ -16,21 +18,23 @@ const DIALOG_PANEL_CLASS = 'login-dialog-panel';
 })
 export class LoginComponent extends ComponentWithSubscriptions implements OnInit {
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate: TemplateRef<any>;
-  dialog: MatDialogRef<any>;
+
+  loginLink = AuthUrlsFactory.googleLoginUrl(
+    this.activatedRoute.snapshot.queryParamMap.get('previousUrl') || undefined,
+  );
   loginDialogGtmContext: string;
 
-  constructor(private dialogService: MatDialog, private authService: AuthService, @Inject(GTM_CONTEXTS) gtmContexts) {
+  constructor(
+    private dialogService: MatDialog,
+    private activatedRoute: ActivatedRoute,
+    @Inject(GTM_CONTEXTS) gtmContexts,
+  ) {
     super();
     this.loginDialogGtmContext = gtmContexts.loginDialog;
   }
 
   ngOnInit() {
-    this.dialog = this.createLoginDialog();
-  }
-
-  onLoginClick() {
-    this.authService.logIn();
-    this.dialog.close();
+    this.createLoginDialog();
   }
 
   private createLoginDialog() {
@@ -41,7 +45,5 @@ export class LoginComponent extends ComponentWithSubscriptions implements OnInit
     });
     const dialogSubscription = dialog.afterClosed().subscribe();
     this.subscriptions.add(dialogSubscription);
-
-    return dialog;
   }
 }
