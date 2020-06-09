@@ -1,5 +1,10 @@
 import { InterventionStatus } from '@shared/domain/intervention.status';
 
+export enum SortDirection {
+  Ascending,
+  Descending,
+}
+
 export interface InterventionFormData {
   id: string;
   /** Date in Date().toISOString() format */
@@ -45,4 +50,8 @@ export interface ListIntervention extends Intervention {
 
 export interface InterventionsFilter {
   status?: InterventionStatus;
+  page?: number;
+  pageSize?: number;
+  sortBy?: string;
+  sortDirection?: SortDirection;
 }
