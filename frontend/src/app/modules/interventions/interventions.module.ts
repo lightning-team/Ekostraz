@@ -9,6 +9,7 @@ import {
   MatPaginatorModule,
   MatRadioModule,
   MatTableModule,
+  MatSortModule,
 } from '@angular/material';
 
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
@@ -41,6 +42,7 @@ const MaterialImports = [
   MatPaginatorModule,
   MatRadioModule,
   MatTableModule,
+  MatSortModule,
 ];
 
 @NgModule({
