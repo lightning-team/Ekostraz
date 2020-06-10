@@ -1,4 +1,4 @@
-<app-loader [loading$]="loading$">
+<eko-loader [loading$]="loading$">
   <eko-intervention-form
     *ngIf="intervention"
     [intervention]="intervention"
@@ -11,4 +11,4 @@
   >
   </eko-intervention-form>
   <h3 *ngIf="!intervention">Nie udało się pobrać danych z serwera!</h3>
-</app-loader>
+</eko-loader>
