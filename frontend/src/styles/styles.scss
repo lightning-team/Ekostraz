@@ -1,17 +1,40 @@
 @import 'theme';
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
+  margin: 0;
 }
 
 // Angular Material hacks here - add rules with care - only when
 // Angular's view encapsulation does not allow for styling it!
 .app-navbar .mat-button.active {
-    & .mat-button-focus-overlay {
-        opacity: .1;
-    }
+  & .mat-button-focus-overlay {
+    opacity: 0.1;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background: transparent;
+}
+
+::-webkit-scrollbar-button {
+  background: transparent;
+  height: 1px;
 }
