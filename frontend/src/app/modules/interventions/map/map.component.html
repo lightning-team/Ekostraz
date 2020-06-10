@@ -1,4 +1,4 @@
-<app-loader [loading$]="loading$" [loaderText]="'Ładowanie mapy...'" [hiddenBeforeLoaded]="true">
+<eko-loader [loading$]="loading$" [loaderText]="'Ładowanie mapy...'" [hiddenBeforeLoaded]="true">
   <eko-map-filters (filtersChange)="handleFiltersChange($event)"></eko-map-filters>
   <!-- TODO: Consider playing with 'fitBounds' directive to center the map if current approach is not enough -->
   <agm-map
@@ -20,7 +20,7 @@
       </agm-marker>
     </agm-marker-cluster>
   </agm-map>
-</app-loader>
+</eko-loader>
 
 <ng-template #infoWindow let-intervention>
   <section class="info-window">

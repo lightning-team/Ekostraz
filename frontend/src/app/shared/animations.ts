@@ -9,6 +9,7 @@ export function createFadeInOut(enterTiming: number | string = 500, leaveTiming:
         opacity: 0,
       }),
     ),
+    transition('void => hidden', animate(0)),
     transition(':enter', [style({ opacity: 0 }), animate(enterTiming)]),
     transition(':leave', animate(leaveTiming, style({ opacity: 0 }))),
     transition('hidden => *', animate(enterTiming, style({ visibility: 'initial', opacity: 1 }))),

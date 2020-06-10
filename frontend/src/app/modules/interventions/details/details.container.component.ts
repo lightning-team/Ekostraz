@@ -11,10 +11,10 @@ import { InterventionsService } from '../interventions.service';
 @Component({
   selector: 'eko-intervention-details-container',
   template: `
-    <app-loader [loading$]="intervention$">
+    <eko-loader [loading$]="intervention$">
       <eko-intervention-details [intervention]="intervention" [withGtmContext]="gtmContexts.interventionDetails">
       </eko-intervention-details>
-    </app-loader>
+    </eko-loader>
   `,
 })
 export class DetailsContainerComponent {
