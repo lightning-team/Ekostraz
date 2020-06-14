@@ -48,7 +48,10 @@ namespace EkoFunkcje.Models
             set
             {
                 _commentsJson = value;
-                _commentsCollection = JsonConvert.DeserializeObject<ICollection<CommentDto>>(value);
+                _commentsCollection = 
+                    value == null ? 
+                        new List<CommentDto>() : 
+                        JsonConvert.DeserializeObject<ICollection<CommentDto>>(value);
             }
         }
 
