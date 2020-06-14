@@ -11,7 +11,6 @@ namespace EkoFunkcje.Models
     {
         public InterventionEntity()
         {
-            this.RowKey = Guid.NewGuid().ToString();
             this._commentsCollection = new List<CommentDto>();
         }
 

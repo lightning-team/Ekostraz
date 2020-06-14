@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using EkoFunkcje.Models.Requests;
+using EkoFunkcje.Interventions.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace EkoFunkcje.Utils
@@ -47,7 +48,15 @@ namespace EkoFunkcje.Utils
 
         public static string GetInterventionListViewFilter(ListInterventionsFilterRequest filter)
         {
-            List<string> filters = new List<string>();
+            string excludeCountEntityFilter = TableQuery.GenerateFilterCondition(
+                InterventionFieldNames.PartitionKey, 
+                QueryComparisons.NotEqual,
+                InterventionCountEntity.CountKey
+            );
+            
+            List<string> filters = new List<string>() {
+                excludeCountEntityFilter
+            };
             if (!string.IsNullOrWhiteSpace(filter.City))
             {
                 string cityFilter = TableQuery.GenerateFilterCondition(
