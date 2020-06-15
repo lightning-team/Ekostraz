@@ -43,8 +43,13 @@ namespace EkoFunkcje.Features.Interventions
             var body = await request.ReadAsStringAsync();
             var areaFilter = JsonConvert.DeserializeObject<AreaInterventionsFilterRequest>(body);
             string filter = GetFilter(areaFilter, latitude, longitude);
-            var interventions = await GetFilteredInterventions(areaFilter.Statuses, interventionsTable, filter);
-            return new JsonResult(interventions);
+            var interventions = (await GetFilteredInterventions(areaFilter.Statuses, interventionsTable, filter)).ToList();
+            var result = new
+            {
+                totalCount = interventions.Count(),
+                results = interventions
+            };
+            return new JsonResult(result);
         }
 
         private async Task<IEnumerable<InterventionListItemResponse>> GetFilteredInterventions(
@@ -60,7 +65,7 @@ namespace EkoFunkcje.Features.Interventions
                 token = queryResult.ContinuationToken;
             } while (token != null);
 
-            return  interventions.Where(intervention => requestStatuses.Contains(intervention.Status));
+            return interventions.Where(intervention => requestStatuses.Contains(intervention.Status));
         }
 
         private static string GetFilter(AreaInterventionsFilterRequest areaFilter, string latitude, string longitude)

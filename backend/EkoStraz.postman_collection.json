@@ -115,7 +115,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n        \"Page\": \"1\",\r\n        \"PageSize\": \"20\",\r\n        \"SortBy\": \"CreationDate\",\r\n        \"SortDirection\": 0,\r\n        \"Status\": -1,\r\n        \"City\": \"\",\r\n        \"Street\": \"\",\r\n        \"DateFrom\": null,\r\n        \"DateTo\": null\r\n    }",
+							"raw": "{\r\n        \"Page\": \"1\",\r\n        \"PageSize\": \"20\",\r\n        \"SortBy\": \"CreationDate\",\r\n        \"SortDirection\": 0,\r\n        \"Statuses\": [],\r\n        \"City\": \"\",\r\n        \"Street\": \"\",\r\n        \"DateFrom\": null,\r\n        \"DateTo\": null\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
