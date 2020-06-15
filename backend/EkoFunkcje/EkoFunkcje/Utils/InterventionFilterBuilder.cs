@@ -90,14 +90,6 @@ namespace EkoFunkcje.Utils
                 filters.Add(dateToFilter);
 
             }
-            if (filter.Status != -1)
-            {
-                string statusFilter = TableQuery.GenerateFilterConditionForInt(
-                    InterventionFieldNames.Status, 
-                    QueryComparisons.Equal,
-                    filter.Status);
-                filters.Add(statusFilter);
-            }
 
             return CombineFilters(filters);
         }

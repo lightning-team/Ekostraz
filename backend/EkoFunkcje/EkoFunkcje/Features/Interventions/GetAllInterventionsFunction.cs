@@ -48,14 +48,21 @@ namespace EkoFunkcje.Features.Interventions
                 token = queryResult.ContinuationToken;
             } while (token != null);
 
-
+            if (filter.Statuses.Count > 0)
+            {
+                entities = entities.Where(intervention => filter.Statuses.Contains(intervention.Status)).ToList();
+            }
             var sortedEntities = filter.SortDirection == (int)SortDirection.Descending ?
                 entities.AsQueryable().OrderByDescending(filter.SortBy ?? "CreationDate")
                 : entities.AsQueryable().OrderBy(filter.SortBy ?? "CreationDate");
 
             var pagedEntities = sortedEntities.Skip((filter.Page - 1) * filter.PageSize).Take(filter.PageSize);
-
-            return new JsonResult(pagedEntities);
+            var result = new
+            {
+                totalCount = sortedEntities.Count(),
+                results = pagedEntities
+            };
+            return new JsonResult(result);
         }
     }
 }
