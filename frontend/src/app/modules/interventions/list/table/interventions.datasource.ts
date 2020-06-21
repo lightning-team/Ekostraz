@@ -2,7 +2,7 @@ import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 
 import { InterventionsService } from '../../interventions.service';
-import { catchError, finalize } from 'rxjs/operators';
+import { finalize, switchMapTo, tap } from 'rxjs/operators';
 
 import { Intervention, InterventionsFilter } from '@shared/domain/intervention.model';
 
@@ -23,14 +23,15 @@ export class InterventionsDatasource implements DataSource<Intervention> {
     this.loadingSubject.complete();
   }
 
-  loadInterventions(params: InterventionsFilter) {
-    this.loadingSubject.next(true);
-    this.interventionsService
-      .getInterventions(params)
-      .pipe(
-        catchError(() => of([])),
-        finalize(() => this.loadingSubject.next(false)),
-      )
-      .subscribe(interventions => this.interventionSubject.next(interventions));
+  loadInterventions$(params: InterventionsFilter) {
+    return of<Intervention[]>([]).pipe(
+      tap(() => this.loadingSubject.next(true)),
+      switchMapTo(
+        this.interventionsService.getInterventions(params).pipe(
+          tap(interventions => this.interventionSubject.next(interventions)),
+          finalize(() => this.loadingSubject.next(false)),
+        ),
+      ),
+    );
   }
 }
