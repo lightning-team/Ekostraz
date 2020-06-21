@@ -1,51 +1,50 @@
-<div class="spinner-container" *ngIf="dataSource.loading$ | async">
-  <mat-spinner></mat-spinner>
-</div>
-<div class="mat-elevation-z8">
-  <mat-table [dataSource]="dataSource" matSort matSortDisableClear matSortActive="date" matSortDirection="desc">
-    <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <mat-header-cell *matHeaderCellDef>L.p.</mat-header-cell>
-      <mat-cell *matCellDef="let element" data-label="Numer">{{ element.position }}</mat-cell>
-    </ng-container>
+<eko-loader [loading$]="dataSource.loading$" [cover]="true">
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort matSortDisableClear matSortActive="date" matSortDirection="desc">
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef>L.p.</mat-header-cell>
+        <mat-cell *matCellDef="let element" data-label="Numer">{{ element.position }}</mat-cell>
+      </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef>Imię i nazwisko</mat-header-cell>
-      <mat-cell *matCellDef="let element" data-label="Imię i nazwisko">{{ element.fullName || 'Brak' }}</mat-cell>
-    </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Imię i nazwisko</mat-header-cell>
+        <mat-cell *matCellDef="let element" data-label="Imię i nazwisko">{{ element.fullName || 'Brak' }}</mat-cell>
+      </ng-container>
 
-    <!-- Status Column -->
-    <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell *matCellDef="let element" data-label="Status">{{ element.status | ekoInterventionStatus }}</mat-cell>
-    </ng-container>
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+        <mat-cell *matCellDef="let element" data-label="Status">{{ element.status | ekoInterventionStatus }}</mat-cell>
+      </ng-container>
 
-    <!-- Phone Column -->
-    <ng-container matColumnDef="phone">
-      <mat-header-cell *matHeaderCellDef>Telefon</mat-header-cell>
-      <mat-cell *matCellDef="let element" data-label="Telefon">{{ element.phoneNumber }}</mat-cell>
-    </ng-container>
+      <!-- Phone Column -->
+      <ng-container matColumnDef="phone">
+        <mat-header-cell *matHeaderCellDef>Telefon</mat-header-cell>
+        <mat-cell *matCellDef="let element" data-label="Telefon">{{ element.phoneNumber }}</mat-cell>
+      </ng-container>
 
-    <!-- Date Column -->
-    <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Data dodania</mat-header-cell>
-      <mat-cell *matCellDef="let element" data-label="Data dodania">{{
-        element.creationDate | date: 'medium'
-      }}</mat-cell>
-    </ng-container>
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Data dodania</mat-header-cell>
+        <mat-cell *matCellDef="let element" data-label="Data dodania">{{
+          element.creationDate | date: 'medium'
+        }}</mat-cell>
+      </ng-container>
 
-    <!-- Description Column -->
-    <ng-container matColumnDef="description">
-      <mat-header-cell *matHeaderCellDef>Opis</mat-header-cell>
-      <mat-cell *matCellDef="let element" title="{{ element.description }}" data-label="Opis">
-        <span>{{ element.description }}</span>
-      </mat-cell>
-    </ng-container>
+      <!-- Description Column -->
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef>Opis</mat-header-cell>
+        <mat-cell *matCellDef="let element" title="{{ element.description }}" data-label="Opis">
+          <span>{{ element.description }}</span>
+        </mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let element; columns: displayedColumns" (click)="showDetails(element)"></mat-row>
-  </mat-table>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let element; columns: displayedColumns" (click)="showDetails(element)"></mat-row>
+    </mat-table>
 
-  <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]" [length]="100"></mat-paginator>
-</div>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]" [length]="100"></mat-paginator>
+  </div>
+</eko-loader>
