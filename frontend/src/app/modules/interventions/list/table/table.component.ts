@@ -16,7 +16,7 @@ const defaultSearchParams: InterventionsFilter = {
 };
 
 @Component({
-  selector: 'app-interventions-table',
+  selector: 'eko-interventions-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
