@@ -4,7 +4,9 @@
       <!-- Position Column -->
       <ng-container matColumnDef="position">
         <mat-header-cell *matHeaderCellDef>L.p.</mat-header-cell>
-        <mat-cell *matCellDef="let element" data-label="Numer">{{ element.position }}</mat-cell>
+        <mat-cell *matCellDef="let index = index" data-label="Numer">{{
+          index + this.paginator.pageIndex * this.paginator.pageSize + 1
+        }}</mat-cell>
       </ng-container>
 
       <!-- Name Column -->
