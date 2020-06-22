@@ -1,4 +1,13 @@
-import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostBinding,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewRef,
+} from '@angular/core';
 
 import { Observable, Subscription } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
@@ -24,6 +33,7 @@ import { fadeInOut } from '../../animations';
   `,
   styleUrls: ['./loader.component.scss'],
   animations: [fadeInOut],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoaderComponent implements OnInit, OnDestroy {
   /**
@@ -52,6 +62,8 @@ export class LoaderComponent implements OnInit, OnDestroy {
 
   private subscription = new Subscription();
 
+  constructor(private changeDetector: ChangeDetectorRef) {}
+
   ngOnInit() {
     this.subscribeToLoading$();
   }
@@ -61,8 +73,12 @@ export class LoaderComponent implements OnInit, OnDestroy {
       this.loading$
         .pipe(
           tap(data => (this.loading = !!data)),
+          tap(() => this.changeDetector.detectChanges()),
           finalize(() => {
             this.loading = false;
+            if (!(this.changeDetector as ViewRef).destroyed) {
+              this.changeDetector.detectChanges();
+            }
           }),
         )
         .subscribe(),
@@ -70,6 +86,7 @@ export class LoaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.changeDetector.detach();
     this.subscription.unsubscribe();
   }
 }
