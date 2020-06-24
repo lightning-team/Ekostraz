@@ -1,13 +1,13 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, MatSort, MatTable } from '@angular/material';
+import { tap, startWith, switchMap, map } from 'rxjs/operators';
+import { combineLatest, Subscription } from 'rxjs';
 
+import { ComponentWithSubscriptions } from '@shared/components/base';
 import { Intervention, SortDirection, InterventionsFilter } from '@shared/domain/intervention.model';
 import { InterventionsDatasource } from './interventions.datasource';
 import { InterventionsService } from '../../interventions.service';
-import { tap, startWith, switchMap, map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
-import { ComponentWithSubscriptions } from '@shared/components/base';
 import { EkoRoutePaths } from '../../../../eko-route-paths';
 
 @Component({
@@ -43,7 +43,7 @@ export class TableComponent extends ComponentWithSubscriptions implements AfterV
     this.subscriptions.add(this.subscribeToSortAndPageChanges());
   }
 
-  private subscribeToSortAndPageChanges() {
+  private subscribeToSortAndPageChanges(): Subscription {
     const sort$ = this.sort.sortChange.pipe(
       tap(() => (this.paginator.pageIndex = 0)),
       startWith({ active: 'date', direction: 'desc' }),
@@ -51,7 +51,7 @@ export class TableComponent extends ComponentWithSubscriptions implements AfterV
     const page$ = this.paginator.page.pipe(
       startWith({
         length: 100,
-        pageIndex: 1,
+        pageIndex: 0,
         pageSize: 10,
       }),
     );
@@ -61,7 +61,7 @@ export class TableComponent extends ComponentWithSubscriptions implements AfterV
       sortDirection: sort.direction === 'asc' ? SortDirection.Ascending : SortDirection.Descending,
     });
 
-    combineLatest([sort$, page$])
+    return combineLatest([sort$, page$])
       .pipe(
         map(toFilters),
         switchMap(filters => this.dataSource.loadInterventions$(filters)),
