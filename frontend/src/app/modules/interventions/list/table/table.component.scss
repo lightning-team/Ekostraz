@@ -38,12 +38,7 @@
   }
 
   .mat-table .mat-header-cell {
-    padding-left: 10px;
-    &:nth-child(1),
-    &:nth-child(2),
-    &:nth-child(3),
-    &:nth-child(4),
-    &:nth-child(6) {
+    &:not([mat-sort-header]) {
       clip: rect(0 0 0 0);
       height: 1px;
       margin: -1px;
@@ -59,12 +54,15 @@
     padding: 10px;
   }
 
-  .mat-table .mat-row {
-    border-bottom: 5px solid #ddd;
-    display: block;
-    padding: 0 12px;
-    &:after {
-      content: unset;
+  .mat-table {
+    .mat-row,
+    .mat-header-row {
+      border-bottom: 5px solid #ddd;
+      display: block;
+      padding: 0 12px;
+      &:after {
+        content: unset;
+      }
     }
   }
 
