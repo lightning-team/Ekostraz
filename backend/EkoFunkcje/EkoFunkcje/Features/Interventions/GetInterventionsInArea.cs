@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
@@ -24,13 +25,15 @@ namespace EkoFunkcje.Features.Interventions
     public class GetInterventionsInArea
     {
         private readonly IMapper _mapper;
+        private readonly IAuth _auth;
 
-        public GetInterventionsInArea()
+        public GetInterventionsInArea(IAuth auth)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionListItemResponse>()
                 .ForMember(dest => dest.Id,
                     opts => opts.MapFrom(src => src.RowKey)));
             _mapper = config.CreateMapper();
+            _auth = auth;
         }
 
         [FunctionName("GetInterventionsInArea")]
@@ -40,6 +43,8 @@ namespace EkoFunkcje.Features.Interventions
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, ILogger log)
         {
+            if (!_auth.IsAuthorized(request, "GetInterventionsInArea"))
+                return new UnauthorizedResult();
             var body = await request.ReadAsStringAsync();
             var areaFilter = JsonConvert.DeserializeObject<AreaInterventionsFilterRequest>(body);
             string filter = GetFilter(areaFilter, latitude, longitude);
