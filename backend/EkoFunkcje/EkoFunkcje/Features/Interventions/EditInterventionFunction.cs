@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
 using EkoFunkcje.Models.Respones;
@@ -17,6 +19,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 using NGeoHash;
 
 namespace EkoFunkcje.Features.Interventions
@@ -25,8 +28,9 @@ namespace EkoFunkcje.Features.Interventions
     {
         private readonly IMapper _mapper;
         private readonly IAddressConverter _addressConverter;
-        
-        public EditInterventionFunction(IAddressConverter addressConverter)
+        private readonly IAuth _auth;
+
+        public EditInterventionFunction(IAddressConverter addressConverter, IAuth auth)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionItemResponse>()
                 .ForMember(dest => dest.Id,
@@ -35,15 +39,20 @@ namespace EkoFunkcje.Features.Interventions
                     opts => opts.MapFrom(src => src.GetComments())));
             _mapper = config.CreateMapper();
             _addressConverter = addressConverter;
+            _auth = auth;
         }
 
         [FunctionName("EditInterventionGeoHash")]
         public async Task<IActionResult> RunWithGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "interventions/{latitude}/{longitude}/{interventionId}")]
-            [RequestBodyType(typeof(InterventionDto), "InterventionDto")]InterventionDto editedIntervention,
+            [RequestBodyType(typeof(InterventionDto), "InterventionDto")]HttpRequest req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, ILogger log)
         {
+            if (!_auth.IsAuthorized(req, "EditIntervention"))
+                return new UnauthorizedResult();
+            var content = await new StreamReader(req.Body).ReadToEndAsync();
+            var editedIntervention = JsonConvert.DeserializeObject<InterventionDto>(content);
             var geoHash = GeoHasher.GetGeoHash(latitude, longitude);
             var finalFilter = InterventionFilterBuilder.GetInterventionGeoHashFilter(geoHash, interventionId);
 
@@ -113,10 +122,14 @@ namespace EkoFunkcje.Features.Interventions
         [FunctionName("EditIntervention")]
         public async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "put", Route = "interventions/{interventionId}")]
-          [RequestBodyType(typeof(InterventionDto), "InterventionDto")]InterventionDto editedIntervention,
+          [RequestBodyType(typeof(InterventionDto), "InterventionDto")]HttpRequest req,
           [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
           string interventionId, ILogger log)
         {
+            if (!_auth.IsAuthorized(req, "EditIntervention"))
+                return new UnauthorizedResult();
+            var content = await new StreamReader(req.Body).ReadToEndAsync();
+            var editedIntervention = JsonConvert.DeserializeObject<InterventionDto>(content);
             var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
               TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, interventionId)).Take(1), null);
             var interventionToEdit = queryResult.Results.FirstOrDefault();

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Threading.Tasks;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
 using Microsoft.AspNetCore.Http;
@@ -18,18 +20,24 @@ namespace EkoFunkcje.Features.Interventions
     public class AddInterventionFunction
     {
         private readonly IAddressConverter _addressConverter;
-        public AddInterventionFunction(IAddressConverter addressConverter)
+        private readonly IAuth _auth;
+        public AddInterventionFunction(IAddressConverter addressConverter, IAuth auth)
         {
             _addressConverter = addressConverter;
+            _auth = auth;
         }
 
         [FunctionName("AddIntervention")]
         public async Task<ActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions")]
-            [RequestBodyType(typeof(InterventionDto), "InterventionDto")]InterventionDto intervention, 
+            [RequestBodyType(typeof(InterventionDto), "InterventionDto")]HttpRequest req, 
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] IAsyncCollector<InterventionEntity> interventions,
             ILogger log)
         {
+            if (!_auth.IsAuthorized(req, "AddIntervention"))
+                return new UnauthorizedResult();
+            var content = await new StreamReader(req.Body).ReadToEndAsync();
+            var intervention = JsonConvert.DeserializeObject<InterventionDto>(content);
             var results = new List<ValidationResult>();
             if (!Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results))
             {

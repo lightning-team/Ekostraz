@@ -1,25 +1,34 @@
-﻿using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Mime;
-using System.Threading.Tasks;
+﻿using EkoFunkcje.Auth;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace EkoFunkcje.Features.Attachments
 {
-    public static class GetAttachmentFunction
+    public class GetAttachmentFunction
     {
+        private readonly IAuth _auth;
+        public GetAttachmentFunction(IAuth auth)
+        {
+            _auth = auth;
+        }
+
         [FunctionName("GetAttachment")]
-        public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{interventionId}/attachments/{fileId}")]  HttpRequestMessage req,
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{interventionId}/attachments/{fileId}")]  HttpRequest req,
             [Blob("attachments/{interventionId}/{fileId}", FileAccess.Read, Connection = Config.StorageConnectionName)] CloudBlockBlob blob,
             ILogger log)
         {
+            if (!_auth.IsAuthorized(req, "GetAttachment"))
+                return new UnauthorizedResult();
             Stream attachmentStream;
             try
             {
@@ -28,27 +37,19 @@ namespace EkoFunkcje.Features.Attachments
             }
             catch
             {
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
+                return new NotFoundResult();
             }
 
             await blob.FetchAttributesAsync();
 
-            return createAttachmentResult(attachmentStream, blob.Properties);
+            return CreateAttachmentResult(attachmentStream, blob.Properties);
         }
-        public static HttpResponseMessage createAttachmentResult(Stream attachmentStream, BlobProperties blobProps) {
-            var result = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StreamContent(attachmentStream)
-            };
 
-            ContentDisposition blobContentDisposition = new ContentDisposition(blobProps.ContentDisposition);
-            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(blobContentDisposition.DispositionType)
-            {
-                FileName = blobContentDisposition.FileName
-            };
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue(blobProps.ContentType);
-            
-            return result;
+        public static IActionResult CreateAttachmentResult(Stream attachmentStream, BlobProperties blobProps)
+        {
+            var response = new FileStreamResult(attachmentStream, new MediaTypeHeaderValue(new StringSegment(blobProps.ContentType)));
+            response.FileDownloadName = blobProps.ContentDisposition;
+            return response;
         }
     }
 

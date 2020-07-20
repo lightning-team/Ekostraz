@@ -1,32 +1,37 @@
-﻿using System;
+﻿using EkoFunkcje.Auth;
+using EkoFunkcje.Models.Dto;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Mime;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using EkoFunkcje.Models.Dto;
-using Microsoft.Azure.WebJobs;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 
 namespace EkoFunkcje.Features.Attachments
 {
-    public static class GetAttachmentListFunction
+    public class GetAttachmentListFunction
     {
+        private readonly IAuth _auth;
+        public GetAttachmentListFunction(IAuth auth)
+        {
+            _auth = auth;
+        }
+
         [FunctionName("GetAttachmentList")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{interventionId}/attachments")] HttpRequest req,
             [Blob("attachments/{interventionId}", FileAccess.Read, Connection = Config.StorageConnectionName)] CloudBlobDirectory blobDirectory,
             string interventionId,
             ILogger log)
         {
+            if (!_auth.IsAuthorized(req, "GetAttachmentList"))
+                return new UnauthorizedResult();
             IEnumerable<CloudBlockBlob> fileResults = await GetAttachmentBlobs(blobDirectory);
             await FetchBlobsAttributes(fileResults);
             return new JsonResult(ToAttachmentDtoList(fileResults));

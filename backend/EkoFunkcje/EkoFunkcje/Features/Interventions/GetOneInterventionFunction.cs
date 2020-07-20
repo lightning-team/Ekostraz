@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;
@@ -21,7 +22,8 @@ namespace EkoFunkcje.Features.Interventions
     public class GetOneInterventionFunction
     {
         private IMapper _mapper;
-        public GetOneInterventionFunction()
+        private readonly IAuth _auth;
+        public GetOneInterventionFunction(IAuth auth)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionItemResponse>()
                 .ForMember(dest => dest.Id,
@@ -29,14 +31,17 @@ namespace EkoFunkcje.Features.Interventions
                 .ForMember(dest => dest.Comments,
                     opts => opts.MapFrom(src => src.GetComments())));
             _mapper = config.CreateMapper();
+            _auth = auth;
         }
 
         [FunctionName("GetOneInterventionGeoHash")]
         public async Task<IActionResult> RunWithGeoHash(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}/{interventionId}")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}/{interventionId}")] HttpRequest req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, ILogger log)
         {
+            if (!_auth.IsAuthorized(req, "GetOneInterventionGeoHash"))
+                return new UnauthorizedResult();
             var geoHash = GeoHasher.GetGeoHash(latitude, longitude);
             var finalFilter = InterventionFilterBuilder.GetInterventionGeoHashFilter(geoHash, interventionId);
 
