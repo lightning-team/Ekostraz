@@ -4,11 +4,15 @@
 
 import { commonEnvironment, Environment } from './environment.common';
 
+const cloudAppUrl = 'https://ekostrazstagging.azurewebsites.net/';
+
 export const environment: Environment = {
   production: false,
   useSentry: false,
   useGoogleTagManager: false,
-  APIUrl: 'https://ekostrazstagging.azurewebsites.net/api/',
+  cloudAppUrl,
+  APIUrl: cloudAppUrl + 'api/',
+  useMockUser: false,
   ...commonEnvironment,
 };
 

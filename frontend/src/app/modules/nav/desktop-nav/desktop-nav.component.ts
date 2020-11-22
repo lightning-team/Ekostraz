@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AuthUrlsFactory } from '../../auth/auth-urls.factory';
+import { User } from '../../auth/user.model';
 
 @Component({
-  selector: 'app-desktop-nav',
+  selector: 'eko-desktop-nav',
   templateUrl: './desktop-nav.component.html',
   styleUrls: ['./desktop-nav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -9,6 +11,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 export class DesktopNavComponent {
   @Input() isLoggedIn = false;
   @Input() gtmContext;
-  @Output() logIn = new EventEmitter();
-  @Output() logOut = new EventEmitter();
+  @Input() user: User;
+
+  loginUrl = AuthUrlsFactory.googleLoginUrl();
+  logoutUrl = AuthUrlsFactory.logoutUrl;
 }

@@ -1,46 +1,67 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, pluck, take, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, map, mapTo, switchMap, take, tap } from 'rxjs/operators';
 
+import { environment } from '@environment';
 import { EkoRoutePaths } from '../../eko-route-paths';
 
-const SUCCESSFUL_LOGIN_ROUTE = '/' + EkoRoutePaths.Interventions;
+import { AuthUrlsFactory } from './auth-urls.factory';
+import { AzureUser, RawUserResponse, User } from './user.model';
+
+const USER_MOCK: User = {
+  email: 'kazik.staszewski@kult.pl',
+  name: 'Kazik',
+  surname: 'Staszewski',
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user = new BehaviorSubject(null);
-  isLoggedIn$: Observable<boolean> = this.user.asObservable().pipe(map(userData => !!userData));
+  private userSubject = new BehaviorSubject<User>(null);
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  user$ = this.userSubject.asObservable();
+  isLoggedIn$ = this.user$.pipe(map(user => !!user));
 
-  navigateToLoginPage(previousUrl?: string) {
+  constructor(private router: Router, private http: HttpClient) {}
+
+  isAuthenticated(): Observable<boolean> {
+    return this.user$.pipe(
+      switchMap(userData =>
+        !!userData
+          ? of(true)
+          : this.fetchCurrentUser().pipe(
+              mapTo(true),
+              catchError(e => of(false)),
+            ),
+      ),
+      take(1),
+    );
+  }
+
+  navigateToLoginPage(previousUrl?: string): void {
     const extras = previousUrl ? { queryParams: { previousUrl } } : undefined;
     this.router.navigate([EkoRoutePaths.Login], extras);
   }
 
-  logIn() {
-    // TODO: Add proper login with API call
-    this.user.next({});
-    this.navigateAfterLogin();
+  fetchCurrentUser(): Observable<User> {
+    const useMockUser = environment.useMockUser;
+    const nextUser = user => this.userSubject.next(user);
+
+    if (environment.isLocalhost() || useMockUser) {
+      return useMockUser ? of(USER_MOCK).pipe(tap(nextUser)) : throwError('user mock not used');
+    }
+
+    return this.http.get<RawUserResponse[]>(AuthUrlsFactory.meUrl).pipe(
+      map(rawUsers => new AzureUser(rawUsers[0])),
+      tap(nextUser),
+    );
   }
 
-  logOut() {
-    this.user.next(null);
-    this.router.navigate([EkoRoutePaths.Root]);
-  }
-
-  private navigateAfterLogin() {
-    this.activatedRoute.queryParams
-      .pipe(
-        take(1),
-        pluck('previousUrl'),
-        map(previousUrl => previousUrl || SUCCESSFUL_LOGIN_ROUTE),
-        tap(url => this.router.navigateByUrl(url)),
-      )
-      .subscribe();
+  resetUser() {
+    this.userSubject.next(null);
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivateChild, CanLoad } from '@angular/router';
 import { Observable } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { AuthModule } from '../auth.module';
 import { AuthService } from '../auth.service';
 
@@ -21,9 +21,8 @@ export class LoggedInGuard implements CanLoad, CanActivateChild {
   }
 
   private isLoggedIn(previousUrl: string) {
-    return this.authService.isLoggedIn$.pipe(
-      take(1),
-      tap(loggedIn => (!loggedIn ? this.authService.navigateToLoginPage(previousUrl) : null)),
-    );
+    return this.authService
+      .isAuthenticated()
+      .pipe(tap(loggedIn => (!loggedIn ? this.authService.navigateToLoginPage(previousUrl) : null)));
   }
 }

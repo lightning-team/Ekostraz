@@ -1,10 +1,10 @@
 <app-gtm-script *ngIf="useGoogleTagManager" [tagManagerId]="tagManagerId"></app-gtm-script>
 
 <mat-progress-bar *ngIf="isRouteLoading$ | async" [mode]="'indeterminate'" [color]="'accent'"></mat-progress-bar>
-<app-nav (sideNavToggle)="sidenav.toggle()"></app-nav>
-<app-mobile-nav #sidenav>
+<eko-nav (sideNavToggle)="sidenav.toggle()"></eko-nav>
+<eko-mobile-nav #sidenav>
   <ng-container *ngTemplateOutlet="main"></ng-container>
-</app-mobile-nav>
+</eko-mobile-nav>
 
 <ng-template #main>
   <main [@routeAnimation]="o.isActivated ? o.activatedRoute : ''" class="container">
