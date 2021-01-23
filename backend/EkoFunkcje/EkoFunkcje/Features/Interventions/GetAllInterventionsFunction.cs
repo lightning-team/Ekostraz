@@ -8,7 +8,6 @@ using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -48,9 +47,17 @@ namespace EkoFunkcje.Features.Interventions
                 token = queryResult.ContinuationToken;
             } while (token != null);
 
-            if (filter.Statuses.Count > 0)
+            if (filter.Statuses.Length > 0)
             {
-                entities = entities.Where(intervention => filter.Statuses.Contains(intervention.Status)).ToList();
+                // NOTE: Crazy workaround for the lack of List params support in Swashbuckle RequestBodyType.
+                // We expect this to be a string with comma-delimited values, e.g "1,2" which represent Status values.
+                // Maybe we should consider using QueryStringParamaterAttribute: https://github.com/yuka1984/azure-functions-extensions-swashbuckle
+                // Or just ditch the Swashbuckle here and use simple req.Query() params from native cloud functions
+                try {
+                    List<int> statusFilters = filter.Statuses.Split(',').ToList().ConvertAll(int.Parse);
+                    entities = entities.Where(intervention => statusFilters.Contains((int)intervention.Status)).ToList();
+                } catch(Exception e) {}
+                
             }
             var sortedEntities = filter.SortDirection == (int)SortDirection.Descending ?
                 entities.AsQueryable().OrderByDescending(filter.SortBy ?? "CreationDate")

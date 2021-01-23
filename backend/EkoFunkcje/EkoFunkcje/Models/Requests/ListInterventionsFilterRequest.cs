@@ -8,9 +8,11 @@ namespace EkoFunkcje.Models.Requests
     {
         public int Page { get; set; }
         public int PageSize { get; set; }
-        public string SortBy { get; set; }
+        public string SortBy { get; set; }  
         public int? SortDirection { get; set; }
-        public List<InterventionStatus> Statuses { get; set; }
+        // NOTE: Crazy workaround for the lack of List params support in Swashbuckle RequestBodyType.
+        // We expect this to be a string with comma-delimited values, e.g "1,2" which represent Status values.
+        public string Statuses { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
         public DateTime? DateFrom { get; set; }
@@ -22,7 +24,7 @@ namespace EkoFunkcje.Models.Requests
             PageSize = 20;
             SortBy = "CreationDate";
             SortDirection = (int)Models.SortDirection.Descending;
-            Statuses = new List<InterventionStatus>();
+            Statuses = "";
             DateTo = null;
             DateFrom = null;
         }
