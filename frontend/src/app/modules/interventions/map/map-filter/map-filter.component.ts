@@ -17,7 +17,7 @@ export class MapFilterComponent extends ComponentWithSubscriptions implements On
   @Output() filtersChange = new EventEmitter<InterventionsFilter>();
   statusOptions = InterventionStatusOptions;
   form = new FormGroup({
-    status: new FormControl(InterventionStatus.ActionRequired),
+    statuses: new FormControl(InterventionStatus.ActionRequired),
   });
   filtersVisible = false;
 
