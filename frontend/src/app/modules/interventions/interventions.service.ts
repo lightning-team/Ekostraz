@@ -8,6 +8,7 @@ import { SnackBarManager } from '@shared/services/snack-bar-manager';
 import {
   Attachment,
   Intervention,
+  InterventionListResponse,
   InterventionsFilter,
   RawServerIntervention,
 } from '@shared/domain/intervention.model';
@@ -17,17 +18,13 @@ import { InterventionsApiUrlsFactory } from '@shared/interventions-api-urls.fact
 export class InterventionsService {
   constructor(private http: HttpClient, private snackBar: SnackBarManager) {}
 
-  getInterventions(params: InterventionsFilter = {}): Observable<Intervention[]> {
-    return this.fetchInterventions(params);
-  }
-
-  private fetchInterventions(params: InterventionsFilter): Observable<Intervention[]> {
+  getInterventions(params: InterventionsFilter = {}): Observable<InterventionListResponse> {
     return this.http
       .get<any>(InterventionsApiUrlsFactory.interventions, {
         params: params as HttpParams,
       })
       .pipe(
-        map(data => data.map(toIntervention)),
+        map(({ results, ...other }) => ({ results: results.map(toIntervention), ...other })),
         this.snackBar.failurePipe(),
       );
   }

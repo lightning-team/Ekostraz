@@ -4,12 +4,14 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { InterventionsService } from '../../interventions.service';
 import { finalize, switchMapTo, tap } from 'rxjs/operators';
 
-import { Intervention, InterventionsFilter } from '@shared/domain/intervention.model';
+import { Intervention, InterventionListResponse, InterventionsFilter } from '@shared/domain/intervention.model';
 
 export class InterventionsDatasource implements DataSource<Intervention> {
   private interventionSubject = new BehaviorSubject<Intervention[]>([]);
+  private totalCountSubject = new BehaviorSubject<number>(0);
   private loadingSubject = new BehaviorSubject<boolean>(false);
 
+  public totalCount$ = this.totalCountSubject.asObservable();
   public loading$ = this.loadingSubject.asObservable();
 
   constructor(private interventionsService: InterventionsService) {}
@@ -23,12 +25,15 @@ export class InterventionsDatasource implements DataSource<Intervention> {
     this.loadingSubject.complete();
   }
 
-  loadInterventions$(params: InterventionsFilter) {
+  loadInterventions$(params: InterventionsFilter): Observable<InterventionListResponse> {
     return of<Intervention[]>([]).pipe(
       tap(() => this.loadingSubject.next(true)),
       switchMapTo(
         this.interventionsService.getInterventions(params).pipe(
-          tap(interventions => this.interventionSubject.next(interventions)),
+          tap(({ results, totalCount }) => {
+            this.interventionSubject.next(results);
+            this.totalCountSubject.next(totalCount);
+          }),
           finalize(() => this.loadingSubject.next(false)),
         ),
       ),

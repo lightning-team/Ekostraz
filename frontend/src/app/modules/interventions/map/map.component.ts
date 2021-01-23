@@ -30,8 +30,8 @@ export class MapComponent {
   loading$ = forkJoin(
     this.tilesLoadedSubject.asObservable().pipe(first()),
     this.interventionsService
-      .getInterventions({ status: InterventionStatus.ActionRequired })
-      .pipe(tap(data => (this.interventions = data))),
+      .getInterventions({ statuses: [InterventionStatus.ActionRequired] })
+      .pipe(tap(({ results }) => (this.interventions = results))),
   );
 
   constructor(private interventionsService: InterventionsService, @Inject(GTM_CONTEXTS) gtmContexts) {
@@ -39,7 +39,7 @@ export class MapComponent {
   }
 
   handleFiltersChange(event: InterventionsFilter) {
-    this.interventionsService.getInterventions(event).subscribe(x => (this.interventions = x));
+    this.interventionsService.getInterventions(event).subscribe(({ results }) => (this.interventions = results));
   }
 
   onTilesLoaded() {
