@@ -1,11 +1,15 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
+import { InterventionsDatasource } from './interventions.datasource';
+import { EkoRoutePaths } from '../../../eko-route-paths';
+import { InterventionsRoutePaths } from '../interventions-routing.module';
 
 @Component({
-  selector: 'app-list',
+  selector: 'eko-interventions-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
+  providers: [InterventionsDatasource],
 })
 export class ListComponent {
   interventionsListGtmContext: string;
@@ -15,6 +19,6 @@ export class ListComponent {
   }
 
   showMap() {
-    this.router.navigate(['interwencje', 'mapa']);
+    this.router.navigate([EkoRoutePaths.Interventions, InterventionsRoutePaths.Map]);
   }
 }

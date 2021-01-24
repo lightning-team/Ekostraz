@@ -1,11 +1,12 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-
-import { InterventionsService } from '../../interventions.service';
 import { finalize, switchMapTo, tap } from 'rxjs/operators';
 
 import { Intervention, InterventionListResponse, InterventionsFilter } from '@shared/domain/intervention.model';
+import { InterventionsService } from '../interventions.service';
 
+@Injectable()
 export class InterventionsDatasource implements DataSource<Intervention> {
   private interventionSubject = new BehaviorSubject<Intervention[]>([]);
   private totalCountSubject = new BehaviorSubject<number>(0);
