@@ -18,7 +18,8 @@ export class ListComponent {
     this.interventionsListGtmContext = gtmContexts.interventionList;
   }
 
-  showMap() {
-    this.router.navigate([EkoRoutePaths.Interventions, InterventionsRoutePaths.Map]);
+  filtersChanged(filters: InterventionsFilter) {
+    const prevFilters = this.dataSource.filtersSubject.getValue();
+    this.dataSource.filtersSubject.next({ ...prevFilters, ...filters });
   }
 }

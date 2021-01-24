@@ -1,13 +1,12 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, MatSort, MatTable } from '@angular/material';
-import { tap, startWith, switchMap, map } from 'rxjs/operators';
-import { combineLatest, Subscription } from 'rxjs';
+import { debounceTime, ignoreElements, map, startWith, tap } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
 
 import { ComponentWithSubscriptions } from '@shared/components/base';
-import { Intervention, SortDirection, InterventionsFilter } from '@shared/domain/intervention.model';
+import { Intervention, InterventionsFilter, SortDirection } from '@shared/domain/intervention.model';
 import { InterventionsDatasource } from '../interventions.datasource';
-import { InterventionsService } from '../../interventions.service';
 import { EkoRoutePaths } from '../../../../eko-route-paths';
 
 @Component({
@@ -15,18 +14,16 @@ import { EkoRoutePaths } from '../../../../eko-route-paths';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent extends ComponentWithSubscriptions implements AfterViewInit, OnInit {
+export class TableComponent extends ComponentWithSubscriptions implements AfterViewInit {
   displayedColumns = ['id', 'name', 'status', 'phone', 'date', 'description'];
+
+  @Output() filtersChange = new EventEmitter<InterventionsFilter>();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(
-    private router: Router,
-    private interventionsService: InterventionsService,
-    public dataSource: InterventionsDatasource,
-  ) {
+  constructor(private router: Router, public dataSource: InterventionsDatasource) {
     super();
   }
 
@@ -34,26 +31,22 @@ export class TableComponent extends ComponentWithSubscriptions implements AfterV
     this.router.navigate([EkoRoutePaths.Interventions, intervention.id]);
   }
 
-  ngOnInit() {
-    this.dataSource = new InterventionsDatasource(this.interventionsService);
-  }
-
   ngAfterViewInit() {
     // TODO: Workaround for https://github.com/angular/components/issues/8057
     // Remove when fixed. Debounces original ngOnDestroy way after route animation finishes.
     const tableOnDestroy = this.table.ngOnDestroy.bind(this.table);
     this.table.ngOnDestroy = () => setTimeout(tableOnDestroy, 1000);
-    this.subscriptions.add(this.subscribeToSortAndPageChanges());
+    this.subscriptions.add(this.sortAndPageChanges$().subscribe());
   }
 
-  private subscribeToSortAndPageChanges(): Subscription {
+  private sortAndPageChanges$(): Observable<never> {
     const sort$ = this.sort.sortChange.pipe(
       tap(() => (this.paginator.pageIndex = 0)),
       startWith({ active: 'date', direction: 'desc' }),
     );
     const page$ = this.paginator.page.pipe(
       startWith({
-        length: 100,
+        length: 0,
         pageIndex: 0,
         pageSize: 10,
       }),
@@ -64,11 +57,11 @@ export class TableComponent extends ComponentWithSubscriptions implements AfterV
       sortDirection: sort.direction === 'asc' ? SortDirection.Ascending : SortDirection.Descending,
     });
 
-    return combineLatest([sort$, page$])
-      .pipe(
-        map(toFilters),
-        switchMap(filters => this.dataSource.loadInterventions$(filters)),
-      )
-      .subscribe();
+    return combineLatest([sort$, page$]).pipe(
+      debounceTime(400),
+      map(toFilters),
+      tap(filters => this.filtersChange.emit(filters)),
+      ignoreElements(),
+    );
   }
 }

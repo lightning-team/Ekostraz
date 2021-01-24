@@ -1,21 +1,46 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import { finalize, switchMapTo, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, pipe } from 'rxjs';
+import { finalize, ignoreElements, skip, switchMap, tap } from 'rxjs/operators';
 
-import { Intervention, InterventionListResponse, InterventionsFilter } from '@shared/domain/intervention.model';
+import { ComponentWithSubscriptions } from '@shared/components/base';
+import { Intervention, InterventionsFilter } from '@shared/domain/intervention.model';
 import { InterventionsService } from '../interventions.service';
+import { UnaryFunction } from 'rxjs/src/internal/types';
 
 @Injectable()
-export class InterventionsDatasource implements DataSource<Intervention> {
+export class InterventionsDatasource extends ComponentWithSubscriptions implements DataSource<Intervention> {
   private interventionSubject = new BehaviorSubject<Intervention[]>([]);
   private totalCountSubject = new BehaviorSubject<number>(0);
   private loadingSubject = new BehaviorSubject<boolean>(false);
 
+  private loadInterventionsPipe: UnaryFunction<Observable<InterventionsFilter>, Observable<never>> = pipe(
+    tap(() => this.loadingSubject.next(true)),
+    switchMap(params =>
+      this.interventionsService.getInterventions(params).pipe(
+        tap(({ results, totalCount }) => {
+          this.interventionSubject.next(results);
+          this.totalCountSubject.next(totalCount);
+        }),
+        finalize(() => this.loadingSubject.next(false)),
+      ),
+    ),
+    ignoreElements(),
+  );
+
+  public filtersSubject = new BehaviorSubject<InterventionsFilter>({});
   public totalCount$ = this.totalCountSubject.asObservable();
   public loading$ = this.loadingSubject.asObservable();
 
-  constructor(private interventionsService: InterventionsService) {}
+  constructor(private interventionsService: InterventionsService) {
+    super();
+    this.subscriptions.add(
+      this.filtersSubject
+        .asObservable()
+        .pipe(skip(1), this.loadInterventionsPipe)
+        .subscribe(),
+    );
+  }
 
   connect(collectionViewer: CollectionViewer): Observable<Intervention[]> {
     return this.interventionSubject.asObservable();
@@ -24,20 +49,7 @@ export class InterventionsDatasource implements DataSource<Intervention> {
   disconnect(collectionViewer: CollectionViewer): void {
     this.interventionSubject.complete();
     this.loadingSubject.complete();
-  }
-
-  loadInterventions$(params: InterventionsFilter): Observable<InterventionListResponse> {
-    return of<Intervention[]>([]).pipe(
-      tap(() => this.loadingSubject.next(true)),
-      switchMapTo(
-        this.interventionsService.getInterventions(params).pipe(
-          tap(({ results, totalCount }) => {
-            this.interventionSubject.next(results);
-            this.totalCountSubject.next(totalCount);
-          }),
-          finalize(() => this.loadingSubject.next(false)),
-        ),
-      ),
-    );
+    this.totalCountSubject.complete();
+    this.filtersSubject.complete();
   }
 }
