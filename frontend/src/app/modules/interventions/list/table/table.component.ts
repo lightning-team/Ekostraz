@@ -16,7 +16,7 @@ import { EkoRoutePaths } from '../../../../eko-route-paths';
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent extends ComponentWithSubscriptions implements AfterViewInit, OnInit {
-  displayedColumns = ['position', 'name', 'status', 'phone', 'date', 'description'];
+  displayedColumns = ['id', 'name', 'status', 'phone', 'date', 'description'];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
