@@ -9,6 +9,7 @@ using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
@@ -31,10 +32,11 @@ namespace EkoFunkcje.Features.Interventions
         [FunctionName("GetAllInterventions")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions")]
-            [RequestBodyType(typeof(ListInterventionsFilterRequest), "ListInterventionsFilterRequest")] ListInterventionsFilterRequest requestParams,
+            [RequestBodyType(typeof(ListInterventionsFilterRequest), "ListInterventionsFilterRequest")] HttpRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             ILogger log)
-        {
+        {   
+            ListInterventionsFilterRequest requestParams = new ListInterventionsFilterRequest(request.Query);
             string filter = InterventionFilterBuilder.GetInterventionListViewFilter(requestParams);
             List<InterventionListItemResponse> interventions = await GetInterventions(interventionsTable, filter);
             IQueryable<InterventionListItemResponse> pagedInterventions = SortAndPaginateInterventions(interventions, requestParams);
@@ -63,7 +65,7 @@ namespace EkoFunkcje.Features.Interventions
             List<InterventionListItemResponse> interventions, ListInterventionsFilterRequest requestParams
         )
         {
-            var sortedEntities = requestParams.SortDirection == (int)SortDirection.Descending ?
+            var sortedEntities = requestParams.SortDirection == SortDirection.Descending ?
                 interventions.AsQueryable().OrderByDescending(requestParams.SortBy ?? "CreationDate")
                 : interventions.AsQueryable().OrderBy(requestParams.SortBy ?? "CreationDate");
 
