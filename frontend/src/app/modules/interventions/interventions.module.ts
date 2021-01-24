@@ -5,10 +5,13 @@ import {
   MatCardModule,
   MatBadgeModule,
   MatExpansionModule,
+  MatFormFieldModule,
   MatListModule,
+  MatOptionModule,
   MatPaginatorModule,
   MatRadioModule,
   MatTableModule,
+  MatSelectModule,
   MatSortModule,
 } from '@angular/material';
 
@@ -33,15 +36,19 @@ import { CommentsComponent } from './details/comments/comments.component';
 import { MapFilterComponent } from './map/map-filter/map-filter.component';
 import { FileListComponent } from './details/file-list/file-list.component';
 import { DetailsBasicComponent } from './details/details-basic/details-basic.component';
+import { FiltersComponent } from './list/filters/filters.component';
 
 const MaterialImports = [
   MatCardModule,
   MatBadgeModule,
   MatExpansionModule,
+  MatFormFieldModule,
   MatListModule,
+  MatOptionModule,
   MatPaginatorModule,
   MatRadioModule,
   MatTableModule,
+  MatSelectModule,
   MatSortModule,
 ];
 
@@ -58,6 +65,7 @@ const MaterialImports = [
     CommentsComponent,
     MapFilterComponent,
     FileListComponent,
+    FiltersComponent,
   ],
   imports: [
     SharedModule,
