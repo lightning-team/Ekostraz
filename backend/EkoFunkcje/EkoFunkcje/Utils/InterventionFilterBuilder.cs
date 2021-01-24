@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Interventions.Models;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -72,6 +73,27 @@ namespace EkoFunkcje.Utils
                     QueryComparisons.Equal,
                     filter.Street);
                 filters.Add(streetFilter);
+            } 
+            if (!string.IsNullOrWhiteSpace(filter.Statuses))
+            {
+                // NOTE: Crazy workaround for the lack of List params support in Swashbuckle RequestBodyType.
+                // We expect this to be a string with comma-delimited values, e.g "1,2" which represent Status values.
+                // Maybe we should consider using QueryStringParamaterAttribute: https://github.com/yuka1984/azure-functions-extensions-swashbuckle
+                // Or just ditch the Swashbuckle here and use simple req.Query() params from native cloud functions
+                List<int> statuses = filter.Statuses.Split(',').ToList().ConvertAll(int.Parse);
+                List<string> statusFilters = new List<string>();
+
+                foreach (int status in statuses) {
+                    statusFilters.Add(
+                        TableQuery.GenerateFilterConditionForInt(
+                            InterventionFieldNames.Status, 
+                            QueryComparisons.Equal,
+                            status
+                        )
+                    );
+                }
+                string statusesFilter = CombineFilters(statusFilters, TableOperators.Or); 
+                filters.Add(statusesFilter);
             }
             if (filter.DateFrom != null)
             {
@@ -131,7 +153,7 @@ namespace EkoFunkcje.Utils
             return Convert.ToDouble(value, CultureInfo.InvariantCulture);
         }
 
-        private static string CombineFilters(string filter, string combinedFilter)
+        private static string CombineFilters(string filter, string combinedFilter, string tableOperator = TableOperators.And)
         {
             if (string.IsNullOrWhiteSpace(combinedFilter)) {
                 return filter;
@@ -141,15 +163,15 @@ namespace EkoFunkcje.Utils
             }
             return TableQuery.CombineFilters(
                 filter,
-                TableOperators.And,
+                tableOperator,
                 combinedFilter
             );
         }
 
-        private static string CombineFilters(List<string> filters) {
+        private static string CombineFilters(List<string> filters, string tableOperator = TableOperators.And) {
             var finalFilter = "";
             foreach(string filter in filters) {
-                finalFilter = CombineFilters(finalFilter, filter);
+                finalFilter = CombineFilters(finalFilter, filter, tableOperator);
             }
             return finalFilter;
         }
