@@ -6,7 +6,7 @@ import { combineLatest, Subscription } from 'rxjs';
 
 import { ComponentWithSubscriptions } from '@shared/components/base';
 import { Intervention, SortDirection, InterventionsFilter } from '@shared/domain/intervention.model';
-import { InterventionsDatasource } from './interventions.datasource';
+import { InterventionsDatasource } from '../interventions.datasource';
 import { InterventionsService } from '../../interventions.service';
 import { EkoRoutePaths } from '../../../../eko-route-paths';
 
@@ -17,13 +17,16 @@ import { EkoRoutePaths } from '../../../../eko-route-paths';
 })
 export class TableComponent extends ComponentWithSubscriptions implements AfterViewInit, OnInit {
   displayedColumns = ['position', 'name', 'status', 'phone', 'date', 'description'];
-  dataSource: InterventionsDatasource;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private router: Router, private interventionsService: InterventionsService) {
+  constructor(
+    private router: Router,
+    private interventionsService: InterventionsService,
+    public dataSource: InterventionsDatasource,
+  ) {
     super();
   }
 
