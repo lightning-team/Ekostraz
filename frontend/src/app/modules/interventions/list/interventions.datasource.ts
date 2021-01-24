@@ -1,12 +1,11 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, pipe } from 'rxjs';
+import { BehaviorSubject, Observable, pipe, UnaryFunction } from 'rxjs';
 import { finalize, ignoreElements, skip, switchMap, tap } from 'rxjs/operators';
 
 import { ComponentWithSubscriptions } from '@shared/components/base';
 import { Intervention, InterventionsFilter } from '@shared/domain/intervention.model';
 import { InterventionsService } from '../interventions.service';
-import { UnaryFunction } from 'rxjs/src/internal/types';
 
 @Injectable()
 export class InterventionsDatasource extends ComponentWithSubscriptions implements DataSource<Intervention> {
