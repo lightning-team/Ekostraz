@@ -22,6 +22,15 @@
   }
 }
 
+header {
+  display: inline-block;
+}
+
+.intervention-counter {
+  margin-left: 5px;
+  color: darkgray;
+}
+
 eko-interventions-filters {
   display: block;
   margin-bottom: 20px;
