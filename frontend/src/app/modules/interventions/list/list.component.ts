@@ -1,9 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { InterventionsDatasource } from './interventions.datasource';
-import { EkoRoutePaths } from '../../../eko-route-paths';
-import { InterventionsRoutePaths } from '../route-paths';
+import { InterventionsFilter } from '@shared/domain/intervention.model';
 
 @Component({
   selector: 'eko-interventions-list',
@@ -13,8 +11,9 @@ import { InterventionsRoutePaths } from '../route-paths';
 })
 export class ListComponent {
   interventionsListGtmContext: string;
+  showFilters = false;
 
-  constructor(private router: Router, @Inject(GTM_CONTEXTS) gtmContexts) {
+  constructor(@Inject(GTM_CONTEXTS) gtmContexts, public dataSource: InterventionsDatasource) {
     this.interventionsListGtmContext = gtmContexts.interventionList;
   }
 
