@@ -31,45 +31,45 @@ namespace EkoFunkcje.Features.Interventions
         [FunctionName("GetAllInterventions")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions")]
-            [RequestBodyType(typeof(ListInterventionsFilterRequest), "ListInterventionsFilterRequest")] ListInterventionsFilterRequest filter,
-            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
+            [RequestBodyType(typeof(ListInterventionsFilterRequest), "ListInterventionsFilterRequest")] ListInterventionsFilterRequest requestParams,
+            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             ILogger log)
         {
-            string finalFilter = InterventionFilterBuilder.GetInterventionListViewFilter(filter);
+            string filter = InterventionFilterBuilder.GetInterventionListViewFilter(requestParams);
+            List<InterventionListItemResponse> interventions = await GetInterventions(interventionsTable, filter);
+            IQueryable<InterventionListItemResponse> pagedInterventions = SortAndPaginateInterventions(interventions, requestParams);
+            return new JsonResult(new
+            {
+                totalCount = interventions.Count(),
+                results = pagedInterventions
+            });
+        }
 
+        private async Task<List<InterventionListItemResponse>> GetInterventions(CloudTable interventionsTable, string finalFilter)
+        {
             TableContinuationToken token = null;
-            var entities = new List<InterventionListItemResponse>();
+            var interventions = new List<InterventionListItemResponse>();
             do
             {
-                var queryResult = await cloudTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
+                var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
                     finalFilter), token);
-                entities.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
+                interventions.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);
+            return interventions;
+        }
 
-            if (filter.Statuses.Length > 0)
-            {
-                // NOTE: Crazy workaround for the lack of List params support in Swashbuckle RequestBodyType.
-                // We expect this to be a string with comma-delimited values, e.g "1,2" which represent Status values.
-                // Maybe we should consider using QueryStringParamaterAttribute: https://github.com/yuka1984/azure-functions-extensions-swashbuckle
-                // Or just ditch the Swashbuckle here and use simple req.Query() params from native cloud functions
-                try {
-                    List<int> statusFilters = filter.Statuses.Split(',').ToList().ConvertAll(int.Parse);
-                    entities = entities.Where(intervention => statusFilters.Contains((int)intervention.Status)).ToList();
-                } catch(Exception e) {}
-                
-            }
-            var sortedEntities = filter.SortDirection == (int)SortDirection.Descending ?
-                entities.AsQueryable().OrderByDescending(filter.SortBy ?? "CreationDate")
-                : entities.AsQueryable().OrderBy(filter.SortBy ?? "CreationDate");
+        private static IQueryable<InterventionListItemResponse> SortAndPaginateInterventions(
+            List<InterventionListItemResponse> interventions, ListInterventionsFilterRequest requestParams
+        )
+        {
+            var sortedEntities = requestParams.SortDirection == (int)SortDirection.Descending ?
+                interventions.AsQueryable().OrderByDescending(requestParams.SortBy ?? "CreationDate")
+                : interventions.AsQueryable().OrderBy(requestParams.SortBy ?? "CreationDate");
 
-            var pagedEntities = sortedEntities.Skip((filter.Page - 1) * filter.PageSize).Take(filter.PageSize);
-            var result = new
-            {
-                totalCount = sortedEntities.Count(),
-                results = pagedEntities
-            };
-            return new JsonResult(result);
+            var pagedEntities = sortedEntities.Skip((requestParams.Page - 1) * requestParams.PageSize).Take(requestParams.PageSize);
+            
+            return pagedEntities;
         }
     }
 }
