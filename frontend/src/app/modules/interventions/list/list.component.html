@@ -1,8 +1,14 @@
 <section class="InterventionsList" [withGtmContext]="interventionsListGtmContext">
   <h1 class="mat-h1">Lista interwencji</h1>
-  <button (click)="showMap()" color="primary" mat-raised-button>
-    Sprawdź na mapie!
-    <mat-icon>map</mat-icon>
+  <button (click)="showFilters = !showFilters" color="primary" mat-raised-button>
+    {{ showFilters ? 'Ukryj' : 'Pokaż' }} filtry
+    <mat-icon>filter_list</mat-icon>
   </button>
+  <eko-interventions-filters
+    *ngIf="showFilters"
+    [filtersState]="dataSource.filtersSubject.asObservable() | async"
+    (filtersChange)="filtersChanged($event)"
+  >
+  </eko-interventions-filters>
   <eko-interventions-table (filtersChange)="filtersChanged($event)"></eko-interventions-table>
 </section>
