@@ -40,6 +40,7 @@ namespace EkoFunkcje.Features.Interventions
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, ILogger log)
         {
+            // FIXME: The function might not work properly for multiple statuses, please recheck and adjust. See "GetAllInterventionsFunction" for a similar case.
             var body = await request.ReadAsStringAsync();
             var areaFilter = JsonConvert.DeserializeObject<AreaInterventionsFilterRequest>(body);
             string filter = GetFilter(areaFilter, latitude, longitude);

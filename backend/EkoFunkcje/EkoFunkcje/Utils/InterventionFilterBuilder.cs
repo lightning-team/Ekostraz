@@ -74,16 +74,11 @@ namespace EkoFunkcje.Utils
                     filter.Street);
                 filters.Add(streetFilter);
             } 
-            if (!string.IsNullOrWhiteSpace(filter.Statuses))
+            if (filter.Statuses.Any())
             {
-                // NOTE: Crazy workaround for the lack of List params support in Swashbuckle RequestBodyType.
-                // We expect this to be a string with comma-delimited values, e.g "1,2" which represent Status values.
-                // Maybe we should consider using QueryStringParamaterAttribute: https://github.com/yuka1984/azure-functions-extensions-swashbuckle
-                // Or just ditch the Swashbuckle here and use simple req.Query() params from native cloud functions
-                List<int> statuses = filter.Statuses.Split(',').ToList().ConvertAll(int.Parse);
                 List<string> statusFilters = new List<string>();
 
-                foreach (int status in statuses) {
+                foreach (int status in filter.Statuses) {
                     statusFilters.Add(
                         TableQuery.GenerateFilterConditionForInt(
                             InterventionFieldNames.Status, 
