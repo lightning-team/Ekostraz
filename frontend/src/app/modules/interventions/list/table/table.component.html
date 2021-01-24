@@ -1,12 +1,10 @@
 <eko-loader [loading$]="dataSource.loading$" [cover]="true">
   <div class="mat-elevation-z8">
     <mat-table [dataSource]="dataSource" matSort matSortDisableClear matSortActive="date" matSortDirection="desc">
-      <!-- Position Column -->
-      <ng-container matColumnDef="position">
-        <mat-header-cell *matHeaderCellDef>L.p.</mat-header-cell>
-        <mat-cell *matCellDef="let index = index" data-label="Numer">{{
-          index + paginator.pageIndex * paginator.pageSize + 1
-        }}</mat-cell>
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Identyfikator</mat-header-cell>
+        <mat-cell *matCellDef="let element" data-label="Identyfikator">{{ element.id }}</mat-cell>
       </ng-container>
 
       <!-- Name Column -->
