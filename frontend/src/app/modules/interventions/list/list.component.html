@@ -8,6 +8,7 @@
     {{ showFilters ? 'Ukryj' : 'Pokaż' }} filtry
     <mat-icon>filter_list</mat-icon>
   </button>
+
   <eko-interventions-filters
     *ngIf="showFilters"
     [filtersState]="dataSource.filtersSubject.asObservable() | async"

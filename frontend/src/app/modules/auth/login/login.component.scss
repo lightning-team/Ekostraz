@@ -3,8 +3,7 @@
 
 $primary-color: map-get($my-app-primary, 'default');
 .login-dialog-backdrop {
-  background-image: url('~src/assets/logo_animals_vert.svg'),
-                    linear-gradient(white, $primary-color 160%);
+  background-image: url('~assets/logo_animals_vert.svg'), linear-gradient(white, $primary-color 160%);
   background-repeat: no-repeat;
   background-size: 300px, 100%;
   background-position: center 40px, top;

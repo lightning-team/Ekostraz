@@ -7,7 +7,7 @@ import { InterventionStatus } from '@shared/domain/intervention.status';
 import { Intervention, InterventionsFilter } from '@shared/domain/intervention.model';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
-import { EkoRoutePaths } from '../../../eko-route-paths';
+import { EkoRoutePaths } from '@app/eko-route-paths';
 import { InterventionsService } from '../interventions.service';
 
 const WROCLAW_COORDINATES = {
