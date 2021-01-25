@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { ComponentWithSubscriptions } from '@shared/components/base';
+import { Subscribable } from '@shared/components/base';
 import { AuthService } from '../auth.service';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
@@ -14,7 +14,7 @@ const DIALOG_PANEL_CLASS = 'login-dialog-panel';
   // Overrides default encapsulation so that dialog styles get applied properly.
   encapsulation: ViewEncapsulation.None,
 })
-export class LoginComponent extends ComponentWithSubscriptions implements OnInit {
+export class LoginComponent extends Subscribable implements OnInit {
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate: TemplateRef<any>;
   dialog: MatDialogRef<any>;
   loginDialogGtmContext: string;

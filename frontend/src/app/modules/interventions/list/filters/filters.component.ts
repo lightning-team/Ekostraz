@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 
 import { InterventionStatusOptions } from '@shared/domain/intervention.status';
-import { ComponentWithSubscriptions } from '@shared/components/base';
+import { Subscribable } from '@shared/components/base';
 import { InterventionsFilter } from '@shared/domain/intervention.model';
 
 @Component({
@@ -11,7 +11,7 @@ import { InterventionsFilter } from '@shared/domain/intervention.model';
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.scss'],
 })
-export class FiltersComponent extends ComponentWithSubscriptions implements OnInit, OnDestroy {
+export class FiltersComponent extends Subscribable implements OnInit, OnDestroy {
   @Input() filtersState: InterventionsFilter;
   @Output() filtersChange = new EventEmitter<InterventionsFilter>();
 
