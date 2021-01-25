@@ -1,1 +1,1 @@
-export * from './ComponentWithSubscriptions';
+export * from './Subscribable';

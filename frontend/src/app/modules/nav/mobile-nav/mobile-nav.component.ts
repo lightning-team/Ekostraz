@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
-import { ComponentWithSubscriptions } from '@shared/components/base';
+import { Subscribable } from '@shared/components/base';
 
 import { AuthService } from '../../auth/auth.service';
 import { BreakpointService } from '@shared/services/breakpoint.service';
@@ -70,7 +70,7 @@ const menuItems = {
   templateUrl: './mobile-nav.component.html',
   styleUrls: ['./mobile-nav.component.scss'],
 })
-export class MobileNavComponent extends ComponentWithSubscriptions implements AfterViewInit {
+export class MobileNavComponent extends Subscribable implements AfterViewInit {
   menuItems: MenuItems = menuItems;
   mobileNavGtmContext: string;
   isLoggedIn$ = this.authService.isLoggedIn$;

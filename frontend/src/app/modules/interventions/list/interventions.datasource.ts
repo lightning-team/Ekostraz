@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, pipe, UnaryFunction } from 'rxjs';
 import { finalize, ignoreElements, skip, switchMap, tap } from 'rxjs/operators';
 
-import { ComponentWithSubscriptions } from '@shared/components/base';
+import { Subscribable } from '@shared/components/base';
 import { Intervention, InterventionsFilter } from '@shared/domain/intervention.model';
 import { InterventionsService } from '../interventions.service';
 
 @Injectable()
-export class InterventionsDatasource extends ComponentWithSubscriptions implements DataSource<Intervention> {
+export class InterventionsDatasource extends Subscribable implements DataSource<Intervention> {
   private interventionSubject = new BehaviorSubject<Intervention[]>([]);
   private totalCountSubject = new BehaviorSubject<number>(0);
   private loadingSubject = new BehaviorSubject<boolean>(false);

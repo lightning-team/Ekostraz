@@ -4,7 +4,7 @@ import { MatPaginator, MatSort, MatTable } from '@angular/material';
 import { debounceTime, ignoreElements, map, startWith, tap } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
 
-import { ComponentWithSubscriptions } from '@shared/components/base';
+import { Subscribable } from '@shared/components/base';
 import { Intervention, InterventionsFilter, SortDirection } from '@shared/domain/intervention.model';
 import { InterventionsDatasource } from '../interventions.datasource';
 import { EkoRoutePaths } from '@app/eko-route-paths';
@@ -14,7 +14,7 @@ import { EkoRoutePaths } from '@app/eko-route-paths';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent extends ComponentWithSubscriptions implements AfterViewInit {
+export class TableComponent extends Subscribable implements AfterViewInit {
   displayedColumns = ['id', 'name', 'status', 'phone', 'date', 'description'];
 
   @Output() filtersChange = new EventEmitter<InterventionsFilter>();
