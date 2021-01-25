@@ -7,7 +7,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { ComponentWithSubscriptions } from '@shared/components/base';
 import { Intervention, InterventionsFilter, SortDirection } from '@shared/domain/intervention.model';
 import { InterventionsDatasource } from '../interventions.datasource';
-import { EkoRoutePaths } from '../../../../eko-route-paths';
+import { EkoRoutePaths } from '@app/eko-route-paths';
 
 @Component({
   selector: 'eko-interventions-table',

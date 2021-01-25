@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, pluck, take, tap } from 'rxjs/operators';
 
-import { EkoRoutePaths } from '../../eko-route-paths';
+import { EkoRoutePaths } from '@app/eko-route-paths';
 
 const SUCCESSFUL_LOGIN_ROUTE = '/' + EkoRoutePaths.Interventions;
 

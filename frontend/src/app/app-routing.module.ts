@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { EkoRoutePaths } from './eko-route-paths';
+import { EkoRoutePaths } from '@app/eko-route-paths';
 
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoggedOutGuard } from './modules/auth/guards/logged-out.guard';

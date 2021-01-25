@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Intervention } from '@shared/domain/intervention.model';
-import { EkoRoutePaths } from '../../../eko-route-paths';
+import { EkoRoutePaths } from '@app/eko-route-paths';
 import { InterventionsRoutePaths } from '../route-paths';
 
 @Component({
