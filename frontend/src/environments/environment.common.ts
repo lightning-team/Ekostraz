@@ -9,11 +9,16 @@ export interface Environment {
   APIUrl: string;
   functionsKey: string;
   mapsKey: string;
+  captchaSiteKey: string;
 }
 
-export const commonEnvironment: Pick<Environment, 'sentryDSN' | 'tagManagerId' | 'functionsKey' | 'mapsKey'> = {
+export const commonEnvironment: Pick<
+  Environment,
+  'sentryDSN' | 'tagManagerId' | 'functionsKey' | 'mapsKey' | 'captchaSiteKey'
+> = {
   sentryDSN: 'https://bc6889e92f5d4c9d941ed23760f38d37@sentry.io/1548140',
   tagManagerId: 'GTM-PH9WQ8J',
   functionsKey: dotenv.functionsKey,
   mapsKey: dotenv.mapsKey,
+  captchaSiteKey: dotenv.captchaSiteKey,
 };
