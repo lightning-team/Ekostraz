@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
+import { environment } from '@environment';
 
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { Intervention, InterventionFormData } from '@shared/domain/intervention.model';
@@ -44,6 +45,7 @@ export class InterventionFormComponent implements OnInit {
   statusOptions = InterventionStatusOptions;
   form = this.buildForm();
   formGtmContext: string;
+  captchaSiteKey: string = environment.captchaSiteKey;
 
   constructor(private formBuilder: FormBuilder, @Inject(GTM_CONTEXTS) private gtmContexts) {}
 
@@ -87,6 +89,12 @@ export class InterventionFormComponent implements OnInit {
   }
 
   private buildForm(): FormGroup {
+    const additionalPublicInputs = !this.inPrivateMode
+      ? {
+          captcha: ['', Validators.required],
+        }
+      : {};
+
     const formGroupConfig: InterventionFormGroupConfig = {
       id: [],
       creationDate: [{ value: '', disabled: true }],
@@ -98,6 +106,7 @@ export class InterventionFormComponent implements OnInit {
       street: ['', Validators.required],
       streetNumber: ['', Validators.required],
       city: ['', Validators.required],
+      ...additionalPublicInputs,
     };
 
     return this.formBuilder.group(formGroupConfig);

@@ -51,6 +51,18 @@
     }
   }
 
+  .captcha {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+    re-captcha {
+      margin: auto;
+    }
+  }
+
   .errors {
     border-radius: 5px;
     color: #ff1d1d;
