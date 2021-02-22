@@ -43,13 +43,14 @@ export class InterventionFormComponent implements OnInit {
   @ViewChild(FileUploaderComponent, { static: true }) fileUploader;
 
   statusOptions = InterventionStatusOptions;
-  form = this.buildForm();
+  form: FormGroup;
   formGtmContext: string;
   captchaSiteKey: string = environment.captchaSiteKey;
 
   constructor(private formBuilder: FormBuilder, @Inject(GTM_CONTEXTS) private gtmContexts) {}
 
   ngOnInit() {
+    this.form = this.buildForm();
     this.initGtmContext();
     this.maybePatchFormValue();
   }
