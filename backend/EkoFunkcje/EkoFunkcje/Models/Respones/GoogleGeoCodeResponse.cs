@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EkoFunkcje.Models.Respones
+﻿namespace EkoFunkcje.Models.Respones
 {
     public class GoogleGeoCodeResponse
     {

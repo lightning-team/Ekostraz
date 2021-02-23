@@ -21,9 +21,11 @@ namespace EkoFunkcje.Features.Interventions
     public class AddInterventionFunction
     {
         private readonly IAddressConverter _addressConverter;
-        public AddInterventionFunction(IAddressConverter addressConverter)
+        private readonly IReCaptchaService _captchaService;
+        public AddInterventionFunction(IAddressConverter addressConverter, IReCaptchaService captchaService)
         {
             _addressConverter = addressConverter;
+            _captchaService = captchaService;
         }
 
         [FunctionName("AddIntervention")]
@@ -33,6 +35,20 @@ namespace EkoFunkcje.Features.Interventions
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             ILogger log)
         {
+            // Validate Captcha
+            if (intervention.Captcha != null) {
+                try
+                {
+                    await _captchaService.ValidateCaptcha(intervention.Captcha);
+                }
+                catch (BaseException e)
+                {
+                    log.Log(e.LogLevel, e, e.Message);
+                    return new BadRequestObjectResult(e.Message);
+                }
+            }
+
+            // Validate InterventionDTO
             var results = new List<ValidationResult>();
             if (!Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results))
             {
@@ -45,10 +61,10 @@ namespace EkoFunkcje.Features.Interventions
                 return new BadRequestObjectResult(json);
             }
 
+            // Convert GoogleMaps Address
             Address convertedGeoAddress;
             try
             {
-                // retry should be added
                 convertedGeoAddress = await _addressConverter.ConvertToGeoAddress(intervention.City, intervention.Street, intervention.StreetNumber);
             }
             catch (BaseException e)
