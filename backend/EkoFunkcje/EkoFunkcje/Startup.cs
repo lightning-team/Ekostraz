@@ -21,6 +21,7 @@ namespace EkoFunkcje
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<IAddressConverter, AddressConverter>();
             builder.Services.AddSingleton<IAddressValidator, AddressValidator>();
+            builder.Services.AddSingleton<IReCaptchaService, ReCaptchaService>();
             builder.Services.AddSingleton<IStringTranslator, PolishCharactersTranslator>();
             builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
         }
