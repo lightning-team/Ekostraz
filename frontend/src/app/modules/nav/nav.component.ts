@@ -6,7 +6,7 @@ import { BreakpointService } from '@shared/services/breakpoint.service';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
 @Component({
-  selector: 'app-nav',
+  selector: 'eko-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss'],
 })

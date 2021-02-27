@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-desktop-nav',
+  selector: 'eko-desktop-nav',
   templateUrl: './desktop-nav.component.html',
   styleUrls: ['./desktop-nav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
