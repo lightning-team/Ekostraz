@@ -13,7 +13,7 @@ import { PublicFormModule } from './modules/public-form/public-form.module';
 import { SharedModule } from '@shared/shared.module';
 
 import { AppComponent } from './app-component/app.component';
-import { HomePageComponent } from './home-page/home-page.component';
+import { HomePageComponent } from './pages/home/home-page.component';
 
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { errorHandlerFactory, localeProviderFactory } from './misc/providerFactories';
