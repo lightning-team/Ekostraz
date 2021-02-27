@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { EkoRoutePaths } from '@app/eko-route-paths';
 
 import { HomePageComponent } from './pages/home/home-page.component';
+import { AboutPageComponent } from './pages/about/about-page.component';
 import { LoggedOutGuard } from './modules/auth/guards/logged-out.guard';
 import { LoggedInGuard } from './modules/auth/guards/logged-in.guard';
 import { PublicFormComponent } from './modules/public-form/public-form/public-form.component';
@@ -11,8 +12,12 @@ import { LoginComponent } from './modules/auth/login/login.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: EkoRoutePaths.Root,
     component: HomePageComponent,
+  },
+  {
+    path: EkoRoutePaths.About,
+    component: AboutPageComponent,
   },
   {
     path: EkoRoutePaths.Login,

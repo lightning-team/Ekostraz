@@ -19,9 +19,10 @@ import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { errorHandlerFactory, localeProviderFactory } from './misc/providerFactories';
 import { EKOSTRAZ_GTM_CONTEXTS } from './misc/ekostraz-gtm-contexts';
 import { httpInterceptors } from '@shared/interceptors';
+import { AboutPageComponent } from './pages/about/about-page.component';
 
 @NgModule({
-  declarations: [AppComponent, HomePageComponent],
+  declarations: [AppComponent, HomePageComponent, AboutPageComponent],
   imports: [
     AuthModule,
     AppRoutingModule,
