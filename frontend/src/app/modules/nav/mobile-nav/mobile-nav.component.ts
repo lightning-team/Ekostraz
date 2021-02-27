@@ -8,8 +8,7 @@ import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 
 interface MenuItem {
   text: string;
-  title?: string;
-  icon: string | null;
+  icon: string;
   showWhenAuthenticated: boolean;
 }
 
@@ -20,8 +19,6 @@ interface RoutedMenuItem extends MenuItem {
 
 interface MenuItems {
   navigationLinks: RoutedMenuItem[];
-  logIn: MenuItem;
-  logOut: MenuItem;
 }
 
 // TODO: Generalize menus so that menuItems it can be used as a single source of truth for both desktop and mobile sidenav.
@@ -53,20 +50,10 @@ const menuItems = {
       showWhenAuthenticated: true,
     },
   ],
-  logIn: {
-    text: 'Zaloguj',
-    icon: 'account_circle',
-    showWhenAuthenticated: false,
-  },
-  logOut: {
-    text: 'Wyloguj',
-    icon: 'exit_to_app',
-    showWhenAuthenticated: true,
-  },
 };
 
 @Component({
-  selector: 'app-mobile-nav',
+  selector: 'eko-mobile-nav',
   templateUrl: './mobile-nav.component.html',
   styleUrls: ['./mobile-nav.component.scss'],
 })

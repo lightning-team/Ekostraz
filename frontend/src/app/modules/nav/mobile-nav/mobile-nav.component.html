@@ -41,15 +41,22 @@
 </ng-template>
 
 <ng-template #authLinks>
-  <a *ngIf="(isLoggedIn$ | async) === false && menuItems.logIn as item" mat-list-item (click)="logIn()">
-    <mat-icon matListIcon> {{ item.icon }} </mat-icon>
-    {{ item.text }}
-  </a>
+  <ng-container *ngIf="(isLoggedIn$ | async) === false">
+    <a mat-list-item routerLink="/o-aplikacji" routerLinkActive="active">
+      <mat-icon matListIcon>help_outline</mat-icon>
+      O aplikacji
+    </a>
 
-  <ng-container *ngIf="(isLoggedIn$ | async) && menuItems.logOut as item">
-    <a mat-list-item (click)="logOut()" title="{{ item.title }}">
-      <mat-icon matListIcon>{{ item.icon }}</mat-icon>
-      {{ item.text }}
+    <a mat-list-item (click)="logIn()">
+      <mat-icon matListIcon>account_circle</mat-icon>
+      Zaloguj
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="isLoggedIn$ | async">
+    <a mat-list-item (click)="logOut()">
+      <mat-icon matListIcon>exit_to_app</mat-icon>
+      Wyloguj
     </a>
   </ng-container>
 </ng-template>
