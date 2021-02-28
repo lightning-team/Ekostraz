@@ -1,0 +1,8 @@
+@import 'mixins';
+
+:host {
+  display: block;
+  @include centerPage;
+}
+
+@include expansionPanelStyles;
