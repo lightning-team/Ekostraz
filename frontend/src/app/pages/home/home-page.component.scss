@@ -1,4 +1,5 @@
 @import 'breakpoints';
+@import 'mixins';
 
 .HomePage {
   min-height: 80vh;
@@ -18,10 +19,12 @@
     }
   }
 
-  & > button {
+  & > .mat-raised-button {
     display: block;
     margin: 50px auto;
     width: 250px;
     height: 60px;
+
+    @include anchorMatButtonCentered;
   }
 }

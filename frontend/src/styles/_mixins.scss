@@ -16,3 +16,12 @@
     margin-left: auto;
   }
 }
+
+@mixin anchorMatButtonCentered {
+  ::ng-deep .mat-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+}
