@@ -6,3 +6,16 @@
 }
 
 @include expansionPanelStyles;
+
+h3 {
+  font-weight: 500;
+}
+
+ul {
+  list-style: none;
+  padding-left: 10px;
+}
+
+li {
+  margin-left: 15px;
+}
