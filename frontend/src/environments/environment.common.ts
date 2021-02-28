@@ -1,24 +1,22 @@
-import { dotenv } from './dotenv';
+/**
+ * @see {https://github.com/Lacka90/angular-dotenv-poc/blob/master/src/app/config/dotenv.ts}
+ * @see {https://codingsans.com/blog/configure-frontend-projects-with-dotenv}
+ */
+import * as loadedDotenv from '!val-loader!./dotenv-loader';
 
-export interface Environment {
-  production: boolean;
-  useSentry: boolean;
-  sentryDSN: string;
-  useGoogleTagManager: boolean;
-  tagManagerId: string;
-  APIUrl: string;
+export interface DotEnv {
   functionsKey: string;
   mapsKey: string;
   captchaSiteKey: string;
+  APIUrl: string;
+  sentryDSN: string;
+  tagManagerId: string;
 }
 
-export const commonEnvironment: Pick<
-  Environment,
-  'sentryDSN' | 'tagManagerId' | 'functionsKey' | 'mapsKey' | 'captchaSiteKey'
-> = {
-  sentryDSN: 'https://bc6889e92f5d4c9d941ed23760f38d37@sentry.io/1548140',
-  tagManagerId: 'GTM-PH9WQ8J',
-  functionsKey: dotenv.functionsKey,
-  mapsKey: dotenv.mapsKey,
-  captchaSiteKey: dotenv.captchaSiteKey,
-};
+export const dotEnv: DotEnv = loadedDotenv;
+
+export interface Environment extends DotEnv {
+  production: boolean;
+  useSentry: boolean;
+  useGoogleTagManager: boolean;
+}

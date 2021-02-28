@@ -10,6 +10,9 @@ const env = {
   mapsKey: process.env.MAPS_KEY || '',
   functionsKey: process.env.FUNCTIONS_KEY || '',
   captchaSiteKey: process.env.CAPTCHA_SITE_KEY || '',
+  APIUrl: process.env.API_URL || '',
+  sentryDSN: process.env.SENTRY_DSN || '',
+  tagManagerId: process.env.TAG_MANAGER_ID || '',
 };
 
 module.exports = () => {
