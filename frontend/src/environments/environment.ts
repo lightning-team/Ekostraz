@@ -2,14 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { commonEnvironment, Environment } from './environment.common';
+import { dotEnv, Environment } from './environment.common';
 
 export const environment: Environment = {
   production: false,
   useSentry: false,
   useGoogleTagManager: false,
-  APIUrl: 'https://ekostrazstagging.azurewebsites.net/api/',
-  ...commonEnvironment,
+  ...dotEnv,
 };
 
 /*
