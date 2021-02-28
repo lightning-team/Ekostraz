@@ -2,17 +2,16 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import {
-  MatCardModule,
   MatBadgeModule,
-  MatExpansionModule,
+  MatCardModule,
   MatFormFieldModule,
   MatListModule,
   MatOptionModule,
   MatPaginatorModule,
   MatRadioModule,
-  MatTableModule,
   MatSelectModule,
   MatSortModule,
+  MatTableModule,
 } from '@angular/material';
 
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
@@ -41,7 +40,6 @@ import { FiltersComponent } from './list/filters/filters.component';
 const MaterialImports = [
   MatCardModule,
   MatBadgeModule,
-  MatExpansionModule,
   MatFormFieldModule,
   MatListModule,
   MatOptionModule,
