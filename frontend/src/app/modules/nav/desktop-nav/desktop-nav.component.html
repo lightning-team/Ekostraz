@@ -1,32 +1,39 @@
 <li class="nav-buttons-container" [withGtmContext]="gtmContext">
   <ng-container *ngFor="let item of menuItems">
-    <button
+    <a
       *ngIf="item.showWhenAuthenticated === isLoggedIn"
       mat-button
+      data-mat-anchor-centered
       [routerLink]="item.routeLink"
       [routerLinkActiveOptions]="{ exact: !!item.routeExact }"
       routerLinkActive="active"
     >
       <mat-icon matListIcon *ngIf="!!item.icon"> {{ item.icon }} </mat-icon>
       {{ item.text }}
-    </button>
+    </a>
   </ng-container>
 </li>
 
 <aside class="auth-buttons-container" [withGtmContext]="gtmContext">
   <ng-container *ngIf="!isLoggedIn">
-    <button class="login" mat-button (click)="logIn.emit()">
+    <a mat-button data-mat-anchor-centered [routerLink]="ekoRoutePaths.Login">
       <mat-icon>account_circle</mat-icon>
       Zaloguj
-    </button>
-    <button mat-button [routerLink]="ekoRoutePaths.About" routerLinkActive="active" matTooltip="O aplikacji">
+    </a>
+    <a
+      mat-button
+      data-mat-anchor-centered
+      [routerLink]="ekoRoutePaths.About"
+      routerLinkActive="active"
+      matTooltip="O aplikacji"
+    >
       <mat-icon>help_outline</mat-icon>
-    </button>
+    </a>
   </ng-container>
   <ng-container *ngIf="isLoggedIn">
     <span class="greeting">Witaj, Inspektorze!</span>
-    <button class="logout" mat-button matTooltip="Wyloguj" (click)="logOut.emit()">
+    <a data-mat-anchor-centered class="logout" mat-button matTooltip="Wyloguj" (click)="logOut.emit()">
       <mat-icon>exit_to_app</mat-icon>
-    </button>
+    </a>
   </ng-container>
 </aside>

@@ -42,12 +42,12 @@
 
 <ng-template #authLinks>
   <ng-container *ngIf="(isLoggedIn$ | async) === false">
-    <a mat-list-item [routerLink]="ekoRoutePaths.About" routerLinkActive="active">
+    <a mat-list-item [routerLink]="ekoRoutePaths.About" (click)="sidenav.close()" routerLinkActive="active">
       <mat-icon matListIcon>help_outline</mat-icon>
       O aplikacji
     </a>
 
-    <a mat-list-item (click)="logIn()">
+    <a mat-list-item [routerLink]="ekoRoutePaths.Login" (click)="sidenav.close()">
       <mat-icon matListIcon>account_circle</mat-icon>
       Zaloguj
     </a>

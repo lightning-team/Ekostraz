@@ -8,7 +8,7 @@
   justify-content: center;
 
   & .logo-container {
-    background: url('../../../assets/logo.svg') no-repeat center center;
+    background: url('~assets/logo.svg') no-repeat center center;
     background-size: cover;
     max-width: 900px;
     width: 100%;
@@ -24,7 +24,5 @@
     margin: 50px auto;
     width: 250px;
     height: 60px;
-
-    @include anchorMatButtonCentered;
   }
 }

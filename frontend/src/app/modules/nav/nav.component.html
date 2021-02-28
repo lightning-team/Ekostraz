@@ -6,7 +6,6 @@
       *ngIf="(isMobileView$ | async) === false"
       [isLoggedIn]="isLoggedIn$ | async"
       [gtmContext]="desktopNavGtmContext"
-      (logIn)="logIn()"
       (logOut)="logOut()"
     >
     </eko-desktop-nav>
