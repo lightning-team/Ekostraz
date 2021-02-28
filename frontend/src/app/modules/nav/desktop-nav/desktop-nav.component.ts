@@ -11,7 +11,6 @@ import { EkoRoutePaths } from '@app/eko-route-paths';
 export class DesktopNavComponent {
   @Input() isLoggedIn = false;
   @Input() gtmContext;
-  @Output() logIn = new EventEmitter();
   @Output() logOut = new EventEmitter();
   menuItems: MenuItems = menuItems;
   ekoRoutePaths = EkoRoutePaths;

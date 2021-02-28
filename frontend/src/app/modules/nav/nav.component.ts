@@ -32,10 +32,6 @@ export class NavComponent implements OnInit {
     this.isMobileView$ = this.breakpointService.isMobileView$;
   }
 
-  logIn() {
-    this.authService.navigateToLoginPage();
-  }
-
   logOut() {
     this.authService.logOut();
   }

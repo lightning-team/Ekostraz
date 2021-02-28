@@ -41,11 +41,6 @@ export class MobileNavComponent extends Subscribable implements AfterViewInit {
     this.sidenav.toggle();
   }
 
-  logIn() {
-    this.authService.navigateToLoginPage();
-    this.sidenav.close();
-  }
-
   logOut() {
     this.authService.logOut();
     this.sidenav.close();
