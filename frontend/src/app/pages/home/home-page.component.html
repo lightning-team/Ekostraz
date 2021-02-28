@@ -1,4 +1,6 @@
 <section class="HomePage" [withGtmContext]="homePageGtmContext">
   <div class="logo-container"></div>
-  <button routerLink="/zglos-interwencje" color="primary" mat-raised-button>Zgłoś interwencję</button>
+  <a color="primary" mat-raised-button [routerLink]="publicFormRoute">
+    Zgłoś interwencję
+  </a>
 </section>
