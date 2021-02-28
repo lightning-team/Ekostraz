@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AboutPageComponent } from './about-page.component';
+import { MatIconModule } from '@angular/material/icon';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AboutPageComponent', () => {
   let component: AboutPageComponent;
@@ -8,6 +11,7 @@ describe('AboutPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [MatExpansionModule, MatIconModule, NoopAnimationsModule],
       declarations: [AboutPageComponent],
     }).compileComponents();
   }));
