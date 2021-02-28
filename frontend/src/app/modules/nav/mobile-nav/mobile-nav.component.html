@@ -19,7 +19,7 @@
 
 <ng-template #navLinks>
   <ul class="nav-links-list">
-    <ng-container *ngFor="let item of menuItems.navigationLinks">
+    <ng-container *ngFor="let item of menuItems">
       <li *ngIf="item.showWhenAuthenticated === (isLoggedIn$ | async)">
         <ng-container *ngTemplateOutlet="navAnchor; context: { item: item }"></ng-container>
       </li>
@@ -42,7 +42,7 @@
 
 <ng-template #authLinks>
   <ng-container *ngIf="(isLoggedIn$ | async) === false">
-    <a mat-list-item routerLink="/o-aplikacji" routerLinkActive="active">
+    <a mat-list-item [routerLink]="ekoRoutePaths.About" routerLinkActive="active">
       <mat-icon matListIcon>help_outline</mat-icon>
       O aplikacji
     </a>

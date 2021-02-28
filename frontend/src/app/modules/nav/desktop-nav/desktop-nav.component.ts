@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { MenuItems, menuItems } from '../menu-items-common';
+import { EkoRoutePaths } from '@app/eko-route-paths';
 
 @Component({
   selector: 'eko-desktop-nav',
@@ -11,4 +13,6 @@ export class DesktopNavComponent {
   @Input() gtmContext;
   @Output() logIn = new EventEmitter();
   @Output() logOut = new EventEmitter();
+  menuItems: MenuItems = menuItems;
+  ekoRoutePaths = EkoRoutePaths;
 }
