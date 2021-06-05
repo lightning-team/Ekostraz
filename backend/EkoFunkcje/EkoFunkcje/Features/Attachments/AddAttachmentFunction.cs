@@ -42,7 +42,7 @@ namespace EkoFunkcje.Features.Attachments
             }
 
             newBlob.Properties.ContentType = contentHeaders.ContentType.MediaType;
-            //newBlob.Properties.ContentDisposition = contentHeaders.ContentDisposition.ToString();
+            newBlob.Properties.ContentDisposition = contentHeaders.ContentDisposition.ToString();
 
             var imageStream = await req.Content.ReadAsStreamAsync();
             await newBlob.UploadFromStreamAsync(imageStream);
