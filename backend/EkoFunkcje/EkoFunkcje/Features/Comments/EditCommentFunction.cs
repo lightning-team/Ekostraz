@@ -10,7 +10,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace EkoFunkcje.Features.Comments
@@ -18,6 +21,8 @@ namespace EkoFunkcje.Features.Comments
     public static class EditCommentFunction
     {
         [FunctionName("EditCommentGeoHash")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "EditCommentGeoHash" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public static async Task<IActionResult> RunGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
             EditCommentRequest request,
@@ -49,6 +54,8 @@ namespace EkoFunkcje.Features.Comments
         }
 
         [FunctionName("EditComment")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "EditComment" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public static async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "interventions/{interventionId}/comments/{commentId}")]
           EditCommentRequest request,
