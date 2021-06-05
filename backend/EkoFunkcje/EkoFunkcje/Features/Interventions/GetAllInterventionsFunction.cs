@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using EkoFunkcje.Models;
@@ -11,7 +12,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace EkoFunkcje.Features.Interventions
@@ -29,6 +33,8 @@ namespace EkoFunkcje.Features.Interventions
         }
 
         [FunctionName("GetAllInterventions")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "GetAllInterventions" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions")]
             HttpRequest request,

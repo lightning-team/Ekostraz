@@ -15,7 +15,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 using NGeoHash;
 
@@ -38,6 +41,8 @@ namespace EkoFunkcje.Features.Interventions
         }
 
         [FunctionName("EditInterventionGeoHash")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "EditInterventionGeoHash" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> RunWithGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "interventions/{latitude}/{longitude}/{interventionId}")]
             InterventionDto editedIntervention,
@@ -117,6 +122,8 @@ namespace EkoFunkcje.Features.Interventions
         }
 
         [FunctionName("EditIntervention")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "EditIntervention" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "put", Route = "interventions/{interventionId}")]
           InterventionDto editedIntervention,

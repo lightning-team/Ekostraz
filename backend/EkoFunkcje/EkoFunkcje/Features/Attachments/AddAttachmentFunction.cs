@@ -6,7 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace EkoFunkcje.Features.Attachments
@@ -14,6 +17,9 @@ namespace EkoFunkcje.Features.Attachments
     public static class AddAttachmentFunction
     {
         [FunctionName("AddAttachment")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "AddAttachment" })]
+        [OpenApiParameter(name: "interventionId", In = ParameterLocation.Path, Required = true, Type = typeof(string), Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
             [Blob("attachments/{interventionId}/{rand-guid}", FileAccess.Write , Connection = Config.StorageConnectionName)] CloudBlockBlob newBlob,

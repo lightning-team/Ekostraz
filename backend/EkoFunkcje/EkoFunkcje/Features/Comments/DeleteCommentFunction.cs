@@ -10,14 +10,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace EkoFunkcje.Features.Comments
 {
     public static class DeleteCommentFunction
     {
         [FunctionName("DeleteCommentGeoHash")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "DeleteCommentGeoHash" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public static async Task<IActionResult> RunGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
             DeletionRequest request,
@@ -49,6 +54,8 @@ namespace EkoFunkcje.Features.Comments
         }
 
         [FunctionName("DeleteComment")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "DeleteComment" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public static async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "interventions/{interventionId}/comments/{commentId}")]
           DeletionRequest request,
