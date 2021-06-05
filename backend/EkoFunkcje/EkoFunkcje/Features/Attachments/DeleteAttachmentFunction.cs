@@ -30,14 +30,14 @@ namespace EkoFunkcje.Features.Attachments
                 await blobToDelete.DeleteIfExistsAsync();
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent("Attachment successfully deleted", Encoding.UTF8, "application/json"),
+                    Content = new StringContent("Attachment successfully deleted", Encoding.UTF8, "text/plain"),
                 };
             }
             catch (Exception e)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {
-                    Content = new StringContent("Could not find the blob", Encoding.UTF8, "application/json"),
+                    Content = new StringContent("Could not find the blob", Encoding.UTF8, "text/plain"),
                 };
             }
         }
