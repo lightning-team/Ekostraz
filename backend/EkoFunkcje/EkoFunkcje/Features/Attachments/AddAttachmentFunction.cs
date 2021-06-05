@@ -29,7 +29,7 @@ namespace EkoFunkcje.Features.Attachments
             if (contentHeaders.ContentLength == 0) {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {
-                    Content = new StringContent("No attachment sent", Encoding.UTF8, "application/json"),
+                    Content = new StringContent("No attachment sent", Encoding.UTF8, "text/plain"),
                 };
             }
 
@@ -37,7 +37,7 @@ namespace EkoFunkcje.Features.Attachments
             {
                 return new HttpResponseMessage(HttpStatusCode.Conflict)
                 {
-                    Content = new StringContent("File under that path already exists", Encoding.UTF8, "application/json"),
+                    Content = new StringContent("File under that path already exists", Encoding.UTF8, "text/plain"),
                 };
             }
 
@@ -49,7 +49,7 @@ namespace EkoFunkcje.Features.Attachments
 
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent("Attachment successfully uploaded", Encoding.UTF8, "application/json"),
+                Content = new StringContent("Attachment successfully uploaded", Encoding.UTF8, "text/plain"),
             };
         }
     }
