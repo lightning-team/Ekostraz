@@ -339,4 +339,6 @@ frontend/.env
 # VS Code
 **/.vscode
 
+# Azurite
 __azurite**.json
+/__blobstorage__
