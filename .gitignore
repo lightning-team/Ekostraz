@@ -338,3 +338,5 @@ frontend/.env
 
 # VS Code
 **/.vscode
+
+__azurite**.json
