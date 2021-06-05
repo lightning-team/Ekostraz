@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
@@ -36,7 +35,7 @@ namespace EkoFunkcje.Features.Interventions
         [FunctionName("GetInterventionsInArea")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}")]
-            [RequestBodyType(typeof(AreaInterventionsFilterRequest), "AreaInterventionsFilterRequest")]HttpRequest request,
+            HttpRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, ILogger log)
         {

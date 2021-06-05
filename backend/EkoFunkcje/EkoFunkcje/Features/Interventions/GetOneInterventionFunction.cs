@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;

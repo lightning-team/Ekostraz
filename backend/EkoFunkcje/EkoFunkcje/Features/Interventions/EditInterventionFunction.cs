@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
 using EkoFunkcje.Models.Respones;
@@ -41,7 +40,7 @@ namespace EkoFunkcje.Features.Interventions
         [FunctionName("EditInterventionGeoHash")]
         public async Task<IActionResult> RunWithGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "interventions/{latitude}/{longitude}/{interventionId}")]
-            [RequestBodyType(typeof(InterventionDto), "InterventionDto")]InterventionDto editedIntervention,
+            InterventionDto editedIntervention,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, ILogger log)
         {
@@ -120,7 +119,7 @@ namespace EkoFunkcje.Features.Interventions
         [FunctionName("EditIntervention")]
         public async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "put", Route = "interventions/{interventionId}")]
-          [RequestBodyType(typeof(InterventionDto), "InterventionDto")]InterventionDto editedIntervention,
+          InterventionDto editedIntervention,
           [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
           string interventionId, ILogger log)
         {

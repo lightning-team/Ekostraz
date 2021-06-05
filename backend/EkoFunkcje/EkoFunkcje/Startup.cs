@@ -1,5 +1,4 @@
-﻿using AzureFunctions.Extensions.Swashbuckle;
-using EkoFunkcje.Utils;
+﻿using EkoFunkcje.Utils;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
@@ -20,7 +19,7 @@ namespace EkoFunkcje
             builder.Services.AddSingleton<IAddressValidator, AddressValidator>();
             builder.Services.AddSingleton<IReCaptchaService, ReCaptchaService>();
             builder.Services.AddSingleton<IStringTranslator, PolishCharactersTranslator>();
-            builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
+            //builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
         }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
 using EkoFunkcje.Utils;
@@ -19,7 +18,7 @@ namespace EkoFunkcje.Features.Comments
         [FunctionName("AddCommentGeoHash")]
         public static async Task<IActionResult> RunGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments")]
-            [RequestBodyType(typeof(AddCommentDto), "AddCommentDto")] AddCommentDto commentDto,
+            AddCommentDto commentDto,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, ILogger log)
         {
@@ -34,7 +33,7 @@ namespace EkoFunkcje.Features.Comments
         [FunctionName("AddComment")]
         public static async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{interventionId}/comments")]
-          [RequestBodyType(typeof(AddCommentDto), "AddCommentDto")] AddCommentDto commentDto,
+          AddCommentDto commentDto,
           [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
           string interventionId, ILogger log)
         {
