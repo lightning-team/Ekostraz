@@ -11,6 +11,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EkoFunkcje.Features.Attachments
 {
@@ -20,25 +21,19 @@ namespace EkoFunkcje.Features.Attachments
         [OpenApiOperation(operationId: "Run", tags: new[] { "AddAttachment" })]
         [OpenApiParameter(name: "interventionId", In = ParameterLocation.Path, Required = true, Type = typeof(string), Visibility = OpenApiVisibilityType.Important)]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        public static async Task<HttpResponseMessage> Run(
+        public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
             [Blob("attachments/{interventionId}/{rand-guid}", FileAccess.Write , Connection = Config.StorageConnectionName)] CloudBlockBlob newBlob,
             ILogger log)
         {
             HttpContentHeaders contentHeaders = req.Content.Headers;
             if (contentHeaders.ContentLength == 0) {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    Content = new StringContent("No attachment sent", Encoding.UTF8, "text/plain"),
-                };
+                return new BadRequestObjectResult("No attachment sent");
             }
 
             if (await newBlob.ExistsAsync())
             {
-                return new HttpResponseMessage(HttpStatusCode.Conflict)
-                {
-                    Content = new StringContent("File under that path already exists", Encoding.UTF8, "text/plain"),
-                };
+               return new BadRequestObjectResult("File under that path already exists");
             }
 
             newBlob.Properties.ContentType = contentHeaders.ContentType.MediaType;
@@ -47,10 +42,10 @@ namespace EkoFunkcje.Features.Attachments
             var imageStream = await req.Content.ReadAsStreamAsync();
             await newBlob.UploadFromStreamAsync(imageStream);
 
-            return new HttpResponseMessage(HttpStatusCode.OK)
+            return new JsonResult(new
             {
-                Content = new StringContent("Attachment successfully uploaded", Encoding.UTF8, "text/plain"),
-            };
+                message = "Attachment successfully uploaded"
+            });
         }
     }
 }
