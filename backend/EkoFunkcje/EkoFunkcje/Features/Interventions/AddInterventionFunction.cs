@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
 using EkoFunkcje.Utils.Exceptions;
@@ -31,7 +30,7 @@ namespace EkoFunkcje.Features.Interventions
         [FunctionName("AddIntervention")]
         public async Task<ActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions")]
-            [RequestBodyType(typeof(InterventionDto), "InterventionDto")]InterventionDto intervention, 
+            InterventionDto intervention, 
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             ILogger log)
         {

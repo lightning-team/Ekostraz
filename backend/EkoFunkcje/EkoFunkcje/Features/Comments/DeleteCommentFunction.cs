@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Utils;
@@ -21,7 +20,7 @@ namespace EkoFunkcje.Features.Comments
         [FunctionName("DeleteCommentGeoHash")]
         public static async Task<IActionResult> RunGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
-            [RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]DeletionRequest request,
+            DeletionRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, string commentId, ILogger log)
         {
@@ -52,7 +51,7 @@ namespace EkoFunkcje.Features.Comments
         [FunctionName("DeleteComment")]
         public static async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "interventions/{interventionId}/comments/{commentId}")]
-          [RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]DeletionRequest request,
+          DeletionRequest request,
           [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
           string interventionId, string commentId, ILogger log)
         {

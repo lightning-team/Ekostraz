@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
@@ -32,7 +31,7 @@ namespace EkoFunkcje.Features.Interventions
         [FunctionName("GetAllInterventions")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions")]
-            [RequestBodyType(typeof(ListInterventionsFilterRequest), "ListInterventionsFilterRequest")] HttpRequest request,
+            HttpRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             ILogger log)
         {   
