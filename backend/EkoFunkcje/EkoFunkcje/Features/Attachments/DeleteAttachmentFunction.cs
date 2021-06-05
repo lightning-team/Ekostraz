@@ -31,7 +31,7 @@ namespace EkoFunkcje.Features.Attachments
                 await blobToDelete.DeleteIfExistsAsync();
                 return new JsonResult(new
                 {
-                    message = "ok"
+                    message = "Attachment successfully deleted"
                 });
             }
             catch

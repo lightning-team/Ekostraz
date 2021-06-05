@@ -44,7 +44,7 @@ namespace EkoFunkcje.Features.Attachments
 
             return new JsonResult(new
             {
-                message = "ok"
+                message = "Attachment successfully uploaded"
             });
         }
     }
