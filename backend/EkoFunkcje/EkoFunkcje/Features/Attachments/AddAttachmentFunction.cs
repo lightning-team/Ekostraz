@@ -27,12 +27,18 @@ namespace EkoFunkcje.Features.Attachments
         {
             HttpContentHeaders contentHeaders = req.Content.Headers;
             if (contentHeaders.ContentLength == 0) {
-                return req.CreateErrorResponse(HttpStatusCode.BadRequest, "No attachment sent");
+                return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("No attachment sent", Encoding.UTF8, "application/json"),
+                };
             }
 
             if (await newBlob.ExistsAsync())
             {
-                return req.CreateErrorResponse(HttpStatusCode.Conflict, "File under that path already exists");
+                return new HttpResponseMessage(HttpStatusCode.Conflict)
+                {
+                    Content = new StringContent("File under that path already exists", Encoding.UTF8, "application/json"),
+                };
             }
 
             newBlob.Properties.ContentType = contentHeaders.ContentType.MediaType;
@@ -41,7 +47,10 @@ namespace EkoFunkcje.Features.Attachments
             var imageStream = await req.Content.ReadAsStreamAsync();
             await newBlob.UploadFromStreamAsync(imageStream);
 
-            return req.CreateResponse(HttpStatusCode.OK, "Attachment successfully uploaded");
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("Attachment successfully uploaded", Encoding.UTF8, "application/json"),
+            };
         }
     }
 }

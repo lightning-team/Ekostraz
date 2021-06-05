@@ -28,11 +28,17 @@ namespace EkoFunkcje.Features.Attachments
             try
             {
                 await blobToDelete.DeleteIfExistsAsync();
-                return req.CreateResponse(HttpStatusCode.OK, "Attachment successfully deleted");
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent("Attachment successfully deleted", Encoding.UTF8, "application/json"),
+                };
             }
             catch (Exception e)
             {
-                return req.CreateErrorResponse(HttpStatusCode.BadRequest, "Could not find the blob");
+                return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Could not find the blob", Encoding.UTF8, "application/json"),
+                };
             }
         }
     }
