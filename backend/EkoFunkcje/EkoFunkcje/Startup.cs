@@ -1,17 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using AzureFunctions.Extensions.Swashbuckle;
-using EkoFunkcje.Auth;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters.Json.Internal;
+﻿using EkoFunkcje.Auth;
+using EkoFunkcje.Utils;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System.Reflection;
+using System.Collections.Generic;
 
 [assembly: FunctionsStartup(typeof(EkoFunkcje.Startup))]
 

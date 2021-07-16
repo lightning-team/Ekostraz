@@ -27,7 +27,7 @@ namespace EkoFunkcje.Features.Attachments
         [FunctionName("DeleteAttachment")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "DeleteAttachment" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "interventions/{interventionId}/attachments/{fileId}")] HttpRequest req,
             [Blob("attachments/{interventionId}/{fileId}", FileAccess.Write, Connection = Config.StorageConnectionName)] CloudBlockBlob blobToDelete,
             ILogger log)

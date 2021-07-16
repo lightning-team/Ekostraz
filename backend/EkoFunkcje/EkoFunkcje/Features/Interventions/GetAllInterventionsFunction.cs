@@ -45,13 +45,18 @@ namespace EkoFunkcje.Features.Interventions
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions")]
-            [RequestBodyType(typeof(ListInterventionsFilterRequest), "ListInterventionsFilterRequest")] HttpRequest req,
+            /*[RequestBodyType(typeof(ListInterventionsFilterRequest), "ListInterventionsFilterRequest")]*/ HttpRequest req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
             ILogger log)
-        {   
-            ListInterventionsFilterRequest requestParams = new ListInterventionsFilterRequest(request.Query);
-            string filter = InterventionFilterBuilder.GetInterventionListViewFilter(requestParams);
-            List<InterventionListItemResponse> interventions = await GetInterventions(interventionsTable, filter);
+        {
+            if (!_auth.IsAuthorized(req, "GetAllInterventions"))
+                return new UnauthorizedResult();
+            var content = await new StreamReader(req.Body).ReadToEndAsync();
+            var filter = JsonConvert.DeserializeObject<ListInterventionsFilterRequest>(content);
+            string finalFilter = InterventionFilterBuilder.GetInterventionListViewFilter(filter);
+
+            ListInterventionsFilterRequest requestParams = new ListInterventionsFilterRequest(req.Query);
+            List<InterventionListItemResponse> interventions = await  GetInterventions(cloudTable, finalFilter);
             IQueryable<InterventionListItemResponse> pagedInterventions = SortAndPaginateInterventions(interventions, requestParams);
             return new JsonResult(new
             {
@@ -62,12 +67,6 @@ namespace EkoFunkcje.Features.Interventions
 
         private async Task<List<InterventionListItemResponse>> GetInterventions(CloudTable interventionsTable, string finalFilter)
         {
-            if (!_auth.IsAuthorized(req, "GetAllInterventions"))
-                return new UnauthorizedResult();
-            var content = await new StreamReader(req.Body).ReadToEndAsync();
-            var filter = JsonConvert.DeserializeObject<ListInterventionsFilterRequest>(content);
-            string finalFilter = InterventionFilterBuilder.GetInterventionListViewFilter(filter);
-
             TableContinuationToken token = null;
             var interventions = new List<InterventionListItemResponse>();
             do

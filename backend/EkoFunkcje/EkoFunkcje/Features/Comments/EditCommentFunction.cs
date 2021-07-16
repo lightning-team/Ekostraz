@@ -29,9 +29,9 @@ namespace EkoFunkcje.Features.Comments
         [FunctionName("EditCommentGeoHash")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "EditCommentGeoHash" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        public static async Task<IActionResult> RunGeoHash(
+        public async Task<IActionResult> RunGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
-            [RequestBodyType(typeof(EditCommentRequest), "EditCommentRequest")]HttpRequest req,
+            /*[RequestBodyType(typeof(EditCommentRequest), "EditCommentRequest")]*/HttpRequest req,
         [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, string commentId, ILogger log)
         {
@@ -66,9 +66,9 @@ namespace EkoFunkcje.Features.Comments
         [FunctionName("EditComment")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "EditComment" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "interventions/{interventionId}/comments/{commentId}")]
-          [RequestBodyType(typeof(EditCommentRequest), "EditCommentRequest")]HttpRequest req,
+          /*[RequestBodyType(typeof(EditCommentRequest), "EditCommentRequest")]*/HttpRequest req,
           [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
           string interventionId, string commentId, ILogger log)
         {

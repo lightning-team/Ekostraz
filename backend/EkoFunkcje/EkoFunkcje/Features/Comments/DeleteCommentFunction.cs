@@ -28,9 +28,9 @@ namespace EkoFunkcje.Features.Comments
         [FunctionName("DeleteCommentGeoHash")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "DeleteCommentGeoHash" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        public static async Task<IActionResult> RunGeoHash(
+        public async Task<IActionResult> RunGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
-            [RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]HttpRequest req,
+            /*[RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]*/HttpRequest req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, string commentId, ILogger log)
         {
@@ -63,9 +63,9 @@ namespace EkoFunkcje.Features.Comments
         [FunctionName("DeleteComment")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "DeleteComment" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "interventions/{interventionId}/comments/{commentId}")]
-          [RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]HttpRequest req,
+          /*[RequestBodyType(typeof(DeletionRequest), "DeletionRequest")]*/HttpRequest req,
           [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
           string interventionId, string commentId, ILogger log)
         {

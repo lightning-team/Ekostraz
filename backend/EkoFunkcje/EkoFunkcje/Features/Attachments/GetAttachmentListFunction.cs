@@ -36,7 +36,7 @@ namespace EkoFunkcje.Features.Attachments
         [FunctionName("GetAttachmentList")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "GetAttachmentList" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
 [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{interventionId}/attachments")] HttpRequest req,
             [Blob("attachments/{interventionId}", FileAccess.Read, Connection = Config.StorageConnectionName)] CloudBlobDirectory blobDirectory,
             string interventionId,

@@ -39,10 +39,15 @@ namespace EkoFunkcje.Features.Interventions
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<ActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions")]
-            [RequestBodyType(typeof(InterventionDto), "InterventionDto")]HttpRequest req, 
+            /*[RequestBodyType(typeof(InterventionDto), "InterventionDto")]*/HttpRequest req, 
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] IAsyncCollector<InterventionEntity> interventions,
             ILogger log)
         {
+
+            if (!_auth.IsAuthorized(req, "AddIntervention"))
+                return new UnauthorizedResult();
+            var content = await new StreamReader(req.Body).ReadToEndAsync();
+            var intervention = JsonConvert.DeserializeObject<InterventionDto>(content);
             // Validate Captcha
             if (intervention.Captcha != null) {
                 try
@@ -55,12 +60,7 @@ namespace EkoFunkcje.Features.Interventions
                     return new BadRequestObjectResult(e.Message);
                 }
             }
-
-            if (!_auth.IsAuthorized(req, "AddIntervention"))
-                return new UnauthorizedResult();
-            var content = await new StreamReader(req.Body).ReadToEndAsync();
-            var intervention = JsonConvert.DeserializeObject<InterventionDto>(content);
-            // Validate InterventionDTO            var results = new List<ValidationResult>();
+            var results = new List<ValidationResult>();
             if (!Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results))
             {
                 var errorList = new List<string>();
@@ -88,9 +88,9 @@ namespace EkoFunkcje.Features.Interventions
                 log.LogError(e, "Error podczas konwertowania adresu");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
-
-            string interventionId = await AddIntervention(intervention, interventionsTable, convertedGeoAddress);
-            return new JsonResult(new { id = interventionId });
+            // TODO: sth is wrong here
+            //string interventionId = await AddIntervention(intervention, interventions, convertedGeoAddress);
+            return new JsonResult(new { id = /*interventionId*/ "" });
         }
 
         private static async Task<string> AddIntervention(

@@ -50,7 +50,7 @@ namespace EkoFunkcje.Features.Interventions
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> RunWithGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "interventions/{latitude}/{longitude}/{interventionId}")]
-            [RequestBodyType(typeof(InterventionDto), "InterventionDto")]HttpRequest req,
+            /*[RequestBodyType(typeof(InterventionDto), "InterventionDto")]*/HttpRequest req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, ILogger log)
         {
@@ -135,7 +135,7 @@ namespace EkoFunkcje.Features.Interventions
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "put", Route = "interventions/{interventionId}")]
-          [RequestBodyType(typeof(InterventionDto), "InterventionDto")]HttpRequest req,
+          /*[RequestBodyType(typeof(InterventionDto), "InterventionDto")]*/HttpRequest req,
           [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
           string interventionId, ILogger log)
         {
