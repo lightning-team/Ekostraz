@@ -1,8 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using AutoMapper;
 using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
@@ -17,7 +12,9 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
-using NGeoHash;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace EkoFunkcje.Features.Interventions
 {

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
@@ -24,6 +16,10 @@ using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using NGeoHash;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EkoFunkcje.Features.Interventions
 {

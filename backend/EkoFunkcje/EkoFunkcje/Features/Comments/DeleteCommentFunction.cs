@@ -1,19 +1,18 @@
 using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
-using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.OpenApi.Models;
 
 namespace EkoFunkcje.Features.Comments
 {

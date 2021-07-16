@@ -1,10 +1,3 @@
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
 using EkoFunkcje.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +8,9 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace EkoFunkcje.Features.Attachments
 {
