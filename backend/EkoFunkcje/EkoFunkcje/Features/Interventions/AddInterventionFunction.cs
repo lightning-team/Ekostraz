@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
 using EkoFunkcje.Utils.Exceptions;
-using EkoFunkcje.Interventions.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -14,19 +10,25 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using NGeoHash;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace EkoFunkcje.Features.Interventions
 {
     public class AddInterventionFunction
     {
         private readonly IAddressConverter _addressConverter;
+        private readonly IAuth _auth;
         private readonly IReCaptchaService _captchaService;
-        public AddInterventionFunction(IAddressConverter addressConverter, IReCaptchaService captchaService)
+        public AddInterventionFunction(IAddressConverter addressConverter, IReCaptchaService captchaService, IAuth auth)
         {
             _addressConverter = addressConverter;
+            _auth = auth;
             _captchaService = captchaService;
         }
 
@@ -35,10 +37,15 @@ namespace EkoFunkcje.Features.Interventions
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<ActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions")]
-            InterventionDto intervention, 
-            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
+            /*[RequestBodyType(typeof(InterventionDto), "InterventionDto")]*/HttpRequest req, 
+            [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] IAsyncCollector<InterventionEntity> interventions,
             ILogger log)
         {
+
+            if (!_auth.IsAuthorized(req, "AddIntervention"))
+                return new UnauthorizedResult();
+            var content = await new StreamReader(req.Body).ReadToEndAsync();
+            var intervention = JsonConvert.DeserializeObject<InterventionDto>(content);
             // Validate Captcha
             if (intervention.Captcha != null) {
                 try
@@ -51,8 +58,6 @@ namespace EkoFunkcje.Features.Interventions
                     return new BadRequestObjectResult(e.Message);
                 }
             }
-
-            // Validate InterventionDTO
             var results = new List<ValidationResult>();
             if (!Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results))
             {
@@ -81,22 +86,12 @@ namespace EkoFunkcje.Features.Interventions
                 log.LogError(e, "Error podczas konwertowania adresu");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
-
-            string interventionId = await AddIntervention(intervention, interventionsTable, convertedGeoAddress);
-            return new JsonResult(new { id = interventionId });
-        }
-
-        private static async Task<string> AddIntervention(
-            InterventionDto intervention, 
-            CloudTable interventionsTable, 
-            Address convertedGeoAddress
-        )
-        {
-            int nextId = await InterventionCounter.GetNextId(interventionsTable);
+            //TODO: sth is wrong here
+            // int nextId = await InterventionCounter.GetNextId(interventionsTable);
             InterventionEntity interventionEntity = new InterventionEntity()
             {
                 PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision),
-                RowKey = nextId.ToString(),
+                RowKey = Guid.NewGuid().ToString(),
                 Email = intervention.Email,
                 City = intervention.City,
                 Street = intervention.Street,
@@ -106,15 +101,13 @@ namespace EkoFunkcje.Features.Interventions
                 Description = intervention.Description,
                 FullName = intervention.FullName,
                 PhoneNumber = intervention.PhoneNumber,
-                Status = (int) intervention.Status,
+                Status = (int)intervention.Status,
                 GeoLat = convertedGeoAddress.Latitude,
                 GeoLng = convertedGeoAddress.Lognitude,
             };
-            
-            TableOperation insertNewIntervention = TableOperation.Insert(interventionEntity);
-            await interventionsTable.ExecuteAsync(insertNewIntervention);
-
-            return interventionEntity.RowKey;
+            await interventions.AddAsync(interventionEntity);
+            await interventions.FlushAsync();
+            return new JsonResult(new { id = interventionEntity.RowKey });
         }
     }
 }

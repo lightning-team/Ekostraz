@@ -1,9 +1,6 @@
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+using EkoFunkcje.Auth;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -11,41 +8,47 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace EkoFunkcje.Features.Attachments
 {
-    public static class AddAttachmentFunction
+    public class AddAttachmentFunction
     {
+        private readonly IAuth _auth;
+        public AddAttachmentFunction(IAuth auth)
+        {
+            _auth = auth;
+        }
+
         [FunctionName("AddAttachment")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "AddAttachment" })]
         [OpenApiParameter(name: "interventionId", In = ParameterLocation.Path, Required = true, Type = typeof(string), Visibility = OpenApiVisibilityType.Important)]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{interventionId}/attachments")] HttpRequestMessage req,
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "interventions/{interventionId}/attachments")] HttpRequest req,
             [Blob("attachments/{interventionId}/{rand-guid}", FileAccess.Write , Connection = Config.StorageConnectionName)] CloudBlockBlob newBlob,
             ILogger log)
         {
-            HttpContentHeaders contentHeaders = req.Content.Headers;
-            if (contentHeaders.ContentLength == 0) {
-                return new BadRequestObjectResult("No attachment sent");
+            if (!_auth.IsAuthorized(req, "AddAttachment"))
+                return new UnauthorizedResult();
+            if (req.ContentLength == 0) {
+                return new BadRequestErrorMessageResult("No attachment sent");
             }
 
             if (await newBlob.ExistsAsync())
             {
-               return new BadRequestObjectResult("File under that path already exists");
+                return new ConflictObjectResult("File under that path already exists");
             }
 
-            newBlob.Properties.ContentType = contentHeaders.ContentType.MediaType;
-            newBlob.Properties.ContentDisposition = contentHeaders.ContentDisposition.ToString();
+            newBlob.Properties.ContentType = req.ContentType;
+            newBlob.Properties.ContentDisposition = req.Headers.ContainsKey("Content-Disposition")? req.Headers["Content-Disposition"].ToString() : "";
 
-            var imageStream = await req.Content.ReadAsStreamAsync();
+            var imageStream = req.Body;
             await newBlob.UploadFromStreamAsync(imageStream);
 
-            return new JsonResult(new
-            {
-                message = "Attachment successfully uploaded"
-            });
+            return new OkObjectResult("Attachment successfully uploaded");
         }
     }
 }

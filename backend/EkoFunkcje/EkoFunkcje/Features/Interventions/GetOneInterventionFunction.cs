@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using AutoMapper;
+using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;
@@ -16,14 +12,17 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
-using NGeoHash;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace EkoFunkcje.Features.Interventions
 {
     public class GetOneInterventionFunction
     {
         private IMapper _mapper;
-        public GetOneInterventionFunction()
+        private readonly IAuth _auth;
+        public GetOneInterventionFunction(IAuth auth)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionItemResponse>()
                 .ForMember(dest => dest.Id,
@@ -31,16 +30,19 @@ namespace EkoFunkcje.Features.Interventions
                 .ForMember(dest => dest.Comments,
                     opts => opts.MapFrom(src => src.GetComments())));
             _mapper = config.CreateMapper();
+            _auth = auth;
         }
 
         [FunctionName("GetOneInterventionGeoHash")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "GetOneInterventionGeoHash" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> RunWithGeoHash(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}/{interventionId}")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}/{interventionId}")] HttpRequest req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, string interventionId, ILogger log)
         {
+            if (!_auth.IsAuthorized(req, "GetOneInterventionGeoHash"))
+                return new UnauthorizedResult();
             var geoHash = GeoHasher.GetGeoHash(latitude, longitude);
             var finalFilter = InterventionFilterBuilder.GetInterventionGeoHashFilter(geoHash, interventionId);
 
