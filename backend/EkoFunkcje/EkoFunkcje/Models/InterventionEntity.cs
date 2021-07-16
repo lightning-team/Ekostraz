@@ -11,7 +11,6 @@ namespace EkoFunkcje.Models
     {
         public InterventionEntity()
         {
-            this.RowKey = Guid.NewGuid().ToString();
             this._commentsCollection = new List<CommentDto>();
         }
 
@@ -48,7 +47,10 @@ namespace EkoFunkcje.Models
             set
             {
                 _commentsJson = value;
-                _commentsCollection = JsonConvert.DeserializeObject<ICollection<CommentDto>>(value);
+                _commentsCollection = 
+                    value == null ? 
+                        new List<CommentDto>() : 
+                        JsonConvert.DeserializeObject<ICollection<CommentDto>>(value);
             }
         }
 

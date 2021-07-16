@@ -1,15 +1,22 @@
-﻿using AutoMapper;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using AutoMapper;
 using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -34,11 +41,26 @@ namespace EkoFunkcje.Features.Interventions
         }
 
         [FunctionName("GetAllInterventions")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "GetAllInterventions" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions")]
             [RequestBodyType(typeof(ListInterventionsFilterRequest), "ListInterventionsFilterRequest")] HttpRequest req,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable cloudTable,
             ILogger log)
+        {   
+            ListInterventionsFilterRequest requestParams = new ListInterventionsFilterRequest(request.Query);
+            string filter = InterventionFilterBuilder.GetInterventionListViewFilter(requestParams);
+            List<InterventionListItemResponse> interventions = await GetInterventions(interventionsTable, filter);
+            IQueryable<InterventionListItemResponse> pagedInterventions = SortAndPaginateInterventions(interventions, requestParams);
+            return new JsonResult(new
+            {
+                totalCount = interventions.Count(),
+                results = pagedInterventions
+            });
+        }
+
+        private async Task<List<InterventionListItemResponse>> GetInterventions(CloudTable interventionsTable, string finalFilter)
         {
             if (!_auth.IsAuthorized(req, "GetAllInterventions"))
                 return new UnauthorizedResult();
@@ -47,23 +69,28 @@ namespace EkoFunkcje.Features.Interventions
             string finalFilter = InterventionFilterBuilder.GetInterventionListViewFilter(filter);
 
             TableContinuationToken token = null;
-            var entities = new List<InterventionListItemResponse>();
+            var interventions = new List<InterventionListItemResponse>();
             do
             {
-                var queryResult = await cloudTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
+                var queryResult = await interventionsTable.ExecuteQuerySegmentedAsync(new TableQuery<InterventionEntity>().Where(
                     finalFilter), token);
-                entities.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
+                interventions.AddRange(queryResult.Results.Select(x => _mapper.Map<InterventionListItemResponse>(x)));
                 token = queryResult.ContinuationToken;
             } while (token != null);
+            return interventions;
+        }
 
+        private static IQueryable<InterventionListItemResponse> SortAndPaginateInterventions(
+            List<InterventionListItemResponse> interventions, ListInterventionsFilterRequest requestParams
+        )
+        {
+            var sortedEntities = requestParams.SortDirection == SortDirection.Descending ?
+                interventions.AsQueryable().OrderByDescending(requestParams.SortBy ?? "CreationDate")
+                : interventions.AsQueryable().OrderBy(requestParams.SortBy ?? "CreationDate");
 
-            var sortedEntities = filter.SortDirection == (int)SortDirection.Descending ?
-                entities.AsQueryable().OrderByDescending(filter.SortBy ?? "CreationDate")
-                : entities.AsQueryable().OrderBy(filter.SortBy ?? "CreationDate");
-
-            var pagedEntities = sortedEntities.Skip((filter.Page - 1) * filter.PageSize).Take(filter.PageSize);
-
-            return new JsonResult(pagedEntities);
+            var pagedEntities = sortedEntities.Skip((requestParams.Page - 1) * requestParams.PageSize).Take(requestParams.PageSize);
+            
+            return pagedEntities;
         }
     }
 }

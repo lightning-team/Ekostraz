@@ -6,15 +6,13 @@
     "start": "ng serve --aot",
     "start:host": "ng serve --aot --host",
     "build": "ng build --aot",
+    "build:prod": "ng build --prod",
     "test": "ng test --browsers=ChromeHeadlessCustom",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadlessCustom",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "prettier": "prettier \"**/*.ts\" --write",
-    "e2e": "ng e2e",
-    "build-optimized": "ng build --prod --aot --build-optimizer",
-    "build-with-stats": "ng build --prod --aot --build-optimizer --stats-json",
-    "analyze": "func() { webpack-bundle-analyzer dist/ekostraz/${1}; }; func"
+    "e2e": "ng e2e"
   },
   "husky": {
     "hooks": {
@@ -37,6 +35,7 @@
     "@angular/router": "^8.2.14",
     "@sentry/browser": "^5.6.3",
     "js-marker-clusterer": "^1.0.0",
+    "ng-recaptcha": "^6.1.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"

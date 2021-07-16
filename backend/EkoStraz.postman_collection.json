@@ -1,552 +1,493 @@
 {
-	"info": {
-		"_postman_id": "82e960cd-20c3-42c0-92b7-3161aaf7b317",
-		"name": "EkoStraz",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Interventions",
-			"item": [
-				{
-					"name": "Add Intervention",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-functions-key",
-								"value": "insertKeyHere",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n        \"FullName\": \"Lukasz Przerada\",\r\n        \"Description\": \"Testowa interwencja\",\r\n        \"PhoneNumber\": \"+48796875555\",\r\n        \"Email\": \"testtest@gmail.com\",\r\n        \"City\": \"Wroclaw\",\r\n        \"Street\": \"Legnicka\",\r\n        \"StreetNumber\": \"48\"\r\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit Intervention",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "x-functions-key",
-								"type": "text",
-								"value": "insertKeyHere"
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "\t{\r\n        \"FullName\": \"Lukasz Przerada3\",\r\n        \"Description\": \"Testowa interwencja\",\r\n        \"PhoneNumber\": \"+48796875555\",\r\n        \"Email\": \"testtest@gmail.com\",\r\n        \"City\": \"Wroclaw\",\r\n        \"Street\": \"Gornicza\",\r\n        \"StreetNumber\": \"48\"\r\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions",
-								"9a185a9c-4236-4c23-adf9-a23d31b2ee19"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get all interventions",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-functions-key",
-								"value": "insertKeyHere",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n        \"Page\": \"1\",\r\n        \"PageSize\": \"20\",\r\n        \"SortBy\": \"CreationDate\",\r\n        \"SortDirection\": 0,\r\n        \"Status\": -1,\r\n        \"City\": \"\",\r\n        \"Street\": \"\",\r\n        \"DateFrom\": null,\r\n        \"DateTo\": null\r\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get interventions in area",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-functions-key",
-								"type": "text",
-								"value": "insertKeyHere"
-							},
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"Statuses\": [0,1,2],\r\n    \"GeoLatDiff\": 0,\r\n    \"GeoLngDiff\": 0\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/51,1130111/16,999149",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions",
-								"51,1130111",
-								"16,999149"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get one intervention",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-functions-key",
-								"value": "insertKeyHere",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions",
-								"9a185a9c-4236-4c23-adf9-a23d31b2ee19"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "Comments",
-			"item": [
-				{
-					"name": "Add Comment",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "x-functions-key",
-								"value": "insertKeyHere",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"Comment\": \"This is test comment.\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/comments",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions",
-								"9a185a9c-4236-4c23-adf9-a23d31b2ee19",
-								"comments"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit Comment",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "x-functions-key",
-								"value": "insertKeyHere",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"NewValue\": \"This is edited test comment.\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/comments/41734214-6616-43c4-b8bb-3d002f1bfa54",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions",
-								"9a185a9c-4236-4c23-adf9-a23d31b2ee19",
-								"comments",
-								"41734214-6616-43c4-b8bb-3d002f1bfa54"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Comment",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "x-functions-key",
-								"type": "text",
-								"value": "insertKeyHere"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/comments/dbb94193-05ba-4a1b-add2-10c6e0adec58",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions",
-								"9a185a9c-4236-4c23-adf9-a23d31b2ee19",
-								"comments",
-								"dbb94193-05ba-4a1b-add2-10c6e0adec58"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "Attachments",
-			"item": [
-				{
-					"name": "Add Attachment",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "x-functions-key",
-								"type": "text",
-								"value": "insertKeyHere"
-							}
-						],
-						"body": {
-							"mode": "file",
-							"file": {
-								"src": "/C:/Users/lukasz.przerada/Pictures/indeks.jpg"
-							},
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/attachments",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions",
-								"9a185a9c-4236-4c23-adf9-a23d31b2ee19",
-								"attachments"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Attachments List",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-functions-key",
-								"type": "text",
-								"value": "insertKeyHere"
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/attachments",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions",
-								"9a185a9c-4236-4c23-adf9-a23d31b2ee19",
-								"attachments"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Attachment",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-functions-key",
-								"type": "text",
-								"value": "insertKeyHere"
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/attachments/901fc454-ad24-427e-bda9-70776933fe7f",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions",
-								"9a185a9c-4236-4c23-adf9-a23d31b2ee19",
-								"attachments",
-								"901fc454-ad24-427e-bda9-70776933fe7f"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Attachment",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "x-functions-key",
-								"type": "text",
-								"value": "insertKeyHere"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/attachments/1a77503c-13d6-40a9-93a2-b734397227f9",
-							"protocol": "https",
-							"host": [
-								"ekostrazstagging",
-								"azurewebsites",
-								"net"
-							],
-							"path": [
-								"api",
-								"interventions",
-								"9a185a9c-4236-4c23-adf9-a23d31b2ee19",
-								"attachments",
-								"1a77503c-13d6-40a9-93a2-b734397227f9"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		}
-	],
-	"protocolProfileBehavior": {}
+  "info": {
+    "_postman_id": "82e960cd-20c3-42c0-92b7-3161aaf7b317",
+    "name": "EkoStraz",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Interventions",
+      "item": [
+        {
+          "name": "Add Intervention",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-functions-key",
+                "value": "insertKeyHere",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"FullName\": \"Lukasz Przerada\",\r\n        \"Description\": \"Testowa interwencja\",\r\n        \"PhoneNumber\": \"+48796875555\",\r\n        \"Email\": \"testtest@gmail.com\",\r\n        \"City\": \"Wroclaw\",\r\n        \"Street\": \"Legnicka\",\r\n        \"StreetNumber\": \"48\"\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": ["api", "interventions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit Intervention",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-functions-key",
+                "type": "text",
+                "value": "insertKeyHere"
+              },
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\t{\r\n        \"FullName\": \"Lukasz Przerada3\",\r\n        \"Description\": \"Testowa interwencja\",\r\n        \"PhoneNumber\": \"+48796875555\",\r\n        \"Email\": \"testtest@gmail.com\",\r\n        \"City\": \"Wroclaw\",\r\n        \"Street\": \"Gornicza\",\r\n        \"StreetNumber\": \"48\"\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": [
+                "api",
+                "interventions",
+                "9a185a9c-4236-4c23-adf9-a23d31b2ee19"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all interventions",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-functions-key",
+                "value": "insertKeyHere",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"Page\": \"1\",\r\n        \"PageSize\": \"20\",\r\n        \"SortBy\": \"CreationDate\",\r\n        \"SortDirection\": 0,\r\n        \"Statuses\": [],\r\n        \"City\": \"\",\r\n        \"Street\": \"\",\r\n        \"DateFrom\": null,\r\n        \"DateTo\": null\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": ["api", "interventions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get interventions in area",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-functions-key",
+                "type": "text",
+                "value": "insertKeyHere"
+              },
+              {
+                "key": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Statuses\": [0,1,2],\r\n    \"GeoLatDiff\": 0,\r\n    \"GeoLngDiff\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/51,1130111/16,999149",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": ["api", "interventions", "51,1130111", "16,999149"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get one intervention",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-functions-key",
+                "value": "insertKeyHere",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": [
+                "api",
+                "interventions",
+                "9a185a9c-4236-4c23-adf9-a23d31b2ee19"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Add Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "x-functions-key",
+                "value": "insertKeyHere",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Comment\": \"This is test comment.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/comments",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": [
+                "api",
+                "interventions",
+                "9a185a9c-4236-4c23-adf9-a23d31b2ee19",
+                "comments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit Comment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "x-functions-key",
+                "value": "insertKeyHere",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"NewValue\": \"This is edited test comment.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/comments/41734214-6616-43c4-b8bb-3d002f1bfa54",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": [
+                "api",
+                "interventions",
+                "9a185a9c-4236-4c23-adf9-a23d31b2ee19",
+                "comments",
+                "41734214-6616-43c4-b8bb-3d002f1bfa54"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              },
+              {
+                "key": "x-functions-key",
+                "type": "text",
+                "value": "insertKeyHere"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/comments/dbb94193-05ba-4a1b-add2-10c6e0adec58",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": [
+                "api",
+                "interventions",
+                "9a185a9c-4236-4c23-adf9-a23d31b2ee19",
+                "comments",
+                "dbb94193-05ba-4a1b-add2-10c6e0adec58"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "Attachments",
+      "item": [
+        {
+          "name": "Add Attachment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              },
+              {
+                "key": "x-functions-key",
+                "type": "text",
+                "value": "insertKeyHere"
+              }
+            ],
+            "body": {
+              "mode": "file",
+              "file": {
+                "src": "/C:/Users/lukasz.przerada/Pictures/indeks.jpg"
+              },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/attachments",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": [
+                "api",
+                "interventions",
+                "9a185a9c-4236-4c23-adf9-a23d31b2ee19",
+                "attachments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Attachments List",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-functions-key",
+                "type": "text",
+                "value": "insertKeyHere"
+              },
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/attachments",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": [
+                "api",
+                "interventions",
+                "9a185a9c-4236-4c23-adf9-a23d31b2ee19",
+                "attachments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Attachment",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-functions-key",
+                "type": "text",
+                "value": "insertKeyHere"
+              },
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/attachments/901fc454-ad24-427e-bda9-70776933fe7f",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": [
+                "api",
+                "interventions",
+                "9a185a9c-4236-4c23-adf9-a23d31b2ee19",
+                "attachments",
+                "901fc454-ad24-427e-bda9-70776933fe7f"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Attachment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              },
+              {
+                "key": "x-functions-key",
+                "type": "text",
+                "value": "insertKeyHere"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ekostrazstagging.azurewebsites.net/api/interventions/9a185a9c-4236-4c23-adf9-a23d31b2ee19/attachments/1a77503c-13d6-40a9-93a2-b734397227f9",
+              "protocol": "https",
+              "host": ["ekostrazstagging", "azurewebsites", "net"],
+              "path": [
+                "api",
+                "interventions",
+                "9a185a9c-4236-4c23-adf9-a23d31b2ee19",
+                "attachments",
+                "1a77503c-13d6-40a9-93a2-b734397227f9"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    }
+  ],
+  "protocolProfileBehavior": {}
 }

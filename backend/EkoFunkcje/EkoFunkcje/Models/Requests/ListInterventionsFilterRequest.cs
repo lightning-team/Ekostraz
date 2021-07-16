@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Microsoft.AspNetCore.Http;
+using EkoFunkcje.Utils.Query;
 
 namespace EkoFunkcje.Models.Requests
 {
@@ -8,21 +9,22 @@ namespace EkoFunkcje.Models.Requests
     {
         public int Page { get; set; }
         public int PageSize { get; set; }
-        public string SortBy { get; set; }
-        public int? SortDirection { get; set; }
-        public int Status { get; set; }
+        public string SortBy { get; set; }  
+        public SortDirection SortDirection { get; set; }
+        public List<InterventionStatus> Statuses { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
 
-        public ListInterventionsFilterRequest()
+        public ListInterventionsFilterRequest(IQueryCollection query)
         {
-            Page = 1;
-            PageSize = 20;
-            SortBy = "CreationDate";
-            SortDirection = (int)Models.SortDirection.Descending;
-            Status = -1;
+            Page = query.Get<int>("page", 1);
+            PageSize = query.Get<int>("pageSize", 20);
+            SortBy = query.Get<string>("sortBy", "CreationDate");
+            SortDirection = query.Get<SortDirection>("sortDirection", SortDirection.Descending);
+            Statuses = query.All<InterventionStatus>("statuses");
+            // TODO: Add date params parsing below
             DateTo = null;
             DateFrom = null;
         }

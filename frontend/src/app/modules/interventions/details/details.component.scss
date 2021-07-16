@@ -1,10 +1,10 @@
 @import 'breakpoints';
+@import 'variables';
+@import 'mixins';
 
 :host {
-  max-width: 800px;
+  @include centerPage;
   display: flex;
-  margin-left: auto;
-  margin-right: auto;
   flex-direction: column;
 }
 
@@ -111,13 +111,7 @@ eko-file-list {
   }
 }
 
-.mat-expansion-panel-header-title {
-  font-size: 1.1em;
-}
-
-.mat-expansion-panel-header-description .mat-icon {
-  margin-left: auto;
-}
+@include expansionPanelStyles;
 
 mat-panel-title .mat-badge-content {
   top: 0;

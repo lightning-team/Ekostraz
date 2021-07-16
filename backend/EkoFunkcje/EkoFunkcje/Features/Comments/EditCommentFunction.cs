@@ -1,5 +1,4 @@
-﻿using AzureFunctions.Extensions.Swashbuckle.Attribute;
-using EkoFunkcje.Auth;
+﻿using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Utils;
@@ -7,7 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using System;
@@ -25,7 +27,9 @@ namespace EkoFunkcje.Features.Comments
             _auth = auth;
         }
         [FunctionName("EditCommentGeoHash")]
-        public async Task<IActionResult> RunGeoHash(
+        [OpenApiOperation(operationId: "Run", tags: new[] { "EditCommentGeoHash" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
+        public static async Task<IActionResult> RunGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "interventions/{latitude}/{longitude}/{interventionId}/comments/{commentId}")]
             [RequestBodyType(typeof(EditCommentRequest), "EditCommentRequest")]HttpRequest req,
         [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
@@ -60,7 +64,9 @@ namespace EkoFunkcje.Features.Comments
         }
 
         [FunctionName("EditComment")]
-        public async Task<IActionResult> Run(
+        [OpenApiOperation(operationId: "Run", tags: new[] { "EditComment" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
+        public static async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "interventions/{interventionId}/comments/{commentId}")]
           [RequestBodyType(typeof(EditCommentRequest), "EditCommentRequest")]HttpRequest req,
           [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,

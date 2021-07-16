@@ -1,44 +1,24 @@
 import { Component, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-
-import { Intervention, ListIntervention } from '@shared/domain/intervention.model';
-import { InterventionsService } from '../interventions.service';
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
+import { InterventionsDatasource } from './interventions.datasource';
+import { InterventionsFilter } from '@shared/domain/intervention.model';
 
 @Component({
-  selector: 'app-list',
+  selector: 'eko-interventions-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
+  providers: [InterventionsDatasource],
 })
 export class ListComponent {
   interventionsListGtmContext: string;
-  interventions: ListIntervention[];
-  loading$: Observable<ListIntervention[]> = this.interventionsService.getInterventions().pipe(
-    map(toTableData),
-    tap(data => {
-      this.interventions = data;
-    }),
-  );
+  showFilters = false;
 
-  constructor(
-    private router: Router,
-    private interventionsService: InterventionsService,
-    @Inject(GTM_CONTEXTS) gtmContexts,
-  ) {
+  constructor(@Inject(GTM_CONTEXTS) gtmContexts, public dataSource: InterventionsDatasource) {
     this.interventionsListGtmContext = gtmContexts.interventionList;
   }
 
-  showMap() {
-    this.router.navigate(['interwencje', 'mapa']);
+  filtersChanged(filters: InterventionsFilter) {
+    const prevFilters = this.dataSource.filtersSubject.getValue();
+    this.dataSource.filtersSubject.next({ ...prevFilters, ...filters });
   }
-}
-
-function toTableData(interventions: Intervention[]): ListIntervention[] {
-  return interventions.map((intervention, index) => ({
-    ...intervention,
-    position: index + 1,
-  }));
 }

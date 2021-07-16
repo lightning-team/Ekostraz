@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using EkoFunkcje.Models.Requests;
+using EkoFunkcje.Interventions.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace EkoFunkcje.Utils
@@ -47,7 +49,15 @@ namespace EkoFunkcje.Utils
 
         public static string GetInterventionListViewFilter(ListInterventionsFilterRequest filter)
         {
-            List<string> filters = new List<string>();
+            string excludeCountEntityFilter = TableQuery.GenerateFilterCondition(
+                InterventionFieldNames.PartitionKey, 
+                QueryComparisons.NotEqual,
+                InterventionCountEntity.CountKey
+            );
+            
+            List<string> filters = new List<string>() {
+                excludeCountEntityFilter
+            };
             if (!string.IsNullOrWhiteSpace(filter.City))
             {
                 string cityFilter = TableQuery.GenerateFilterCondition(
@@ -63,6 +73,22 @@ namespace EkoFunkcje.Utils
                     QueryComparisons.Equal,
                     filter.Street);
                 filters.Add(streetFilter);
+            } 
+            if (filter.Statuses.Any())
+            {
+                List<string> statusFilters = new List<string>();
+
+                foreach (int status in filter.Statuses) {
+                    statusFilters.Add(
+                        TableQuery.GenerateFilterConditionForInt(
+                            InterventionFieldNames.Status, 
+                            QueryComparisons.Equal,
+                            status
+                        )
+                    );
+                }
+                string statusesFilter = CombineFilters(statusFilters, TableOperators.Or); 
+                filters.Add(statusesFilter);
             }
             if (filter.DateFrom != null)
             {
@@ -80,14 +106,6 @@ namespace EkoFunkcje.Utils
                     new DateTimeOffset(filter.DateTo.Value));
                 filters.Add(dateToFilter);
 
-            }
-            if (filter.Status != -1)
-            {
-                string statusFilter = TableQuery.GenerateFilterConditionForInt(
-                    InterventionFieldNames.Status, 
-                    QueryComparisons.Equal,
-                    filter.Status);
-                filters.Add(statusFilter);
             }
 
             return CombineFilters(filters);
@@ -130,7 +148,7 @@ namespace EkoFunkcje.Utils
             return Convert.ToDouble(value, CultureInfo.InvariantCulture);
         }
 
-        private static string CombineFilters(string filter, string combinedFilter)
+        private static string CombineFilters(string filter, string combinedFilter, string tableOperator = TableOperators.And)
         {
             if (string.IsNullOrWhiteSpace(combinedFilter)) {
                 return filter;
@@ -140,15 +158,15 @@ namespace EkoFunkcje.Utils
             }
             return TableQuery.CombineFilters(
                 filter,
-                TableOperators.And,
+                tableOperator,
                 combinedFilter
             );
         }
 
-        private static string CombineFilters(List<string> filters) {
+        private static string CombineFilters(List<string> filters, string tableOperator = TableOperators.And) {
             var finalFilter = "";
             foreach(string filter in filters) {
-                finalFilter = CombineFilters(finalFilter, filter);
+                finalFilter = CombineFilters(finalFilter, filter, tableOperator);
             }
             return finalFilter;
         }

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import {
   MatButtonModule,
   MatDialogModule,
+  MatExpansionModule,
   MatIconModule,
   MatProgressSpinnerModule,
   MatSnackBarModule,
@@ -21,6 +22,7 @@ import { InterventionStatusPipe } from './pipes/intervention-status.pipe';
 const MATERIAL_IMPORTS = [
   MatButtonModule,
   MatDialogModule,
+  MatExpansionModule,
   MatIconModule,
   MatProgressSpinnerModule,
   MatSnackBarModule,

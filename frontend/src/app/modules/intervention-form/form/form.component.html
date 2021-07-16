@@ -81,6 +81,13 @@
         <eko-file-uploader [imagesOnly]="!this.inPrivateMode"></eko-file-uploader>
       </section>
 
+      <section class="captcha" *ngIf="!inPrivateMode">
+        <re-captcha formControlName="captcha" required [siteKey]="captchaSiteKey"></re-captcha>
+        <mat-error>
+          <span *ngIf="hasRequiredError('captcha')">Proszę wypełnić zapezpieczenie przed botami</span>
+        </mat-error>
+      </section>
+
       <button
         type="submit"
         color="primary"
@@ -94,5 +101,9 @@
         </ng-container>
       </button>
     </form>
+
+    <section class="errors" *ngIf="errors && errors.length">
+      <p *ngFor="let error of errors">{{ error }}</p>
+    </section>
   </mat-card-content>
 </mat-card>

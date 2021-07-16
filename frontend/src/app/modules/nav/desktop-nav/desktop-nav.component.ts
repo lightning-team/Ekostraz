@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { MenuItems, menuItems } from '../menu-items-common';
+import { EkoRoutePaths } from '@app/eko-route-paths';
 
 @Component({
-  selector: 'app-desktop-nav',
+  selector: 'eko-desktop-nav',
   templateUrl: './desktop-nav.component.html',
   styleUrls: ['./desktop-nav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -9,6 +11,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 export class DesktopNavComponent {
   @Input() isLoggedIn = false;
   @Input() gtmContext;
-  @Output() logIn = new EventEmitter();
   @Output() logOut = new EventEmitter();
+  menuItems: MenuItems = menuItems;
+  ekoRoutePaths = EkoRoutePaths;
 }

@@ -7,13 +7,18 @@
 .nav-buttons-container {
   flex-grow: 1;
   height: 100%;
+  list-style: none;
 }
 
 $font-size: 15px;
 .auth-buttons-container {
+  display: flex;
+  align-items: center;
+
   .greeting {
     font-size: $font-size;
     margin-right: 5px;
+    height: 30px;
   }
 
   .logout.mat-button {
@@ -30,7 +35,12 @@ $font-size: 15px;
 .mat-button {
   height: 100%;
   font-size: $font-size;
+
   .material-icons {
     margin-right: 5px;
+  }
+
+  &.active::ng-deep .mat-button-focus-overlay {
+    opacity: 0.1;
   }
 }

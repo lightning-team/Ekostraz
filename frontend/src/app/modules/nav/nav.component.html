@@ -1,26 +1,23 @@
 <header>
   <mat-toolbar class="app-navbar" color="primary">
-    <a mat-button class="logo-text" title="Strona główna" routerLink="/">Ekostraż</a>
-    <app-desktop-nav
+    <a mat-button class="logo-text" routerLink="/">Ekostraż</a>
+
+    <eko-desktop-nav
       *ngIf="(isMobileView$ | async) === false"
       [isLoggedIn]="isLoggedIn$ | async"
       [gtmContext]="desktopNavGtmContext"
-      (logIn)="logIn()"
       (logOut)="logOut()"
     >
-    </app-desktop-nav>
-    <ng-container *ngTemplateOutlet="hamburgerButton"></ng-container>
+    </eko-desktop-nav>
+
+    <button
+      *ngIf="isMobileView$ | async"
+      class="hamburger-menu"
+      mat-icon-button
+      [withGtmContext]="hamburgerMenuButtonGtmContext"
+      (click)="sideNavToggle.emit()"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
   </mat-toolbar>
 </header>
-
-<ng-template #hamburgerButton>
-  <button
-    *ngIf="isMobileView$ | async"
-    class="hamburger-menu"
-    mat-icon-button
-    [withGtmContext]="hamburgerMenuButtonGtmContext"
-    (click)="sideNavToggle.emit()"
-  >
-    <mat-icon>menu</mat-icon>
-  </button>
-</ng-template>

@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
+import { environment } from '@environment';
 
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { Intervention, InterventionFormData } from '@shared/domain/intervention.model';
@@ -24,7 +25,7 @@ type InterventionFormGroupConfig = { [key in keyof InterventionFormData]: any };
  * It does not implement any API-related logic - only exposes form data through formSubmit event.
  */
 @Component({
-  selector: 'app-intervention-form',
+  selector: 'eko-intervention-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,18 +36,21 @@ export class InterventionFormComponent implements OnInit {
   @Input() intervention: Intervention = null;
   @Input() inPrivateMode = false;
   @Input() submitInProgress = false;
+  @Input() errors: string[];
 
   @Output() formSubmit = new EventEmitter<InterventionFormSubmitData>();
 
   @ViewChild(FileUploaderComponent, { static: true }) fileUploader;
 
   statusOptions = InterventionStatusOptions;
-  form = this.buildForm();
+  form: FormGroup;
   formGtmContext: string;
+  captchaSiteKey: string = environment.captchaSiteKey;
 
   constructor(private formBuilder: FormBuilder, @Inject(GTM_CONTEXTS) private gtmContexts) {}
 
   ngOnInit() {
+    this.form = this.buildForm();
     this.initGtmContext();
     this.maybePatchFormValue();
   }
@@ -86,6 +90,12 @@ export class InterventionFormComponent implements OnInit {
   }
 
   private buildForm(): FormGroup {
+    const additionalPublicInputs = !this.inPrivateMode
+      ? {
+          captcha: ['', Validators.required],
+        }
+      : {};
+
     const formGroupConfig: InterventionFormGroupConfig = {
       id: [],
       creationDate: [{ value: '', disabled: true }],
@@ -97,6 +107,7 @@ export class InterventionFormComponent implements OnInit {
       street: ['', Validators.required],
       streetNumber: ['', Validators.required],
       city: ['', Validators.required],
+      ...additionalPublicInputs,
     };
 
     return this.formBuilder.group(formGroupConfig);

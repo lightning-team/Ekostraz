@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 import { Comment } from '@shared/domain/intervention.model';
 import { InterventionsService } from '../../interventions.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ComponentWithSubscriptions } from '@shared/components/base';
+import { Subscribable } from '@shared/components/base';
 
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.scss'],
 })
-export class CommentsComponent extends ComponentWithSubscriptions {
+export class CommentsComponent extends Subscribable {
   @Input() comments: Comment[];
   @Input() interventionId: string;
 

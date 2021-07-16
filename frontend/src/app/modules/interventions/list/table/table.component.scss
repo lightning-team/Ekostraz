@@ -38,24 +38,31 @@
   }
 
   .mat-table .mat-header-cell {
-    border: 10px solid;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    position: absolute;
-    width: 1px;
+    &:not([mat-sort-header]) {
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
   }
-  .mat-header-row {
-    height: 0;
-    min-height: 0;
-  }
-  .mat-table .mat-row {
-    border-bottom: 5px solid #ddd;
+
+  .mat-table:before {
     display: block;
-    padding: 0 12px;
-    &:after {
-      content: unset;
+    content: 'Sortowanie';
+    padding: 10px;
+  }
+
+  .mat-table {
+    .mat-row,
+    .mat-header-row {
+      border-bottom: 5px solid #ddd;
+      display: block;
+      padding: 0 12px;
+      &:after {
+        content: unset;
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,17 +7,20 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Dto;
 using EkoFunkcje.Models.Respones;
 using EkoFunkcje.Utils;
+using EkoFunkcje.Utils.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using NGeoHash;
@@ -43,6 +46,8 @@ namespace EkoFunkcje.Features.Interventions
         }
 
         [FunctionName("EditInterventionGeoHash")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "EditInterventionGeoHash" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> RunWithGeoHash(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "interventions/{latitude}/{longitude}/{interventionId}")]
             [RequestBodyType(typeof(InterventionDto), "InterventionDto")]HttpRequest req,
@@ -71,11 +76,16 @@ namespace EkoFunkcje.Features.Interventions
                 Address convertedGeoAddress = new Address();
                 try
                 {
-                    convertedGeoAddress = await _addressConverter.ConvertToGeoAddress(editedIntervention.Address);
+                    convertedGeoAddress = await _addressConverter.ConvertToGeoAddress(editedIntervention.City, editedIntervention.Street, editedIntervention.StreetNumber);
+                }
+                catch (BaseException e)
+                {
+                    log.Log(e.LogLevel, e, e.Message);
+                    return new BadRequestObjectResult(e.Message);
                 }
                 catch (Exception e)
                 {
-                    log.LogError(e, "error");
+                    log.LogError(e, "Error podczas konwertowania adresu");
                     return new StatusCodeResult(StatusCodes.Status500InternalServerError);
                 }
 
@@ -93,7 +103,8 @@ namespace EkoFunkcje.Features.Interventions
                     StreetNumber = editedIntervention.StreetNumber,
                     GeoLat = convertedGeoAddress.Latitude,
                     GeoLng = convertedGeoAddress.Lognitude,
-                    PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision)
+                    PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision),
+                    CommentsJson = interventionToEdit.CommentsJson
                 };
 
                 TableOperation deleteOldIntervention = TableOperation.Delete(interventionToEdit);
@@ -120,6 +131,8 @@ namespace EkoFunkcje.Features.Interventions
         }
 
         [FunctionName("EditIntervention")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "EditIntervention" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> Run(
           [HttpTrigger(AuthorizationLevel.Function, "put", Route = "interventions/{interventionId}")]
           [RequestBodyType(typeof(InterventionDto), "InterventionDto")]HttpRequest req,
@@ -145,15 +158,20 @@ namespace EkoFunkcje.Features.Interventions
               Address convertedGeoAddress = new Address();
               try
               {
-                convertedGeoAddress = await _addressConverter.ConvertToGeoAddress(editedIntervention.Address);
+                convertedGeoAddress = await _addressConverter.ConvertToGeoAddress(editedIntervention.City, editedIntervention.Street, editedIntervention.StreetNumber);
+              }
+              catch (BaseException e)
+              {
+                  log.Log(e.LogLevel, e, e.Message);
+                  return new BadRequestObjectResult(e.Message);
               }
               catch (Exception e)
               {
-                log.LogError(e, "error");
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-              }
+                  log.LogError(e, "Error podczas konwertowania adresu");
+                  return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                }
 
-              InterventionEntity adddedInterventionEntity = new InterventionEntity()
+                InterventionEntity adddedInterventionEntity = new InterventionEntity()
               {
                   RowKey = interventionToEdit.RowKey,
                   Email = editedIntervention.Email,
@@ -168,7 +186,8 @@ namespace EkoFunkcje.Features.Interventions
                   StreetNumber = editedIntervention.StreetNumber,
                   GeoLat = convertedGeoAddress.Latitude,
                   GeoLng = convertedGeoAddress.Lognitude,
-                  PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision)
+                  PartitionKey = GeoHash.Encode(convertedGeoAddress.Latitude, convertedGeoAddress.Lognitude, Config.GeoHashPrecision),
+                  CommentsJson = interventionToEdit.CommentsJson
               };
 
               TableOperation deleteOldIntervention = TableOperation.Delete(interventionToEdit);

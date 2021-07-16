@@ -1,16 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
+import { InterventionsRoutePaths } from './route-paths';
+
 import { ListComponent } from './list/list.component';
 import { DetailsContainerComponent } from './details/details.container.component';
 import { MapComponent } from './map/map.component';
 import { NewFormComponent } from './new-form/new-form.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
-
-export enum InterventionsRoutePaths {
-  Report = 'zglos',
-  Map = 'mapa',
-  Edit = 'edytuj',
-}
 
 const routes: Routes = [
   {

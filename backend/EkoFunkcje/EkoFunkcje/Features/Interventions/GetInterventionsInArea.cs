@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
@@ -15,7 +14,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 
@@ -37,19 +39,27 @@ namespace EkoFunkcje.Features.Interventions
         }
 
         [FunctionName("GetInterventionsInArea")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "GetInterventionsInArea" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "interventions/{latitude}/{longitude}")]
-            [RequestBodyType(typeof(AreaInterventionsFilterRequest), "AreaInterventionsFilterRequest")]HttpRequest request,
+            HttpRequest request,
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             string latitude, string longitude, ILogger log)
         {
+            // FIXME: The function might not work properly for multiple statuses, please recheck and adjust. See "GetAllInterventionsFunction" for a similar case.
             if (!_auth.IsAuthorized(request, "GetInterventionsInArea"))
                 return new UnauthorizedResult();
             var body = await request.ReadAsStringAsync();
             var areaFilter = JsonConvert.DeserializeObject<AreaInterventionsFilterRequest>(body);
             string filter = GetFilter(areaFilter, latitude, longitude);
-            var interventions = await GetFilteredInterventions(areaFilter.Statuses, interventionsTable, filter);
-            return new JsonResult(interventions);
+            var interventions = (await GetFilteredInterventions(areaFilter.Statuses, interventionsTable, filter)).ToList();
+            var result = new
+            {
+                totalCount = interventions.Count(),
+                results = interventions
+            };
+            return new JsonResult(result);
         }
 
         private async Task<IEnumerable<InterventionListItemResponse>> GetFilteredInterventions(
@@ -65,7 +75,7 @@ namespace EkoFunkcje.Features.Interventions
                 token = queryResult.ContinuationToken;
             } while (token != null);
 
-            return  interventions.Where(intervention => requestStatuses.Contains(intervention.Status));
+            return interventions.Where(intervention => requestStatuses.Contains(intervention.Status));
         }
 
         private static string GetFilter(AreaInterventionsFilterRequest areaFilter, string latitude, string longitude)

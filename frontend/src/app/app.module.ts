@@ -13,15 +13,16 @@ import { PublicFormModule } from './modules/public-form/public-form.module';
 import { SharedModule } from '@shared/shared.module';
 
 import { AppComponent } from './app-component/app.component';
-import { HomePageComponent } from './home-page/home-page.component';
+import { HomePageComponent } from './pages/home/home-page.component';
 
 import { GTM_CONTEXTS } from '@shared/google-tag-manager/gtm-contexts';
 import { errorHandlerFactory, localeProviderFactory } from './misc/providerFactories';
 import { EKOSTRAZ_GTM_CONTEXTS } from './misc/ekostraz-gtm-contexts';
 import { httpInterceptors } from '@shared/interceptors';
+import { AboutPageComponent } from './pages/about/about-page.component';
 
 @NgModule({
-  declarations: [AppComponent, HomePageComponent],
+  declarations: [AppComponent, HomePageComponent, AboutPageComponent],
   imports: [
     AuthModule,
     AppRoutingModule,

@@ -1,7 +1,18 @@
 @import 'theme';
 
 $primary-color: map-get($my-app-primary, 'default');
-.app-loader-container {
+
+:host.cover {
+  display: block;
+  position: relative;
+
+  .eko-loader-container {
+    position: absolute;
+    z-index: 50;
+  }
+}
+
+.eko-loader-container {
   display: flex;
   flex-direction: column;
   position: fixed;
