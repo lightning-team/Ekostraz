@@ -39,19 +39,6 @@ namespace EkoFunkcje.Features.Interventions
             [Table(Config.InterventionsTableName, Connection = Config.StorageConnectionName)] CloudTable interventionsTable,
             ILogger log)
         {
-            // Validate Captcha
-            if (intervention.Captcha != null) {
-                try
-                {
-                    await _captchaService.ValidateCaptcha(intervention.Captcha);
-                }
-                catch (BaseException e)
-                {
-                    log.Log(e.LogLevel, e, e.Message);
-                    return new BadRequestObjectResult(e.Message);
-                }
-            }
-
             // Validate InterventionDTO
             var results = new List<ValidationResult>();
             if (!Validator.TryValidateObject(intervention, new ValidationContext(intervention, null, null), results))
@@ -65,11 +52,14 @@ namespace EkoFunkcje.Features.Interventions
                 return new BadRequestObjectResult(json);
             }
 
-            // Convert GoogleMaps Address
+            // Convert GoogleMaps Address and validate captcha if exists
             Address convertedGeoAddress;
             try
             {
                 convertedGeoAddress = await _addressConverter.ConvertToGeoAddress(intervention.City, intervention.Street, intervention.StreetNumber);
+                if (intervention.Captcha != null) {
+                    await _captchaService.ValidateCaptcha(intervention.Captcha);
+                }
             }
             catch (BaseException e)
             {
