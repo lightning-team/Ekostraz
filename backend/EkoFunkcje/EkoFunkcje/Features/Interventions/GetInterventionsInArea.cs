@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using EkoFunkcje.Auth;
 using EkoFunkcje.Models;
 using EkoFunkcje.Models.Requests;
 using EkoFunkcje.Models.Respones;
@@ -19,6 +14,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EkoFunkcje.Features.Interventions
 {
@@ -26,13 +25,15 @@ namespace EkoFunkcje.Features.Interventions
     public class GetInterventionsInArea
     {
         private readonly IMapper _mapper;
+        private readonly IAuth _auth;
 
-        public GetInterventionsInArea()
+        public GetInterventionsInArea(IAuth auth)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<InterventionEntity, InterventionListItemResponse>()
                 .ForMember(dest => dest.Id,
                     opts => opts.MapFrom(src => src.RowKey)));
             _mapper = config.CreateMapper();
+            _auth = auth;
         }
 
         [FunctionName("GetInterventionsInArea")]
@@ -45,6 +46,8 @@ namespace EkoFunkcje.Features.Interventions
             string latitude, string longitude, ILogger log)
         {
             // FIXME: The function might not work properly for multiple statuses, please recheck and adjust. See "GetAllInterventionsFunction" for a similar case.
+            if (!_auth.IsAuthorized(request, "GetInterventionsInArea"))
+                return new UnauthorizedResult();
             var body = await request.ReadAsStringAsync();
             var areaFilter = JsonConvert.DeserializeObject<AreaInterventionsFilterRequest>(body);
             string filter = GetFilter(areaFilter, latitude, longitude);

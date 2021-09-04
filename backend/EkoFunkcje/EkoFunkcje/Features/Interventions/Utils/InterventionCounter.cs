@@ -2,7 +2,6 @@ using EkoFunkcje.Interventions.Models;
 using Microsoft.WindowsAzure.Storage.Table;
 using System.Threading.Tasks;
 
-
 namespace EkoFunkcje.Interventions.Utils {
     public static class InterventionCounter {
         public static async Task<int> GetNextId(CloudTable interventionsTable)
